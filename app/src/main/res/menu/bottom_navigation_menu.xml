@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/games_home"
+        android:enabled="true"
+        android:title="Games"/>
+    <item
+        android:id="@+id/tv_home"
+        android:enabled="true"
+        android:title="TV"/>
+
+    <item
+        android:id="@+id/books_home"
+        android:enabled="true"
+        android:title="Books"/>
+</menu>

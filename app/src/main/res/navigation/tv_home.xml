@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_home"
+    app:startDestination="@+id/tv">
+
+    <fragment
+        android:id="@+id/tv"
+        android:name="kinf.koch.catalog.ui.tv.TVFragment"
+        android:label="TV"
+        tools:layout="@layout/tv_fragment">
+        <action
+            android:id="@+id/action_tv_home_to_search"
+            app:destination="@id/searchTV"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchTV"
+        android:name="kinf.koch.catalog.ui.tv.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/search_fragment"/>
+</navigation>
