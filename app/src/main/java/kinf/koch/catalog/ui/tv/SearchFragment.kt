@@ -1,46 +1,60 @@
 package kinf.koch.catalog.ui.tv
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kinf.koch.catalog.R
-import kinf.koch.catalog.ui.CustomAdapter
+import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 import kotlinx.android.synthetic.main.search_fragment.*
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-  //  private lateinit var dataset: Array<String>
+    private lateinit var adapter: SearchResultsAdapter
+    private lateinit var clickListener: OnClickListener
+
+    //  private lateinit var dataset: Array<String>
     private lateinit var viewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-   //     initDataset()
+        //     initDataset()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val rootView = inflater.inflate(R.layout.search_fragment, container, false)
         recyclerView = rootView.findViewById(R.id.recyclerView)
+        clickListener = object : OnClickListener {
+            override fun onCheckBoxClick(item: EitherMovieOrSeries) {
+                println("HALLOO")
+              //  findNavController().navigate(R.id.action_searchTV_to_addToDbDialogFragment)
+                val dialog = AddToDbDialogFragment()
+                dialog.show(fragmentManager!!, "dialog")
+            }
+
+        }
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        adapter = SearchResultsAdapter(listOf(), clickListener)
+        recyclerView.adapter = adapter
         return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        // TODO: Use the ViewModel
 
         viewModel.results.observe(viewLifecycleOwner, Observer {
-            recyclerView.adapter = SearchResultsAdapter(it)
+            //recyclerView.adapter = SearchResultsAdapter(it, clickListener)
+            adapter.setItems(it)
         })
 
         searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
@@ -53,7 +67,6 @@ class SearchFragment: Fragment() {
                 viewModel.search(newText)
                 return true
             }
-
         })
 
     }

@@ -9,6 +9,7 @@ import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.StringRequest
 import kinf.koch.catalog.util.Singletons
 import kinf.koch.catalog.ui.App
+import org.json.JSONException
 import org.json.JSONObject
 
 class TVRepository {
@@ -21,8 +22,8 @@ class TVRepository {
             Request.Method.GET, url,
             listener,
             Response.ErrorListener { Log.i("hallo", "Response Error TMDB") })
-        val context = App.getAppContext()
-        Singletons.getInstance(context).addToRequestQueue(stringRequest)
+        val context = App.appContext
+        Singletons.getInstance(context!!).addToRequestQueue(stringRequest)
     }
 
     fun handleResponse(response: String): List<EitherMovieOrSeries> {
@@ -60,35 +61,40 @@ class TVRepository {
                     poster_path
                 ))
             } else if (results.getJSONObject(i).getString("media_type").equals("movie")) {
+                try {
+                    val original_name = result.getString("original_title")
+                    val name = result.getString("title")
+                    val release_date = result.getString("release_date")?: "unkown"
+                    val overview = result.getString("overview")
+                    val rating_tmdb = result.getDouble("vote_average")
+                    val backdrop_path = result.getString("backdrop_path")
+                    val poster_path = result.getString("poster_path")
+                    val id_tmdb = result.getInt("id")
+                    val result_genres = result.getJSONArray("genre_ids")
+                    val genres = mutableListOf<Genre>()
 
-                val original_name = result.getString("original_title")
-                val name = result.getString("title")
-                val release_date = result.getString("release_date")
-                val overview = result.getString("overview")
-                val rating_tmdb = result.getDouble("vote_average")
-                val backdrop_path = result.getString("backdrop_path")
-                val poster_path = result.getString("poster_path")
-                val id_tmdb = result.getInt("id")
-                val result_genres = result.getJSONArray("genre_ids")
-                val genres = mutableListOf<Genre>()
-                for (j in 0 until result_genres.length()) {
-                    genres.add(genreIdToGenre(result_genres[j].toString().toInt()))
+                    for (j in 0 until result_genres.length()) {
+                        genres.add(genreIdToGenre(result_genres[j].toString().toInt()))
+                    }
+
+                    if (!release_date.isNullOrEmpty() && !poster_path.isNullOrEmpty()) {
+                        list.add(EitherMovieOrSeries(
+                            TypeOfWatchable.MOVIE,
+                            original_name,
+                            name,
+                            genres,
+                            release_date,
+                            overview,
+                            rating_tmdb,
+                            id_tmdb,
+                            backdrop_path,
+                            poster_path
+                        ))
+                    }
+                } catch (e: JSONException) {
+                    // TODO: handle
                 }
 
-                if (!release_date.isNullOrEmpty() && !poster_path.isNullOrEmpty()) {
-                    list.add(EitherMovieOrSeries(
-                        TypeOfWatchable.MOVIE,
-                        original_name,
-                        name,
-                        genres,
-                        release_date,
-                        overview,
-                        rating_tmdb,
-                        id_tmdb,
-                        backdrop_path,
-                        poster_path
-                    ))
-                }
             }
         }
         return list
@@ -106,8 +112,8 @@ class TVRepository {
             listener,
             300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
             Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
-        val imageLoader =  Singletons.getInstance(App.getAppContext()).imageLoader
-        Singletons.getInstance(App.getAppContext()).addToRequestQueue(imageRequest)
+        val imageLoader =  Singletons.getInstance(App.appContext!!).imageLoader
+        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
 
 
         /*imageLoader.get(url,

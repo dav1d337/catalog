@@ -20,16 +20,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="72dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="12dp"
+    android:layout_marginBottom="2dp"
     android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="221dp"
+        android:layout_height="33dp"
         android:text="Title"
         android:textSize="22dp"
+        app:layout_constraintEnd_toStartOf="@+id/year"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,21 +39,21 @@
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="3dp"
-        android:textSize="16dp"
         android:text="2018"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/description"
         android:layout_width="230dp"
         android:layout_height="34dp"
+        android:ellipsize="end"
+        android:scrollHorizontally="true"
         android:text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt"
         android:textSize="9dp"
-        android:scrollHorizontally="true"
-        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/name" />
 
@@ -63,4 +65,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/ic_baseline_check_box_24"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

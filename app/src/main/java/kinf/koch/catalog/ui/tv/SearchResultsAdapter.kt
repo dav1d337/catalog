@@ -34,7 +34,7 @@ import kinf.koch.catalog.model.tv.EitherMovieOrSeries
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsAdapter(private val dataSet: List<EitherMovieOrSeries>) :
+class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener) :
         RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
 
     /**
@@ -45,6 +45,7 @@ class SearchResultsAdapter(private val dataSet: List<EitherMovieOrSeries>) :
         val textViewYear: TextView
         val textViewDescription: TextView
         val imageView: ImageView
+        val checkBox: ImageView
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -53,7 +54,7 @@ class SearchResultsAdapter(private val dataSet: List<EitherMovieOrSeries>) :
             textViewYear = v.findViewById(R.id.year)
             textViewDescription = v.findViewById(R.id.description)
             imageView = v.findViewById(R.id.imageView)
-
+            checkBox = v.findViewById(R.id.checkBox)
         }
     }
 
@@ -76,10 +77,17 @@ class SearchResultsAdapter(private val dataSet: List<EitherMovieOrSeries>) :
         viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4)
         viewHolder.textViewDescription.text = dataSet[position].overview
         viewHolder.imageView.setImageBitmap(dataSet[position].poster)
+        viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
+
+    fun setItems(dataSet: List<EitherMovieOrSeries>) {
+        this.dataSet = dataSet
+        notifyDataSetChanged()
+    }
 
     companion object {
         private val TAG = "CustomAdapter"
