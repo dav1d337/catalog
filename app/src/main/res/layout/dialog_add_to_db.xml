@@ -1,14 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <TextView
-        android:text="Add to Catalog"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:scaleType="center"
         android:background="#FFFFBB33"
-        android:contentDescription="@string/app_name" />
+        android:contentDescription="@string/app_name"
+        android:scaleType="center"
+        android:text="Add to Catalog" />
+
 
     <LinearLayout
         android:id="@+id/starsLayout"
@@ -19,70 +21,98 @@
 
         <ImageView
             android:id="@+id/star1"
-            android:inputType="textEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
+            android:inputType="textEmailAddress"
             android:src="@drawable/ic_baseline_star_border_24" />
 
         <ImageView
             android:id="@+id/star2"
-            android:inputType="textEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
+            android:inputType="textEmailAddress"
             android:src="@drawable/ic_baseline_star_border_24" />
 
         <ImageView
             android:id="@+id/star3"
-            android:inputType="textEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
+            android:inputType="textEmailAddress"
             android:src="@drawable/ic_baseline_star_border_24" />
 
         <ImageView
             android:id="@+id/star4"
-            android:inputType="textEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
+            android:inputType="textEmailAddress"
             android:src="@drawable/ic_baseline_star_border_24" />
 
         <ImageView
             android:id="@+id/star5"
-            android:inputType="textEmailAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="4dp"
+            android:inputType="textEmailAddress"
             android:src="@drawable/ic_baseline_star_border_24" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/datepicker_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:text="Watched: " />
+
+        <TextView
+            android:id="@+id/datepicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/comment"
-        android:inputType="text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
-        android:hint="Comment"/>
+        android:hint="Comment"
+        android:inputType="text" />
 </LinearLayout>

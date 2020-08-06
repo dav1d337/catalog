@@ -1,19 +1,19 @@
 package kinf.koch.catalog.ui.tv
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.app.Dialog
-import android.content.DialogInterface
-import android.media.Image
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
-import androidx.core.view.forEach
+import android.widget.TextView
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.DialogFragment
-import io.reactivex.internal.subscriptions.SubscriptionHelper.cancel
 import kinf.koch.catalog.R
-import kotlinx.android.synthetic.main.dialog_add_to_db.*
 import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AddToDbDialogFragment : DialogFragment() {
 
@@ -26,23 +26,8 @@ class AddToDbDialogFragment : DialogFragment() {
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_add_to_db, null)
 
-            val stars = mutableListOf<ImageView>()
-            view.starsLayout.forEachIndexed { indexOuter, star ->
-                star.setOnClickListener {
-                    numberOfStars = 0
-                    stars.forEachIndexed { indexInner, star ->
-                        if (indexInner <= indexOuter) {
-                            star.setImageResource(R.drawable.ic_baseline_star_24)
-                            numberOfStars++
-                        } else {
-                            star.setImageResource(R.drawable.ic_baseline_star_border_24)
-                            numberOfStars--
-                        }
-                    }
-
-                }
-                stars.add(star as ImageView)
-            }
+            setupDatePicker(view)
+            setupStars(view)
 
             builder
                 .setView(view)
@@ -57,5 +42,53 @@ class AddToDbDialogFragment : DialogFragment() {
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
         return dialog
+    }
+
+    private fun setupStars(view: View) {
+        val stars = mutableListOf<ImageView>()
+        view.starsLayout.forEachIndexed { indexOuter, star ->
+            star.setOnClickListener {
+                numberOfStars = 0
+                stars.forEachIndexed { indexInner, star ->
+                    if (indexInner <= indexOuter) {
+                        star.setImageResource(R.drawable.ic_baseline_star_24)
+                        numberOfStars++
+                    } else {
+                        star.setImageResource(R.drawable.ic_baseline_star_border_24)
+                        numberOfStars--
+                    }
+                }
+
+            }
+            stars.add(star as ImageView)
+        }
+    }
+
+    private fun setupDatePicker(view: View) {
+        val textView: TextView = view.findViewById(R.id.datepicker)
+        textView.text = SimpleDateFormat("dd.MM.yyyy").format(System.currentTimeMillis())
+
+        var cal = Calendar.getInstance()
+
+        val dateSetListener =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                cal.set(Calendar.YEAR, year)
+                cal.set(Calendar.MONTH, monthOfYear)
+                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                val myFormat = "dd.MM.yyyy" // mention the format you need
+                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                textView.text = sdf.format(cal.time)
+
+            }
+
+        textView.setOnClickListener {
+            DatePickerDialog(
+                requireActivity(), dateSetListener,
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
     }
 }

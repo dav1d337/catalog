@@ -74,7 +74,7 @@ class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, priva
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         viewHolder.textViewName.text = dataSet[position].name
-        if (dataSet[position].first_air_date.length < 4) { viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4) }
+        if (dataSet[position].first_air_date.length >= 4) { viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4) }
         viewHolder.textViewDescription.text = dataSet[position].overview
         viewHolder.imageView.setImageBitmap(dataSet[position].poster)
         viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
