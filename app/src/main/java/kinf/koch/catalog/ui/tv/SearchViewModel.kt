@@ -8,24 +8,20 @@ import com.android.volley.Response
 import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 import kinf.koch.catalog.model.tv.TVRepository
 import kotlinx.coroutines.launch
+import org.koin.standalone.KoinComponent
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel constructor(private val tvRepository: TVRepository): ViewModel(),
+    KoinComponent {
 
     val results: MutableLiveData<List<EitherMovieOrSeries>> by lazy {
         MutableLiveData<List<EitherMovieOrSeries>>()
-    }
-
-    private var tvRepository: TVRepository? = null
-
-    init {
-        tvRepository = TVRepository()
     }
 
     fun search(query: String?) {
         viewModelScope.launch {
 
             val listener = Response.Listener<String> {
-                results.value = tvRepository!!.handleResponse(it)
+                results.value = tvRepository.handleResponse(it)
                 results.value!!.forEachIndexed { index, eitherMovieOrSeries ->
                     val listenerImages = Response.Listener<Bitmap> {img ->
                         if (index < results.value!!.size) {
@@ -37,10 +33,10 @@ class SearchViewModel : ViewModel() {
                             }
                         }
                     }
-                    tvRepository!!.getPosterImage(eitherMovieOrSeries.poster_path, listenerImages)
+                    tvRepository.getPosterImage(eitherMovieOrSeries.poster_path, listenerImages)
                 }
             }
-            tvRepository!!.searchTMB(query?:"test", listener)
+            tvRepository.searchTMB(query?:"test", listener)
         }
     }
 }

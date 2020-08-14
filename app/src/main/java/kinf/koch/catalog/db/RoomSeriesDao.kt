@@ -1,11 +1,12 @@
 package kinf.koch.catalog.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface RoomSeriesDao {
     @Query("SELECT * FROM roomSeries")
-    fun getAll(): List<RoomSeries>
+    fun getAll(): LiveData<List<RoomSeries>>
 
     @Query("SELECT * FROM roomSeries WHERE uid IN (:seriesIds)")
     fun loadAllByIds(seriesIds: IntArray): List<RoomSeries>

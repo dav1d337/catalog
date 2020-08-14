@@ -12,8 +12,6 @@ import androidx.work.WorkManager
 abstract class AppDatabase: RoomDatabase() {
     abstract fun roomSeriesDao(): RoomSeriesDao
 
-
-
     companion object {
 
         // For Singleton instantiation
@@ -25,9 +23,7 @@ abstract class AppDatabase: RoomDatabase() {
             }
         }
 
-        // Create and pre-populate the database. See this article for more details:
-        // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
-        private fun buildDatabase(context: Context): AppDatabase {
+        fun buildDatabase(context: Context): AppDatabase {
             return Room.databaseBuilder(context, AppDatabase::class.java, "catalogDB")
                 .build()
         }

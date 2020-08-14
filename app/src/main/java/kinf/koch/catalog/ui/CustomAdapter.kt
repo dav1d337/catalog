@@ -16,6 +16,7 @@
 
 package kinf.koch.catalog.ui
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kinf.koch.catalog.R
+import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 
 
 /**
@@ -32,9 +34,12 @@ import kinf.koch.catalog.R
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class CustomAdapter(private val dataSet: Array<String>) :
+class CustomAdapter internal constructor(
+    context: Context
+) :
         RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
+    private var dataSet = emptyList<EitherMovieOrSeries>()
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
@@ -63,11 +68,16 @@ class CustomAdapter(private val dataSet: Array<String>) :
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.textView.text = dataSet[position]
+        viewHolder.textView.text = dataSet[position].name
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
+
+    internal fun setItems(items: List<EitherMovieOrSeries>) {
+        this.dataSet = items
+        notifyDataSetChanged()
+    }
 
     companion object {
         private val TAG = "CustomAdapter"

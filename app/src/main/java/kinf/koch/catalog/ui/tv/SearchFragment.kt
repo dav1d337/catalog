@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kinf.koch.catalog.R
 import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 import kotlinx.android.synthetic.main.search_fragment.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
@@ -21,7 +22,8 @@ class SearchFragment : Fragment() {
     private lateinit var clickListener: OnClickListener
 
     //  private lateinit var dataset: Array<String>
-    private lateinit var viewModel: SearchViewModel
+   //  private lateinit var viewModel: SearchViewModel
+    val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +38,6 @@ class SearchFragment : Fragment() {
         recyclerView = rootView.findViewById(R.id.recyclerView)
         clickListener = object : OnClickListener {
             override fun onCheckBoxClick(item: EitherMovieOrSeries) {
-              //  findNavController().navigate(R.id.action_searchTV_to_addToDbDialogFragment)
                 val dialog = AddToDbDialogFragment()
                 dialog.show(fragmentManager!!, "dialog")
             }
@@ -50,7 +51,7 @@ class SearchFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
+     //   viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
         viewModel.results.observe(viewLifecycleOwner, Observer {
             //recyclerView.adapter = SearchResultsAdapter(it, clickListener)

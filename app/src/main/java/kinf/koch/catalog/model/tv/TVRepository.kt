@@ -3,16 +3,24 @@ package kinf.koch.catalog.model.tv
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
+import androidx.lifecycle.LiveData
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.StringRequest
+import kinf.koch.catalog.db.AppDatabase
+import kinf.koch.catalog.db.RoomSeries
+import kinf.koch.catalog.db.RoomSeriesDao
+import kinf.koch.catalog.di.applicationModule
 import kinf.koch.catalog.util.Singletons
 import kinf.koch.catalog.ui.App
 import org.json.JSONException
 import org.json.JSONObject
 
-class TVRepository {
+class TVRepository() {
+
+    var roomSeriesDao: RoomSeriesDao = AppDatabase.getInstance(App.appContext!!).roomSeriesDao()
+    val allSeries: LiveData<List<RoomSeries>> = roomSeriesDao.getAll()
 
     fun searchTMB(query: String, listener: Response.Listener<String>) {
         val url =
