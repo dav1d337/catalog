@@ -24,11 +24,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import kinf.koch.catalog.R
 import kinf.koch.catalog.db.RoomSeriesMovie
-import kinf.koch.catalog.model.tv.EitherMovieOrSeries
-import kinf.koch.catalog.ui.tv.OnClickListener
 import kinf.koch.catalog.util.ImageSaver
 
 
@@ -52,8 +49,9 @@ class CustomAdapter internal constructor(
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
         val year: TextView
-        val watchDate: TextView
+       // val watchDate: TextView
         val poster: ImageView
+        val commentView: TextView
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -65,7 +63,8 @@ class CustomAdapter internal constructor(
             title = v.findViewById(R.id.textView)
             year = v.findViewById(R.id.year)
             poster = v.findViewById(R.id.imageView2)
-            watchDate = v.findViewById(R.id.watchDate)
+            commentView = v.findViewById(R.id.comment)
+         //   watchDate = v.findViewById(R.id.watchDate)
         }
 
     }
@@ -86,9 +85,11 @@ class CustomAdapter internal constructor(
         Log.d(TAG, "Element $position set.")
 
         viewHolder.title.text = dataSet[position].name
-        viewHolder.year.text = dataSet[position].first_air_date
-        viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName("lol.png").setDirectoryName("images").load())
-      //  viewHolder.poster.setImageBitmap(dataSet[position].poster)
+        viewHolder.year.text = dataSet[position].first_air_date.substring(0,4)
+        val fileName = dataSet[position].original_name + ".png"
+        viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
+        viewHolder.commentView.text = comment
     }
 
 

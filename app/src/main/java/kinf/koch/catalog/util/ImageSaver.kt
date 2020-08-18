@@ -20,6 +20,7 @@ class ImageSaver(context: Context) {
     private var fileName = "image.png"
     private val context: Context
     private var external = false
+
     fun setFileName(fileName: String): ImageSaver {
         this.fileName = fileName
         return this

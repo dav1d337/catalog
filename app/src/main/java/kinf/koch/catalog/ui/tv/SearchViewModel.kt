@@ -44,7 +44,7 @@ class SearchViewModel constructor(private val tvRepository: TVRepository): ViewM
                             }
                         }
                     }
-                    tvRepository.getPosterImage(eitherMovieOrSeries.poster_path, listenerImages)
+                    tvRepository.getPosterImage(id = eitherMovieOrSeries.poster_path, listener = listenerImages)
                 }
             }
             tvRepository.searchTMB(query?:"test", listener)

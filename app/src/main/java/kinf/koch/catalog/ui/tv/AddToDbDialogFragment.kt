@@ -33,8 +33,9 @@ class AddToDbDialogFragment(val clickListener: OnClickListener, val item: Either
             builder
                 .setView(view)
                 .setPositiveButton("Save") { dialog, id ->
-                    Log.i("hallo", numberOfStars.toString())
-                    clickListener.onSaveClick(item, numberOfStars, view.datepicker.toString(), view.comment.toString())
+                    Log.i("hallo", view.datepicker.text.toString())
+
+                    clickListener.onSaveClick(item, numberOfStars, view.datepicker.text.toString(), view.comment.text.toString())
                 }
                 .setNegativeButton("Cancel") { dialog, id ->
                     // User cancelled the dialog
@@ -77,9 +78,8 @@ class AddToDbDialogFragment(val clickListener: OnClickListener, val item: Either
                 cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
                 val myFormat = "dd.MM.yyyy" // mention the format you need
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
+                val sdf = SimpleDateFormat(myFormat, Locale.GERMAN)
                 textView.text = sdf.format(cal.time)
-
             }
 
         textView.setOnClickListener {

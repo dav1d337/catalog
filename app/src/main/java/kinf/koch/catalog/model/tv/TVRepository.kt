@@ -1,13 +1,9 @@
 package kinf.koch.catalog.model.tv
 
-import android.content.Context
-import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
-import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.ImageRequest
@@ -20,25 +16,27 @@ import kinf.koch.catalog.util.ImageSaver
 import kinf.koch.catalog.util.Singletons
 import org.json.JSONException
 import org.json.JSONObject
-import org.koin.dsl.module.applicationContext
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-
 
 class TVRepository() {
 
     var roomSeriesDao: RoomSeriesDao = AppDatabase.getInstance(App.appContext!!).roomSeriesDao()
-    val allSeriesMovie: LiveData<List<RoomSeriesMovie>> = roomSeriesDao.getAll()
+    val allSeriesMovie: LiveData<List<RoomSeriesMovie>> = roomSeriesDao
+        .getAll()
+
 
     fun insert(seriesMovie: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
-        seriesMovie.poster?.let {
-            ImageSaver(App.appContext!!).setFileName("lol.png").setDirectoryName("images").save(it)
+        val listenerImage = Response.Listener<Bitmap> { img ->
+            val fileName = seriesMovie.original_name + ".png"
+            ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").save(img)
         }
+        getPosterImage("w185", seriesMovie.poster_path, listenerImage)
+
         roomSeriesDao.insertAll(seriesMovie.toRoomEntity(rating, watchDate, comment))
     }
 
     fun delete(roomSeriesMovie: RoomSeriesMovie) {
+        val fileName = roomSeriesMovie.original_name + ".png"
+        ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").deleteFile()
         roomSeriesDao.delete(roomSeriesMovie)
     }
 
@@ -59,7 +57,7 @@ class TVRepository() {
         val results = JSONObject(response).getJSONArray("results")
         for (i in 0 until results.length()) {
             val result = results.getJSONObject(i)
-        //    Log.i("hallo", "response: $result")
+            //    Log.i("hallo", "response: $result")
             if (result.getString("media_type") == "tv") {
                 // Series
                 val original_name = result.getString("original_name")
@@ -76,23 +74,25 @@ class TVRepository() {
                     genres.add(genreIdToGenre(result_genres[j].toString().toInt()))
                 }
 
-                list.add(EitherMovieOrSeries(
-                    TypeOfWatchable.SERIES,
-                    original_name,
-                    name,
-                    genres,
-                    first_air_date,
-                    overview,
-                    rating_tmdb,
-                    id_tmdb,
-                    backdrop_path,
-                    poster_path
-                ))
+                list.add(
+                    EitherMovieOrSeries(
+                        TypeOfWatchable.SERIES,
+                        original_name,
+                        name,
+                        genres,
+                        first_air_date,
+                        overview,
+                        rating_tmdb,
+                        id_tmdb,
+                        backdrop_path,
+                        poster_path
+                    )
+                )
             } else if (results.getJSONObject(i).getString("media_type").equals("movie")) {
                 try {
                     val original_name = result.getString("original_title")
                     val name = result.getString("title")
-                    val release_date = result.getString("release_date")?: "unkown"
+                    val release_date = result.getString("release_date") ?: "unkown"
                     val overview = result.getString("overview")
                     val rating_tmdb = result.getDouble("vote_average")
                     val backdrop_path = result.getString("backdrop_path")
@@ -106,18 +106,20 @@ class TVRepository() {
                     }
 
                     if (!release_date.isNullOrEmpty() && !poster_path.isNullOrEmpty()) {
-                        list.add(EitherMovieOrSeries(
-                            TypeOfWatchable.MOVIE,
-                            original_name,
-                            name,
-                            genres,
-                            release_date,
-                            overview,
-                            rating_tmdb,
-                            id_tmdb,
-                            backdrop_path,
-                            poster_path
-                        ))
+                        list.add(
+                            EitherMovieOrSeries(
+                                TypeOfWatchable.MOVIE,
+                                original_name,
+                                name,
+                                genres,
+                                release_date,
+                                overview,
+                                rating_tmdb,
+                                id_tmdb,
+                                backdrop_path,
+                                poster_path
+                            )
+                        )
                     }
                 } catch (e: JSONException) {
                     // TODO: handle
@@ -128,8 +130,8 @@ class TVRepository() {
         return list
     }
 
-    fun getPosterImage(id: String, listener: Response.Listener<Bitmap>) {
-        val url = "https://image.tmdb.org/t/p/w154$id"
+    fun getPosterImage(size: String = "w154", id: String, listener: Response.Listener<Bitmap>) {
+        val url = "https://image.tmdb.org/t/p/$size$id"
         val imageRequest = ImageRequest(url,
             listener,
             300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
