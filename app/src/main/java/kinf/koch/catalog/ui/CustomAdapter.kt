@@ -21,10 +21,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import kinf.koch.catalog.R
+import kinf.koch.catalog.db.RoomSeriesMovie
 import kinf.koch.catalog.model.tv.EitherMovieOrSeries
+import kinf.koch.catalog.ui.tv.OnClickListener
+import kinf.koch.catalog.util.ImageSaver
 
 
 /**
@@ -39,42 +44,57 @@ class CustomAdapter internal constructor(
 ) :
         RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-    private var dataSet = emptyList<EitherMovieOrSeries>()
+    private var dataSet = emptyList<RoomSeriesMovie>()
+    var onItemLongClick: ((RoomSeriesMovie) -> Unit)? = null
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val textView: TextView
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val title: TextView
+        val year: TextView
+        val watchDate: TextView
+        val poster: ImageView
 
         init {
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener { Log.d(TAG, "Element $adapterPosition clicked.") }
-            textView = v.findViewById(R.id.textView)
+            v.setOnLongClickListener {
+                onItemLongClick?.invoke(dataSet[adapterPosition])
+                return@setOnLongClickListener false
+            }
+            title = v.findViewById(R.id.textView)
+            year = v.findViewById(R.id.year)
+            poster = v.findViewById(R.id.imageView2)
+            watchDate = v.findViewById(R.id.watchDate)
         }
+
     }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.text_row_item, viewGroup, false)
+                .inflate(R.layout.tv_cardview, viewGroup, false)
+
 
         return ViewHolder(v)
     }
+
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
-        viewHolder.textView.text = dataSet[position].name
+        viewHolder.title.text = dataSet[position].name
+        viewHolder.year.text = dataSet[position].first_air_date
+        viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName("lol.png").setDirectoryName("images").load())
+      //  viewHolder.poster.setImageBitmap(dataSet[position].poster)
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
+
     override fun getItemCount() = dataSet.size
 
-    internal fun setItems(items: List<EitherMovieOrSeries>) {
+    internal fun setItems(items: List<RoomSeriesMovie>) {
         this.dataSet = items
         notifyDataSetChanged()
     }

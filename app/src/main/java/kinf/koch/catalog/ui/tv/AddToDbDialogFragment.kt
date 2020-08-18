@@ -11,17 +11,18 @@ import android.widget.TextView
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.DialogFragment
 import kinf.koch.catalog.R
+import kinf.koch.catalog.model.tv.EitherMovieOrSeries
+import kotlinx.android.synthetic.main.dialog_add_to_db.*
 import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddToDbDialogFragment : DialogFragment() {
+class AddToDbDialogFragment(val clickListener: OnClickListener, val item: EitherMovieOrSeries): DialogFragment() {
 
-    var numberOfStars = 0
+    private var numberOfStars = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = activity?.let {
-            // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(it)
             val inflater = requireActivity().layoutInflater
             val view = inflater.inflate(R.layout.dialog_add_to_db, null)
@@ -31,14 +32,13 @@ class AddToDbDialogFragment : DialogFragment() {
 
             builder
                 .setView(view)
-                .setPositiveButton("Save", { dialog, id ->
+                .setPositiveButton("Save") { dialog, id ->
                     Log.i("hallo", numberOfStars.toString())
-                    // FIRE ZE MISSILES!
-                })
-                .setNegativeButton("Cancel", { dialog, id ->
+                    clickListener.onSaveClick(item, numberOfStars, view.datepicker.toString(), view.comment.toString())
+                }
+                .setNegativeButton("Cancel") { dialog, id ->
                     // User cancelled the dialog
-                })
-            // Create the AlertDialog object
+                }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
         return dialog

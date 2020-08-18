@@ -1,22 +1,23 @@
 package kinf.koch.catalog.db
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 
 @Dao
 interface RoomSeriesDao {
-    @Query("SELECT * FROM roomSeries")
-    fun getAll(): LiveData<List<RoomSeries>>
+    @Query("SELECT * FROM roomSeriesMovie")
+    fun getAll(): LiveData<List<RoomSeriesMovie>>
 
-    @Query("SELECT * FROM roomSeries WHERE uid IN (:seriesIds)")
-    fun loadAllByIds(seriesIds: IntArray): List<RoomSeries>
+  //  @Query("SELECT * FROM roomSeriesMovie WHERE uid IN (:seriesIds)")
+  //  fun loadAllByIds(seriesIds: IntArray): List<RoomSeriesMovie>
 
-    @Query("SELECT * FROM roomSeries WHERE original_name LIKE :name LIMIT 1")
-    fun findByName(name: String): RoomSeries
+    @Query("SELECT * FROM roomSeriesMovie WHERE original_name LIKE :name LIMIT 1")
+    fun findByName(name: String): RoomSeriesMovie
 
-    @Insert
-    fun insertAll(vararg roomSeries: RoomSeries)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg roomSeryMovies: RoomSeriesMovie)
 
     @Delete
-    fun delete(roomSeries: RoomSeries)
+    fun delete(roomSeriesMovie: RoomSeriesMovie)
 }

@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
 import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 import kinf.koch.catalog.model.tv.TVRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.standalone.KoinComponent
 
 class SearchViewModel constructor(private val tvRepository: TVRepository): ViewModel(),
@@ -15,6 +17,15 @@ class SearchViewModel constructor(private val tvRepository: TVRepository): ViewM
 
     val results: MutableLiveData<List<EitherMovieOrSeries>> by lazy {
         MutableLiveData<List<EitherMovieOrSeries>>()
+    }
+
+    fun insert(item: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                tvRepository.insert(item, rating, watchDate, comment)
+            }
+        }
+
     }
 
     fun search(query: String?) {

@@ -8,6 +8,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.tv.TVFragment">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="22dp"
+        android:textSize="22sp"
+        android:text="Looks like you've watched nothing so far! Click on the Search-Button to add the first movie or series to your tv catalog :-)"/>
+    />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

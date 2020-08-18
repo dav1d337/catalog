@@ -1,26 +1,46 @@
 package kinf.koch.catalog.model.tv
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import androidx.room.Room
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.StringRequest
 import kinf.koch.catalog.db.AppDatabase
-import kinf.koch.catalog.db.RoomSeries
 import kinf.koch.catalog.db.RoomSeriesDao
-import kinf.koch.catalog.di.applicationModule
-import kinf.koch.catalog.util.Singletons
+import kinf.koch.catalog.db.RoomSeriesMovie
 import kinf.koch.catalog.ui.App
+import kinf.koch.catalog.util.ImageSaver
+import kinf.koch.catalog.util.Singletons
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.dsl.module.applicationContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+
 
 class TVRepository() {
 
     var roomSeriesDao: RoomSeriesDao = AppDatabase.getInstance(App.appContext!!).roomSeriesDao()
-    val allSeries: LiveData<List<RoomSeries>> = roomSeriesDao.getAll()
+    val allSeriesMovie: LiveData<List<RoomSeriesMovie>> = roomSeriesDao.getAll()
+
+    fun insert(seriesMovie: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
+        seriesMovie.poster?.let {
+            ImageSaver(App.appContext!!).setFileName("lol.png").setDirectoryName("images").save(it)
+        }
+        roomSeriesDao.insertAll(seriesMovie.toRoomEntity(rating, watchDate, comment))
+    }
+
+    fun delete(roomSeriesMovie: RoomSeriesMovie) {
+        roomSeriesDao.delete(roomSeriesMovie)
+    }
 
     fun searchTMB(query: String, listener: Response.Listener<String>) {
         val url =
@@ -39,7 +59,7 @@ class TVRepository() {
         val results = JSONObject(response).getJSONArray("results")
         for (i in 0 until results.length()) {
             val result = results.getJSONObject(i)
-            Log.i("hallo", "response: $result")
+        //    Log.i("hallo", "response: $result")
             if (result.getString("media_type") == "tv") {
                 // Series
                 val original_name = result.getString("original_name")
@@ -110,30 +130,11 @@ class TVRepository() {
 
     fun getPosterImage(id: String, listener: Response.Listener<Bitmap>) {
         val url = "https://image.tmdb.org/t/p/w154$id"
-        var image: Bitmap? = null
-
         val imageRequest = ImageRequest(url,
-/*            Response.Listener<Bitmap> {
-                image = it
-                Log.i("hallo", "Response Image OK 1")
-            },*/
             listener,
             300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
             Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
-        val imageLoader =  Singletons.getInstance(App.appContext!!).imageLoader
         Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
-
-
-        /*imageLoader.get(url,
-            object : ImageLoader.ImageListener {
-            override fun onResponse(response: ImageLoader.ImageContainer?, isImmediate: Boolean) {
-                Log.i("hallo", "Response Image OK 2")
-            }
-
-            override fun onErrorResponse(error: VolleyError?) {
-                Log.i("hallo", "Response Error IMAGE 2")
-            }
-        })*/
     }
 
     companion object {

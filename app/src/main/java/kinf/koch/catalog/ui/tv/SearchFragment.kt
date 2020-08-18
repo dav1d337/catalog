@@ -20,14 +20,12 @@ class SearchFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SearchResultsAdapter
     private lateinit var clickListener: OnClickListener
+    private lateinit var clickListenerSave: OnClickListener
 
-    //  private lateinit var dataset: Array<String>
-   //  private lateinit var viewModel: SearchViewModel
     val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //     initDataset()
     }
 
     override fun onCreateView(
@@ -36,12 +34,16 @@ class SearchFragment : Fragment() {
     ): View {
         val rootView = inflater.inflate(R.layout.search_fragment, container, false)
         recyclerView = rootView.findViewById(R.id.recyclerView)
+        clickListenerSave = object : OnClickListener {
+            override fun onSaveClick(item: EitherMovieOrSeries, rating: Int, watchDate:String, comment: String) {
+                viewModel.insert(item, rating, watchDate, comment)
+            }
+        }
         clickListener = object : OnClickListener {
             override fun onCheckBoxClick(item: EitherMovieOrSeries) {
-                val dialog = AddToDbDialogFragment()
+                val dialog = AddToDbDialogFragment(clickListenerSave, item)
                 dialog.show(fragmentManager!!, "dialog")
             }
-
         }
         recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter = SearchResultsAdapter(listOf(), clickListener)
@@ -51,10 +53,8 @@ class SearchFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-     //   viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
         viewModel.results.observe(viewLifecycleOwner, Observer {
-            //recyclerView.adapter = SearchResultsAdapter(it, clickListener)
             adapter.setItems(it)
         })
 
