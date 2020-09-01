@@ -5,9 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="1dp"
-    android:gravity="center_vertical"
-    app:cardBackgroundColor="@color/yellow_green">
+    app:cardCornerRadius="6dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginBottom="2dp"
+    android:layout_marginEnd="2dp"
+    android:gravity="center"
+    app:cardBackgroundColor="@color/persimmon">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -17,13 +20,19 @@
 
         <TextView
             android:id="@+id/comment"
-            android:layout_width="246dp"
-            android:layout_height="67dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:lines="4"
+            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="3dp"
+            android:scrollbars="vertical"
             android:text="Lorem ipsum blalbla Lorem ipsum blalbla Lorem ipsusdaasdm blalbla"
+            app:layout_constrainedHeight="true"
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView2" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 
         <LinearLayout
@@ -92,6 +101,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -114,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="22dp"
+                android:textSize="18sp"
                 android:text="2012" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

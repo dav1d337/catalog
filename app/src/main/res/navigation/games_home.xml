@@ -9,7 +9,7 @@
 
     <fragment
             android:id="@+id/games"
-            android:name="kinf.koch.catalog.ui.games.GamesFragment"
+            android:name="com.dav1337d.catalog.ui.games.GamesFragment"
             android:label="Games"
             tools:layout="@layout/games_fragment">
 <!--        <action-->

@@ -6,7 +6,7 @@
     android:id="@+id/tv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green_munsell"
+    android:background="@color/orange"
     tools:context=".ui.tv.TVFragment">
 
     <TextView
@@ -23,7 +23,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:backgroundTint="@color/gold_crayola"
+        app:backgroundTint="@color/transparent"
+        android:backgroundTint="@color/colorAccent"
         android:src="@drawable/ic_baseline_add_24"
         android:contentDescription="To Search"
         android:layout_margin="16dp"/>

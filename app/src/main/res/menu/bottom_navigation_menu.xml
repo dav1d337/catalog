@@ -3,7 +3,6 @@
         android:id="@+id/games_home"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_videogame_asset_24"
-        android:iconTint="@color/green_munsell"
         android:title="@string/games"/>
     <item
         android:id="@+id/tv_home"

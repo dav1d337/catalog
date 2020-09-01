@@ -9,7 +9,7 @@
 
     <fragment
             android:id="@+id/books"
-            android:name="kinf.koch.catalog.ui.books.BooksFragment"
+            android:name="com.dav1337d.catalog.ui.books.BooksFragment"
             android:label="Books"
             tools:layout="@layout/books_fragment">
 <!--        <action-->

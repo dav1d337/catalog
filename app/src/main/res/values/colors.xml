@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/gold_crayola</color>
-    <color name="colorPrimaryDark">@color/smoky</color>
-    <color name="colorAccent">@color/yellow_green</color>
+    <color name="colorPrimary">@color/dark_red</color>
+    <color name="colorPrimaryDark">@color/rose</color>
+    <color name="colorAccent">@color/carrot</color>
 
     <color name="transparent">#00FFFFFF</color>
 
@@ -11,4 +11,16 @@
     <color name="gold_crayola">#F3C178</color>
     <color name="orange_soda">#FE5E41</color>
     <color name="smoky">#0B0500</color>
+
+    <color name="xikatic">#03071e</color>
+    <color name="sienna">#370617</color>
+    <color name="rose">#6a040f</color>
+    <color name="dark_red">#9d0208</color>
+    <color name="rosso">#d00000</color>
+    <color name="vermilion">#dc2f02</color>
+    <color name="persimmon">#e85d04</color>
+    <color name="carrot">#f48c06</color>
+    <color name="orange">#faa307</color>
+    <color name="yellow">#ffba08</color>
+
 </resources>
