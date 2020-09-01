@@ -13,5 +13,5 @@
         android:layout_gravity="center"
         android:layout_margin="22dp"
         android:textSize="22sp"
-        android:text="Looks like you've played no game so far! Click on the Search-Button to add the first game to your game catalog :-)"/>
+        android:text="@string/empty_games_catalog"/>
 </LinearLayout>

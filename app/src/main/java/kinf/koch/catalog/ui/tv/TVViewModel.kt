@@ -2,6 +2,7 @@ package kinf.koch.catalog.ui.tv
 
 import android.R
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
@@ -37,6 +38,7 @@ class TVViewModel constructor(private val tvRepository: TVRepository) : ViewMode
         }
     }
 
+
     fun sortItemsBy(by: String): Boolean {
         liveData.value?.let { seriesMovies ->
             when (by) {
@@ -47,15 +49,31 @@ class TVViewModel constructor(private val tvRepository: TVRepository) : ViewMode
                         liveData.value = seriesMovies.sortedByDescending { it.name }
                     }
                 }
-                "release" -> {
+                "first_air_date" -> {
                     if (seriesMovies != seriesMovies.sortedBy { it.first_air_date }) {
                         liveData.value = seriesMovies.sortedBy { it.first_air_date }
                     } else {
                         liveData.value = seriesMovies.sortedByDescending { it.first_air_date }
                     }
                 }
+                "watchDate" -> {
+                    if (seriesMovies != seriesMovies.sortedBy { it.watchDate }) {
+                        liveData.value = seriesMovies.sortedBy { it.watchDate }
+                    } else {
+                        liveData.value = seriesMovies.sortedByDescending { it.watchDate }
+                    }
+                }
+                "personalRating" -> {
+                    if (seriesMovies != seriesMovies.sortedBy { it.personalRating }) {
+                        liveData.value = seriesMovies.sortedBy { it.personalRating }
+                    } else {
+                        liveData.value = seriesMovies.sortedByDescending { it.personalRating }
+                    }
+                }
             }
         }
+
+
 
         return true
     }

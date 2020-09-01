@@ -1,10 +1,13 @@
 package kinf.koch.catalog.ui.tv
 
 import android.os.Bundle
+import android.provider.Contacts
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kinf.koch.catalog.R
 import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 import kotlinx.android.synthetic.main.search_fragment.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -21,18 +27,17 @@ class SearchFragment : Fragment() {
     private lateinit var adapter: SearchResultsAdapter
     private lateinit var clickListener: OnClickListener
     private lateinit var clickListenerSave: OnClickListener
+    private lateinit var searchView: SearchView
 
     val viewModel by viewModel<SearchViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val rootView = inflater.inflate(R.layout.search_fragment, container, false)
+        searchView = rootView.findViewById(R.id.searchView)
+        searchView.queryHint = "Enter title..."
         recyclerView = rootView.findViewById(R.id.recyclerView)
         clickListenerSave = object : OnClickListener {
             override fun onSaveClick(item: EitherMovieOrSeries, rating: Int, watchDate:String, comment: String) {
@@ -51,6 +56,7 @@ class SearchFragment : Fragment() {
         return rootView
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -60,6 +66,7 @@ class SearchFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+
                 viewModel.search(query)
                 return false
             }
@@ -69,6 +76,5 @@ class SearchFragment : Fragment() {
                 return true
             }
         })
-
     }
 }

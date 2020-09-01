@@ -7,13 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
 import kinf.koch.catalog.model.tv.EitherMovieOrSeries
 import kinf.koch.catalog.model.tv.TVRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
 
 class SearchViewModel constructor(private val tvRepository: TVRepository): ViewModel(),
     KoinComponent {
+
+    var queryTextChangedJob: Job? = null
 
     val results: MutableLiveData<List<EitherMovieOrSeries>> by lazy {
         MutableLiveData<List<EitherMovieOrSeries>>()
@@ -30,24 +30,29 @@ class SearchViewModel constructor(private val tvRepository: TVRepository): ViewM
 
     fun search(query: String?) {
         viewModelScope.launch {
+            queryTextChangedJob?.cancel()
 
-            val listener = Response.Listener<String> {
-                results.value = tvRepository.handleResponse(it)
-                results.value!!.forEachIndexed { index, eitherMovieOrSeries ->
-                    val listenerImages = Response.Listener<Bitmap> {img ->
-                        if (index < results.value!!.size) {
-                            results.value?.get(index).let { tv ->
-                                tv?.let {
-                                    it.poster = img
-                                    results.postValue(results.value)
+            queryTextChangedJob = launch(Dispatchers.Main) {
+                delay(200)
+                val listener = Response.Listener<String> {
+                    results.value = tvRepository.handleResponse(it)
+                    results.value!!.forEachIndexed { index, eitherMovieOrSeries ->
+                        val listenerImages = Response.Listener<Bitmap> {img ->
+                            if (index < results.value!!.size) {
+                                results.value?.get(index).let { tv ->
+                                    tv?.let {
+                                        it.poster = img
+                                        results.postValue(results.value)
+                                    }
                                 }
                             }
                         }
+                        tvRepository.getPosterImage(id = eitherMovieOrSeries.poster_path, listener = listenerImages)
                     }
-                    tvRepository.getPosterImage(id = eitherMovieOrSeries.poster_path, listener = listenerImages)
                 }
+                tvRepository.searchTMB(query?:"test", listener)
             }
-            tvRepository.searchTMB(query?:"test", listener)
+
         }
     }
 }

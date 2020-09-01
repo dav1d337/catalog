@@ -17,12 +17,17 @@
 package kinf.koch.catalog.ui
 
 import android.content.Context
+import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.get
+import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import kinf.koch.catalog.R
 import kinf.koch.catalog.db.RoomSeriesMovie
@@ -52,6 +57,7 @@ class CustomAdapter internal constructor(
        // val watchDate: TextView
         val poster: ImageView
         val commentView: TextView
+        val linearLayout: LinearLayout
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -65,6 +71,7 @@ class CustomAdapter internal constructor(
             poster = v.findViewById(R.id.imageView2)
             commentView = v.findViewById(R.id.comment)
          //   watchDate = v.findViewById(R.id.watchDate)
+            linearLayout = v.findViewById(R.id.linearLayout)
         }
 
     }
@@ -74,7 +81,6 @@ class CustomAdapter internal constructor(
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.tv_cardview, viewGroup, false)
-
 
         return ViewHolder(v)
     }
@@ -86,12 +92,23 @@ class CustomAdapter internal constructor(
 
         viewHolder.title.text = dataSet[position].name
         viewHolder.year.text = dataSet[position].first_air_date.substring(0,4)
-        val fileName = dataSet[position].original_name + ".png"
+        val fileName = (dataSet[position].original_name + ".png").replace("/","")
         viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
         val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
         viewHolder.commentView.text = comment
+        Log.i("hallo rating", dataSet[position].personalRating.toString())
+        for (i in 0 until viewHolder.linearLayout.size) {
+            if (dataSet[position].personalRating >= 0 && dataSet[position].personalRating > i) {
+                viewHolder.linearLayout[i].visibility = View.VISIBLE
+            } else {
+                viewHolder.linearLayout[i].visibility = View.GONE
+            }
+        }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return dataSet[position].personalRating
+    }
 
     override fun getItemCount() = dataSet.size
 

@@ -34,7 +34,7 @@ class AddToDbDialogFragment(val clickListener: OnClickListener, val item: Either
                 .setView(view)
                 .setPositiveButton("Save") { dialog, id ->
                     Log.i("hallo", view.datepicker.text.toString())
-
+                    Log.i("hallo rating eingeben", numberOfStars.toString())
                     clickListener.onSaveClick(item, numberOfStars, view.datepicker.text.toString(), view.comment.text.toString())
                 }
                 .setNegativeButton("Cancel") { dialog, id ->
@@ -56,7 +56,7 @@ class AddToDbDialogFragment(val clickListener: OnClickListener, val item: Either
                         numberOfStars++
                     } else {
                         star.setImageResource(R.drawable.ic_baseline_star_border_24)
-                        numberOfStars--
+                        // numberOfStars--
                     }
                 }
 

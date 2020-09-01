@@ -58,6 +58,7 @@ class TVFragment : Fragment() {
             alertDialog?.show()
             alertDialog?.window?.setLayout(600,400)
         }
+
         return rootView
     }
 
@@ -77,24 +78,6 @@ class TVFragment : Fragment() {
                     textView.visibility = View.VISIBLE
                 }
                 adapter.setItems(it)
-                /*
-                adapter.setItems(it.map {
-                    EitherMovieOrSeries(
-                        TypeOfWatchable.SERIES,
-                        it.original_name,
-                        it.name,
-                        listOf(),
-                        it.first_air_date,
-                        it.overview,
-                        it.rating_tmdb,
-                        it.id_tmdb,
-                        it.backdrop_path,
-                        it.poster_path
-                    )
-                })
-
-
-                 */
             }
         })
     }
@@ -108,9 +91,9 @@ class TVFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.name -> viewModel.sortItemsBy("name")
-            R.id.rating -> viewModel.sortItemsBy("rating")
-            R.id.watched -> viewModel.sortItemsBy("watched")
-            R.id.release -> viewModel.sortItemsBy("release")
+            R.id.rating -> viewModel.sortItemsBy("personalRating")
+            R.id.watched -> viewModel.sortItemsBy("watchDate")
+            R.id.release -> viewModel.sortItemsBy("first_air_date")
 
             else -> super.onOptionsItemSelected(item)
         }

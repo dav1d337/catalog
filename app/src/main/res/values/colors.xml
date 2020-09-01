@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">@color/gold_crayola</color>
+    <color name="colorPrimaryDark">@color/smoky</color>
+    <color name="colorAccent">@color/yellow_green</color>
+
+    <color name="transparent">#00FFFFFF</color>
+
+    <color name="green_munsell">#00A878</color>
+    <color name="yellow_green">#D8F1A0</color>
+    <color name="gold_crayola">#F3C178</color>
+    <color name="orange_soda">#FE5E41</color>
+    <color name="smoky">#0B0500</color>
 </resources>

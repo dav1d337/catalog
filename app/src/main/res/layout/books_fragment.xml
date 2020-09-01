@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_margin="22dp"
         android:textSize="22sp"
-        android:text="Looks like you've read no book so far! Click on the Search-Button to add the first book to your book catalog :-)"/>
+        android:text="@string/empty_book_catalog"/>
     />
 
 </LinearLayout>

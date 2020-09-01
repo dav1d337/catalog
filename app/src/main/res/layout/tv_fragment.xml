@@ -6,6 +6,7 @@
     android:id="@+id/tv"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green_munsell"
     tools:context=".ui.tv.TVFragment">
 
     <TextView
@@ -15,15 +16,15 @@
         android:layout_gravity="center"
         android:layout_margin="22dp"
         android:textSize="22sp"
-        android:text="Looks like you've watched nothing so far! Click on the Search-Button to add the first movie or series to your tv catalog :-)"/>
-    />
+        android:text="@string/empty_tv_catalog"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:src="@drawable/ic_baseline_search_24"
+        android:backgroundTint="@color/gold_crayola"
+        android:src="@drawable/ic_baseline_add_24"
         android:contentDescription="To Search"
         android:layout_margin="16dp"/>
 

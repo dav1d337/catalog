@@ -26,7 +26,7 @@ class TVRepository() {
 
     fun insert(seriesMovie: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
         val listenerImage = Response.Listener<Bitmap> { img ->
-            val fileName = seriesMovie.original_name + ".png"
+            val fileName = (seriesMovie.original_name + ".png").replace("/","")
             ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").save(img)
         }
         getPosterImage("w185", seriesMovie.poster_path, listenerImage)
@@ -35,7 +35,7 @@ class TVRepository() {
     }
 
     fun delete(roomSeriesMovie: RoomSeriesMovie) {
-        val fileName = roomSeriesMovie.original_name + ".png"
+        val fileName = (roomSeriesMovie.original_name + ".png").replace("/","")
         ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").deleteFile()
         roomSeriesDao.delete(roomSeriesMovie)
     }
@@ -131,12 +131,14 @@ class TVRepository() {
     }
 
     fun getPosterImage(size: String = "w154", id: String, listener: Response.Listener<Bitmap>) {
-        val url = "https://image.tmdb.org/t/p/$size$id"
-        val imageRequest = ImageRequest(url,
-            listener,
-            300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
-            Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
-        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+        if (id != null) {
+            val url = "https://image.tmdb.org/t/p/$size$id"
+            val imageRequest = ImageRequest(url,
+                listener,
+                300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
+                Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
+            Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+        }
     }
 
     companion object {

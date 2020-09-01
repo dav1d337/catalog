@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Catalog</string>
+    <string name="empty_tv_catalog">Looks like you\'ve watched nothing so far! Click on the Search-Button to add the first movie or series to your tv catalog :-)</string>
+    <string name="empty_book_catalog">Looks like you\'ve read no book so far! Click on the Search-Button to add the first book to your book catalog :-)</string>
+    <string name="empty_games_catalog">Looks like you\'ve played no game so far! Click on the Search-Button to add the first game to your game catalog :-)</string>
+    <string name="name">Name</string>
+    <string name="rating">Rating</string>
+    <string name="release_date">Release Date</string>
+    <string name="watch_date">Watch Date</string>
+    <string name="filter_by">Filter by</string>
+    <string name="games">Games</string>
+    <string name="tv">TV</string>
+    <string name="books">Books</string>
 </resources>

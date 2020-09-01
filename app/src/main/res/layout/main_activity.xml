@@ -17,5 +17,7 @@
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        style="@style/BottomNavigationViewStyle"
         app:menu="@menu/bottom_navigation_menu"/>
 </LinearLayout>

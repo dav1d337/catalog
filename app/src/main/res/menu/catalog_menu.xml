@@ -3,18 +3,18 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/new_game"
         android:icon="@drawable/ic_baseline_filter_list_24"
-        android:title="Filter by"
+        android:title="@string/filter_by"
         app:showAsAction="ifRoom">
 
     <menu>
         <item android:id="@+id/name"
-            android:title="Name" />
+            android:title="@string/name" />
         <item android:id="@+id/rating"
-            android:title="Rating" />
+            android:title="@string/rating" />
         <item android:id="@+id/release"
-            android:title="Release Date" />
+            android:title="@string/release_date" />
         <item android:id="@+id/watched"
-            android:title="Watch Date" />
+            android:title="@string/watch_date" />
     </menu>
 
     </item>
