@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.dav1337d.catalog.ui.tv
+package com.dav1337d.catalog.ui.books
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,8 +24,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
-
+import com.dav1337d.catalog.model.books.BookItem
 
 /**
  * Provide views to RecyclerView with data from dataSet.
@@ -34,8 +33,8 @@ import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener) :
-        RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
+class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val listener: OnClickListener) :
+        RecyclerView.Adapter<SearchResultsBooksAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -71,28 +70,14 @@ class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, priva
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
-        viewHolder.textViewName.text = dataSet[position].name
-        if (dataSet[position].first_air_date.length >= 4) { viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4) }
-        viewHolder.textViewDescription.text = dataSet[position].overview
-        viewHolder.imageView.setImageBitmap(dataSet[position].poster)
-        viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
-        dataSet[position].watched?.let {
-            if (it) {
-                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
-            } else {
-                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
-            }
-        }
-        Log.i("hallo watched", dataSet[position].watched.toString())
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
 
-    fun setItems(dataSet: List<EitherMovieOrSeries>) {
+    fun setItems(dataSet: List<BookItem>) {
         this.dataSet = dataSet
         notifyDataSetChanged()
     }

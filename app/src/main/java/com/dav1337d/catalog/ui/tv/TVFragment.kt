@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.ui.CustomTVAdapter
 import kotlinx.android.synthetic.main.tv_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -92,7 +91,6 @@ class TVFragment : Fragment() {
             R.id.rating -> viewModel.sortItemsBy("personalRating")
             R.id.watched -> viewModel.sortItemsBy("watchDate")
             R.id.release -> viewModel.sortItemsBy("first_air_date")
-
             else -> super.onOptionsItemSelected(item)
         }
     }

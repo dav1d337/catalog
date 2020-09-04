@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.dav1337d.catalog.ui
+package com.dav1337d.catalog.ui.tv
 
 import android.content.Context
 import android.util.Log
@@ -29,6 +29,7 @@ import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.db.RoomSeriesMovie
+import com.dav1337d.catalog.ui.App
 import com.dav1337d.catalog.util.ImageSaver
 
 

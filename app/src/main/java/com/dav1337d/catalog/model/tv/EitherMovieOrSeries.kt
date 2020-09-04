@@ -16,7 +16,8 @@ data class EitherMovieOrSeries(
     val id_tmdb: Int,
     val backdrop_path: String,
     val poster_path: String,
-    var poster: Bitmap? = null
+    var poster: Bitmap? = null,
+    var watched: Boolean? = false
 )
 {
     fun toRoomEntity(personalRating: Int, watchDate: String, comment: String): RoomSeriesMovie {

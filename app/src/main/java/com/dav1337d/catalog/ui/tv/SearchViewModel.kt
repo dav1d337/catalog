@@ -1,6 +1,7 @@
 package com.dav1337d.catalog.ui.tv
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,22 +26,24 @@ class SearchViewModel constructor(private val tvRepository: TVRepository): ViewM
                 tvRepository.insert(item, rating, watchDate, comment)
             }
         }
-
     }
 
     fun search(query: String?) {
         viewModelScope.launch {
             queryTextChangedJob?.cancel()
 
-            queryTextChangedJob = launch(Dispatchers.Main) {
-                delay(200)
+            queryTextChangedJob = launch(Dispatchers.IO) {
+                delay(50)
                 val listener = Response.Listener<String> {
-                    results.value = tvRepository.handleResponse(it)
+                    results.value = tvRepository.handleResponse(it).filter { it.poster_path != "null" }
                     results.value!!.forEachIndexed { index, eitherMovieOrSeries ->
                         val listenerImages = Response.Listener<Bitmap> {img ->
                             if (index < results.value!!.size) {
                                 results.value?.get(index).let { tv ->
                                     tv?.let {
+                                        runBlocking {
+                                            it.watched = tvRepository.contains(it.original_name)
+                                        }
                                         it.poster = img
                                         results.postValue(results.value)
                                     }

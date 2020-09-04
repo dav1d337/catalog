@@ -34,6 +34,15 @@ class TVRepository() {
         roomSeriesDao.insertAll(seriesMovie.toRoomEntity(rating, watchDate, comment))
     }
 
+    suspend fun contains(name: String): Boolean {
+        if (roomSeriesDao.count(name) > 0) {
+            Log.i("hallo", "TRUUE")
+            return true
+        }
+        Log.i("hallo", "FALSE")
+        return false
+    }
+
     fun delete(roomSeriesMovie: RoomSeriesMovie) {
         val fileName = (roomSeriesMovie.original_name + ".png").replace("/","")
         ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").deleteFile()
@@ -105,7 +114,7 @@ class TVRepository() {
                         genres.add(genreIdToGenre(result_genres[j].toString().toInt()))
                     }
 
-                    if (!release_date.isNullOrEmpty() && !poster_path.isNullOrEmpty()) {
+                    if (release_date.isNotEmpty() && !poster_path.isNullOrEmpty()) {
                         list.add(
                             EitherMovieOrSeries(
                                 TypeOfWatchable.MOVIE,
@@ -131,14 +140,12 @@ class TVRepository() {
     }
 
     fun getPosterImage(size: String = "w154", id: String, listener: Response.Listener<Bitmap>) {
-        if (id != null) {
-            val url = "https://image.tmdb.org/t/p/$size$id"
-            val imageRequest = ImageRequest(url,
-                listener,
-                300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
-                Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
-            Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
-        }
+        val url = "https://image.tmdb.org/t/p/$size$id"
+        val imageRequest = ImageRequest(url,
+            listener,
+            300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
+            Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
+        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
     }
 
     companion object {

@@ -14,17 +14,19 @@
 * limitations under the License.
 */
 
-package com.dav1337d.catalog.ui.tv
+package com.dav1337d.catalog.ui.books
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
+import com.dav1337d.catalog.model.books.BookItem
 
 
 /**
@@ -34,66 +36,61 @@ import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener) :
-        RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
+class CustomBooksAdapter internal constructor(
+    context: Context
+) :
+        RecyclerView.Adapter<CustomBooksAdapter.ViewHolder>() {
 
+    private var dataSet = emptyList<BookItem>()
+    var onItemLongClick: ((BookItem) -> Unit)? = null
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val textViewName: TextView
-        val textViewYear: TextView
-        val textViewDescription: TextView
-        val imageView: ImageView
-        val checkBox: ImageView
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val title: TextView
+        val year: TextView
+       // val watchDate: TextView
+        val poster: ImageView
+        val commentView: TextView
+        val linearLayout: LinearLayout
 
         init {
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener { Log.d(TAG, "Element $adapterPosition clicked.") }
-            textViewName = v.findViewById(R.id.name)
-            textViewYear = v.findViewById(R.id.year)
-            textViewDescription = v.findViewById(R.id.description)
-            imageView = v.findViewById(R.id.imageView)
-            checkBox = v.findViewById(R.id.checkBox)
+            v.setOnLongClickListener {
+                onItemLongClick?.invoke(dataSet[adapterPosition])
+                return@setOnLongClickListener false
+            }
+            title = v.findViewById(R.id.textView)
+            year = v.findViewById(R.id.year)
+            poster = v.findViewById(R.id.imageView2)
+            commentView = v.findViewById(R.id.comment)
+         //   watchDate = v.findViewById(R.id.watchDate)
+            linearLayout = v.findViewById(R.id.linearLayout)
         }
+
     }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.search_result_tv_item, viewGroup, false)
+                .inflate(R.layout.tv_cardview, viewGroup, false)
 
         return ViewHolder(v)
     }
+
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
-        viewHolder.textViewName.text = dataSet[position].name
-        if (dataSet[position].first_air_date.length >= 4) { viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4) }
-        viewHolder.textViewDescription.text = dataSet[position].overview
-        viewHolder.imageView.setImageBitmap(dataSet[position].poster)
-        viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
-        dataSet[position].watched?.let {
-            if (it) {
-                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
-            } else {
-                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
-            }
-        }
-        Log.i("hallo watched", dataSet[position].watched.toString())
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-
-    fun setItems(dataSet: List<EitherMovieOrSeries>) {
-        this.dataSet = dataSet
+    internal fun setItems(items: List<BookItem>) {
+        this.dataSet = items
         notifyDataSetChanged()
     }
 

@@ -12,7 +12,10 @@ interface RoomSeriesDao {
   //  fun loadAllByIds(seriesIds: IntArray): List<RoomSeriesMovie>
 
     @Query("SELECT * FROM roomSeriesMovie WHERE original_name LIKE :name LIMIT 1")
-    fun findByName(name: String): RoomSeriesMovie
+    suspend fun findByName(name: String): RoomSeriesMovie?
+
+    @Query("SELECT COUNT() FROM roomSeriesMovie WHERE original_name LIKE :name")
+    suspend fun count(name:String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg roomSeryMovies: RoomSeriesMovie)
