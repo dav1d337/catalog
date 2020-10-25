@@ -5,11 +5,14 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:background="#FFFFBB33"
         android:contentDescription="@string/app_name"
+        android:fontFamily="@font/rubik_mono_one"
         android:scaleType="center"
-        android:text="Add to Catalog" />
+        android:text="ADD TO CATALOG"
+        android:textSize="28sp"
+        android:visibility="visible" />
 
 
     <LinearLayout
@@ -90,7 +93,7 @@
             android:layout_marginTop="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/rubik_mono_one"
             android:text="Watched: " />
 
         <TextView

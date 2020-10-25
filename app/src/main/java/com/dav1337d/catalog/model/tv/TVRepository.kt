@@ -35,7 +35,7 @@ class TVRepository() {
             val fileName = (seriesMovie.original_name + ".png").replace("/", "")
             ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").save(img)
         }
-        // getPosterImage("w185", seriesMovie.poster_path, listenerImage)
+        getPosterImage("w185", seriesMovie.poster_path, listenerImage)
 
         roomSeriesDao.insertAll(seriesMovie.toRoomEntity(rating, watchDate, comment))
     }
