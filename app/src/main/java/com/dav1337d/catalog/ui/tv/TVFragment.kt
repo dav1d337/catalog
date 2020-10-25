@@ -19,7 +19,7 @@ class TVFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var TVAdapter: CustomTVAdapter
-    val viewModel by viewModel<TVViewModel>()
+    private val viewModel by viewModel<TVViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +82,7 @@ class TVFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.catalog_menu, menu)
+        menu.findItem(R.id.account).isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
     }
 

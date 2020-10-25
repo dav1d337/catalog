@@ -16,6 +16,7 @@
 
 package com.dav1337d.catalog.ui.books
 
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +24,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Response
+import com.android.volley.toolbox.ImageRequest
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
+import com.dav1337d.catalog.ui.App
+import com.dav1337d.catalog.util.Singletons
 
 /**
  * Provide views to RecyclerView with data from dataSet.
@@ -40,8 +45,9 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val textViewName: TextView
+        val textViewTitle: TextView
         val textViewYear: TextView
+        val textViewAuthor: TextView
         val textViewDescription: TextView
         val imageView: ImageView
         val checkBox: ImageView
@@ -49,8 +55,9 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
         init {
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener { Log.d(TAG, "Element $adapterPosition clicked.") }
-            textViewName = v.findViewById(R.id.name)
+            textViewTitle = v.findViewById(R.id.name)
             textViewYear = v.findViewById(R.id.year)
+            textViewAuthor = v.findViewById(R.id.author)
             textViewDescription = v.findViewById(R.id.description)
             imageView = v.findViewById(R.id.imageView)
             checkBox = v.findViewById(R.id.checkBox)
@@ -61,7 +68,7 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.search_result_tv_item, viewGroup, false)
+                .inflate(R.layout.search_result_book_item, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -70,10 +77,39 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
+        viewHolder.textViewTitle.text = dataSet[position].volumeInfo.title
+        viewHolder.textViewAuthor.text = dataSet[position].volumeInfo.authors.toString()
+
+        Log.i("hallo s1", dataSet[position].volumeInfo.title)
+       // Log.i("hallo s2", dataSet[position].volumeInfo.publishedDate)
+        if (dataSet[position].volumeInfo.publishedDate != null) {
+            if (dataSet[position].volumeInfo.publishedDate!!.length >= 4) { dataSet[position].volumeInfo.publishedDate?.substring(0,4) }
+        }
+
+        viewHolder.textViewDescription.text = dataSet[position].volumeInfo.description
+
+        val listenerImage = Response.Listener<Bitmap> { img ->
+            viewHolder.imageView.setImageBitmap(img)
+        }
+
+        val url = dataSet[position].volumeInfo.imageLinks!!.get("thumbnail")?.replaceFirst("http", "https")
+        val imageRequest = ImageRequest(url,
+            listenerImage,
+            300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
+            Response.ErrorListener { Log.i(TAG + "hallo", it.message) })
+        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+
+      //  viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
+//        dataSet[position].read?.let {
+//            if (it) {
+//                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
+//            } else {
+//                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
+//            }
+//        }
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
 
@@ -83,6 +119,6 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
     }
 
     companion object {
-        private val TAG = "CustomAdapter"
+        private val TAG = "SearchResultsBookAdapter"
     }
 }

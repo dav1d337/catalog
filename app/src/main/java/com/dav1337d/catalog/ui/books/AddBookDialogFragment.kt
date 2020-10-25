@@ -11,12 +11,13 @@ import android.widget.TextView
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.DialogFragment
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.model.books.BookItem
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddToDbDialogFragment(val clickListener: OnClickListener, val item: EitherMovieOrSeries): DialogFragment() {
+class AddBookDialogFragment(val clickListener: OnClickListener, val item: BookItem): DialogFragment() {
 
     private var numberOfStars = 0
 
@@ -32,8 +33,6 @@ class AddToDbDialogFragment(val clickListener: OnClickListener, val item: Either
             builder
                 .setView(view)
                 .setPositiveButton("Save") { dialog, id ->
-                    Log.i("hallo", view.datepicker.text.toString())
-                    Log.i("hallo rating eingeben", numberOfStars.toString())
                     clickListener.onSaveClick(item, numberOfStars, view.datepicker.text.toString(), view.comment.text.toString())
                 }
                 .setNegativeButton("Cancel") { dialog, id ->

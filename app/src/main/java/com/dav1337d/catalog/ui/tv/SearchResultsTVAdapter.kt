@@ -34,8 +34,8 @@ import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener) :
-        RecyclerView.Adapter<SearchResultsAdapter.ViewHolder>() {
+class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener) :
+        RecyclerView.Adapter<SearchResultsTVAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -90,7 +90,6 @@ class SearchResultsAdapter(private var dataSet: List<EitherMovieOrSeries>, priva
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
-
 
     fun setItems(dataSet: List<EitherMovieOrSeries>) {
         this.dataSet = dataSet

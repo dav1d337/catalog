@@ -1,17 +1,16 @@
 package com.dav1337d.catalog.ui.books
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.volley.Response
 import com.dav1337d.catalog.model.books.BookItem
 import com.dav1337d.catalog.model.books.BookRepository
+import com.dav1337d.catalog.model.books.BookSearchResponse
+import com.dav1337d.catalog.ui.base.BaseSearchViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.*
-import org.koin.standalone.KoinComponent
 
-class BookSearchViewModel constructor(private val bookRepository: BookRepository): ViewModel(),
-    KoinComponent {
-
-    var queryTextChangedJob: Job? = null
+class BookSearchViewModel constructor(private val bookRepository: BookRepository): BaseSearchViewModel() {
 
     val results: MutableLiveData<List<BookItem>> by lazy {
         MutableLiveData<List<BookItem>>()
@@ -32,7 +31,15 @@ class BookSearchViewModel constructor(private val bookRepository: BookRepository
             queryTextChangedJob = launch(Dispatchers.IO) {
                 delay(50)
 
-                bookRepository.searchBook("test")
+                val listener = Response.Listener<String> {
+                    val gson = Gson()
+                    val result = gson.fromJson(it, BookSearchResponse::class.java)
+                    results.value = result.items.filter { it.volumeInfo.publishedDate != null &&  it.volumeInfo.imageLinks != null &&  it.volumeInfo.authors != null}
+                }
+
+                query?.let {
+                    bookRepository.searchBook(it, listener)
+                }
             }
         }
     }

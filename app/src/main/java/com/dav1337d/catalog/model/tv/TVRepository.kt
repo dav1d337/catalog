@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.ImageRequest
+import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.StringRequest
 import com.dav1337d.catalog.db.AppDatabase
 import com.dav1337d.catalog.db.RoomSeriesDao
@@ -14,8 +15,13 @@ import com.dav1337d.catalog.db.RoomSeriesMovie
 import com.dav1337d.catalog.ui.App
 import com.dav1337d.catalog.util.ImageSaver
 import com.dav1337d.catalog.util.Singletons
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 class TVRepository() {
 
@@ -26,25 +32,25 @@ class TVRepository() {
 
     fun insert(seriesMovie: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
         val listenerImage = Response.Listener<Bitmap> { img ->
-            val fileName = (seriesMovie.original_name + ".png").replace("/","")
+            val fileName = (seriesMovie.original_name + ".png").replace("/", "")
             ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").save(img)
         }
-        getPosterImage("w185", seriesMovie.poster_path, listenerImage)
+        // getPosterImage("w185", seriesMovie.poster_path, listenerImage)
 
         roomSeriesDao.insertAll(seriesMovie.toRoomEntity(rating, watchDate, comment))
     }
 
-    suspend fun contains(name: String): Boolean {
-        if (roomSeriesDao.count(name) > 0) {
-            Log.i("hallo", "TRUUE")
-            return true
+    fun contains(id: Int): Boolean {
+        return runBlocking {
+            if (roomSeriesDao.count(id) > 0) {
+                return@runBlocking true
+            }
+            return@runBlocking false
         }
-        Log.i("hallo", "FALSE")
-        return false
     }
 
     fun delete(roomSeriesMovie: RoomSeriesMovie) {
-        val fileName = (roomSeriesMovie.original_name + ".png").replace("/","")
+        val fileName = (roomSeriesMovie.original_name + ".png").replace("/", "")
         ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").deleteFile()
         roomSeriesDao.delete(roomSeriesMovie)
     }
@@ -75,13 +81,18 @@ class TVRepository() {
                 val overview = result.getString("overview")
                 val rating_tmdb = result.getDouble("vote_average")
                 val backdrop_path = result.getString("backdrop_path")
+
                 val poster_path = result.getString("poster_path")
+              //  var poster: Bitmap? = null
+               // getPosterImage(id = poster_path)
+
                 val id_tmdb = result.getInt("id")
                 val result_genres = result.getJSONArray("genre_ids")
                 val genres = mutableListOf<Genre>()
                 for (j in 0 until result_genres.length()) {
                     genres.add(genreIdToGenre(result_genres[j].toString().toInt()))
                 }
+                val watched = contains(id_tmdb)
 
                 list.add(
                     EitherMovieOrSeries(
@@ -94,7 +105,9 @@ class TVRepository() {
                         rating_tmdb,
                         id_tmdb,
                         backdrop_path,
-                        poster_path
+                        poster_path,
+                        watched = watched
+                  //      poster = poster
                     )
                 )
             } else if (results.getJSONObject(i).getString("media_type").equals("movie")) {
@@ -105,7 +118,12 @@ class TVRepository() {
                     val overview = result.getString("overview")
                     val rating_tmdb = result.getDouble("vote_average")
                     val backdrop_path = result.getString("backdrop_path")
+
+
                     val poster_path = result.getString("poster_path")
+                 //   var poster: Bitmap? = null
+                //   getPosterImage(id = poster_path)
+
                     val id_tmdb = result.getInt("id")
                     val result_genres = result.getJSONArray("genre_ids")
                     val genres = mutableListOf<Genre>()
@@ -113,6 +131,8 @@ class TVRepository() {
                     for (j in 0 until result_genres.length()) {
                         genres.add(genreIdToGenre(result_genres[j].toString().toInt()))
                     }
+
+                    val watched = contains(id_tmdb)
 
                     if (release_date.isNotEmpty() && !poster_path.isNullOrEmpty()) {
                         list.add(
@@ -126,7 +146,9 @@ class TVRepository() {
                                 rating_tmdb,
                                 id_tmdb,
                                 backdrop_path,
-                                poster_path
+                                poster_path,
+                                watched = watched
+                              //  poster = poster
                             )
                         )
                     }
@@ -140,12 +162,17 @@ class TVRepository() {
     }
 
     fun getPosterImage(size: String = "w154", id: String, listener: Response.Listener<Bitmap>) {
-        val url = "https://image.tmdb.org/t/p/$size$id"
-        val imageRequest = ImageRequest(url,
-            listener,
-            300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
-            Response.ErrorListener { Log.i("hallo", "Response Error IMAGE 1") })
-        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+        if (!id.isEmpty() && id != "null") {
+            val url = "https://image.tmdb.org/t/p/$size$id"
+            val requestFuture = RequestFuture.newFuture<Bitmap>()
+            val imageRequest = ImageRequest(url,
+                listener,
+                300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
+                Response.ErrorListener {
+                    Log.i("hallo img error", it.message)
+                })
+            Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+        }
     }
 
     companion object {

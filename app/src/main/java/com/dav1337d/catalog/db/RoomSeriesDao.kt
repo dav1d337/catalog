@@ -14,8 +14,8 @@ interface RoomSeriesDao {
     @Query("SELECT * FROM roomSeriesMovie WHERE original_name LIKE :name LIMIT 1")
     suspend fun findByName(name: String): RoomSeriesMovie?
 
-    @Query("SELECT COUNT() FROM roomSeriesMovie WHERE original_name LIKE :name")
-    suspend fun count(name:String): Int
+    @Query("SELECT COUNT() FROM roomSeriesMovie WHERE id_tmdb LIKE :id")
+    suspend fun count(id: Int): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg roomSeryMovies: RoomSeriesMovie)

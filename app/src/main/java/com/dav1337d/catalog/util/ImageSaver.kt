@@ -11,10 +11,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-
-/**
- * Created by Ilya Gazman on 3/6/2016.
- */
 class ImageSaver(context: Context) {
     private var directoryName = "images"
     private var fileName = "image.png"
@@ -56,8 +52,7 @@ class ImageSaver(context: Context) {
 
     @NonNull
     private fun createFile(): File {
-        val directory: File
-        directory = if (external) {
+        val directory: File = if (external) {
             getAlbumStorageDir(directoryName)
         } else {
             context.getDir(directoryName, Context.MODE_PRIVATE)
@@ -85,9 +80,7 @@ class ImageSaver(context: Context) {
             e.printStackTrace()
         } finally {
             try {
-                if (inputStream != null) {
-                    inputStream.close()
-                }
+                inputStream?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
             }

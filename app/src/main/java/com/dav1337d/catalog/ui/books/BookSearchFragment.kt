@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.model.books.BookItem
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class BookSearchFragment : Fragment() {
@@ -28,21 +30,21 @@ class BookSearchFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.search_fragment, container, false)
         searchView = rootView.findViewById(R.id.searchView)
 //        searchView.queryHint = "Enter title..."
-//        recyclerView = rootView.findViewById(R.id.recyclerView)
-//        clickListenerSave = object : OnClickListener {
-//            override fun onSaveClick(item: Book) {
-//                viewModel.insert(item)
-//            }
-//        }
-//        clickListener = object : OnClickListener {
-//            override fun onCheckBoxClick(item: EitherMovieOrSeries) {
-//                val dialog = AddToDbDialogFragment(clickListenerSave, item)
-//                dialog.show(fragmentManager!!, "dialog")
-//            }
-//        }
-//        recyclerView.layoutManager = LinearLayoutManager(activity)
-//        adapter = SearchResultsAdapter(listOf(), clickListener)
-//        recyclerView.adapter = adapter
+        recyclerView = rootView.findViewById(R.id.recyclerView)
+        clickListenerSave = object : OnClickListener {
+            override fun onSaveClick(item: BookItem, rating: Int, watchDate:String, comment: String) {
+               // viewModel.insert(item)
+            }
+        }
+        clickListener = object : OnClickListener {
+            override fun onCheckBoxClick(item: BookItem) {
+                val dialog = AddBookDialogFragment(clickListenerSave, item)
+                dialog.show(fragmentManager!!, "dialog")
+            }
+        }
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        booksAdapter = SearchResultsBooksAdapter(listOf(), clickListener)
+        recyclerView.adapter = booksAdapter
         return rootView
     }
 

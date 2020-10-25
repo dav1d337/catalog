@@ -16,7 +16,16 @@
         <action
             android:id="@+id/action_book_home_to_search"
             app:destination="@id/searchBook"/>
+        <action
+            android:id="@+id/action_books_to_googleLogin"
+            app:destination="@id/googleLogin" />
     </fragment>
+
+    <fragment
+        android:id="@+id/googleLogin"
+        android:name="com.dav1337d.catalog.ui.account.GoogleLoginFragment"
+        android:label="GoogleLogin"
+        tools:layout="@layout/google_login_fragment"/>
 
     <fragment
         android:id="@+id/searchBook"

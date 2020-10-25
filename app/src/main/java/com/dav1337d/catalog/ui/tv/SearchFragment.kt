@@ -1,6 +1,7 @@
 package com.dav1337d.catalog.ui.tv
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +17,12 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class SearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: SearchResultsAdapter
+    private lateinit var TVAdapter: SearchResultsTVAdapter
     private lateinit var clickListener: OnClickListener
     private lateinit var clickListenerSave: OnClickListener
     private lateinit var searchView: SearchView
 
-    val viewModel by viewModel<SearchViewModel>()
+    val viewModel by viewModel<TVSearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +35,7 @@ class SearchFragment : Fragment() {
         clickListenerSave = object : OnClickListener {
             override fun onSaveClick(item: EitherMovieOrSeries, rating: Int, watchDate:String, comment: String) {
                 viewModel.insert(item, rating, watchDate, comment)
+                searchView.setQuery(searchView.query, true) // to update the watched mark
             }
         }
         clickListener = object : OnClickListener {
@@ -43,8 +45,8 @@ class SearchFragment : Fragment() {
             }
         }
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = SearchResultsAdapter(listOf(), clickListener)
-        recyclerView.adapter = adapter
+        TVAdapter = SearchResultsTVAdapter(listOf(), clickListener)
+        recyclerView.adapter = TVAdapter
         return rootView
     }
 
@@ -54,9 +56,9 @@ class SearchFragment : Fragment() {
 
         viewModel.results.observe(viewLifecycleOwner, Observer {
             if (it.isNullOrEmpty()) {
-                adapter.setItems(listOf())
+                TVAdapter.setItems(listOf())
             }
-            adapter.setItems(it)
+            TVAdapter.setItems(it)
         })
 
         searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
@@ -66,7 +68,12 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.search(newText)
+                newText?.let {
+                    viewModel.search(it)
+                    if (it.isBlank()) {
+                        TVAdapter.setItems(listOf())
+                    }
+                }
                 return true
             }
         })
