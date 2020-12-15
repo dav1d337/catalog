@@ -32,8 +32,6 @@ class AddToDbDialogFragment(val clickListener: OnClickListener, val item: Either
             builder
                 .setView(view)
                 .setPositiveButton("Save") { dialog, id ->
-                    Log.i("hallo", view.datepicker.text.toString())
-                    Log.i("hallo rating eingeben", numberOfStars.toString())
                     clickListener.onSaveClick(item, numberOfStars, view.datepicker.text.toString(), view.comment.text.toString())
                 }
                 .setNegativeButton("Cancel") { dialog, id ->

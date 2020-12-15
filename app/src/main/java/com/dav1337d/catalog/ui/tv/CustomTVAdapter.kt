@@ -52,25 +52,22 @@ class CustomTVAdapter internal constructor(
      */
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
-        val year: TextView
+       // val year: TextView
        // val watchDate: TextView
         val poster: ImageView
         val commentView: TextView
         val linearLayout: LinearLayout
 
         init {
-            // Define click listener for the ViewHolder's View.
-            v.setOnClickListener { Log.d(TAG, "Element $adapterPosition clicked.") }
             v.setOnLongClickListener {
-                onItemLongClick?.invoke(dataSet[adapterPosition])
+                onItemLongClick?.invoke(dataSet[bindingAdapterPosition])
                 return@setOnLongClickListener false
             }
             title = v.findViewById(R.id.textView)
-            year = v.findViewById(R.id.year)
+     //       year = v.findViewById(R.id.year)
             poster = v.findViewById(R.id.imageView2)
             commentView = v.findViewById(R.id.comment)
-         //   watchDate = v.findViewById(R.id.watchDate)
-            linearLayout = v.findViewById(R.id.linearLayout)
+            linearLayout = v.findViewById(R.id.tv_linearLayout_stars)
         }
 
     }
@@ -89,8 +86,8 @@ class CustomTVAdapter internal constructor(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        viewHolder.title.text = dataSet[position].name
-        viewHolder.year.text = dataSet[position].first_air_date.substring(0,4)
+        viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_air_date.substring(0,4) + ")"
+        //viewHolder.year.text = dataSet[position].first_air_date.substring(0,4)
         val fileName = (dataSet[position].original_name + ".png").replace("/","")
         viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
         val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"

@@ -10,7 +10,7 @@
         android:contentDescription="@string/app_name"
         android:fontFamily="@font/rubik_mono_one"
         android:scaleType="center"
-        android:text="ADD TO CATALOG"
+        android:text="@string/add_to_catalog"
         android:textSize="28sp"
         android:visibility="visible" />
 
@@ -94,7 +94,7 @@
             android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/rubik_mono_one"
-            android:text="Watched: " />
+            android:text="@string/date" />
 
         <TextView
             android:id="@+id/datepicker"
@@ -116,6 +116,6 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
-        android:hint="Comment"
+        android:hint="@string/comment"
         android:inputType="text" />
 </LinearLayout>

@@ -21,9 +21,6 @@ class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
     }
 
     private val listener = Response.Listener<String> {
-//        results.value = tvRepository.handleResponse(it).filter {
-//            it.poster_path != "null"
-//        }
 
         results.value = tvRepository.handleResponse(it)
             .filter { it.poster_path != "null" }

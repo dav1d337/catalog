@@ -11,4 +11,7 @@
     <string name="games">Games</string>
     <string name="tv">TV</string>
     <string name="books">Books</string>
+    <string name="add_to_catalog">ADD TO CATALOG</string>
+    <string name="date">Date:</string>
+    <string name="comment">Comment</string>
 </resources>

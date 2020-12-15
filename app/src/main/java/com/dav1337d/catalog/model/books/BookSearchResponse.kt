@@ -1,5 +1,7 @@
 package com.dav1337d.catalog.model.books
 
+import android.graphics.Bitmap
+
 data class BookSearchResponse constructor(val kind: String, val totalItems: Int, val items: List<BookItem>)
 
 data class BookItem constructor(
@@ -10,7 +12,9 @@ data class BookItem constructor(
     val volumeInfo: VolumeInfo,
     val saleInfo: SaleInfo,
     val accessInfo: AccessInfo,
-    val searchInfo: SearchInfo
+    val searchInfo: SearchInfo,
+    var thumbnail: Bitmap,
+    var read: Boolean = false
 )
 
 data class VolumeInfo constructor(
@@ -24,7 +28,7 @@ data class VolumeInfo constructor(
     val readingModes: Map<String, String>,
     val pageCount: Int,
     val printType: String,
-    val averageRating: Int,
+    val averageRating: Double,
     val ratingsCount: Int,
     val maturityRating: String,
     val allowAnonLogging: Boolean,

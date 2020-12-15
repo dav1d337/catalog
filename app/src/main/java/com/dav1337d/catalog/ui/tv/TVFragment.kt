@@ -18,7 +18,7 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class TVFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var TVAdapter: CustomTVAdapter
+    private lateinit var tvAdapter: CustomTVAdapter
     private val viewModel by viewModel<TVViewModel>()
 
 
@@ -29,15 +29,16 @@ class TVFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
+
         val rootView = inflater.inflate(R.layout.tv_fragment, container, false)
-        recyclerView = rootView.findViewById(R.id.recyclerView)
+        recyclerView = rootView.findViewById(R.id.roomItemList)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        TVAdapter = CustomTVAdapter(requireContext())
+        tvAdapter = CustomTVAdapter(requireContext())
 
-        recyclerView.adapter = TVAdapter
+        recyclerView.adapter = tvAdapter
 
-        TVAdapter.onItemLongClick = { item ->
+        tvAdapter.onItemLongClick = { item ->
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.apply {
@@ -75,7 +76,7 @@ class TVFragment : Fragment() {
                 } else {
                     textView.visibility = View.VISIBLE
                 }
-                TVAdapter.setItems(it)
+                tvAdapter.setItems(it)
             }
         })
     }

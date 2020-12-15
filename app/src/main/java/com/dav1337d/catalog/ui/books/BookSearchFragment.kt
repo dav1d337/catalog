@@ -29,11 +29,17 @@ class BookSearchFragment : Fragment() {
     ): View {
         val rootView = inflater.inflate(R.layout.search_fragment, container, false)
         searchView = rootView.findViewById(R.id.searchView)
-//        searchView.queryHint = "Enter title..."
-        recyclerView = rootView.findViewById(R.id.recyclerView)
+        searchView.queryHint = "Enter title..."
+        recyclerView = rootView.findViewById(R.id.roomItemList)
         clickListenerSave = object : OnClickListener {
-            override fun onSaveClick(item: BookItem, rating: Int, watchDate:String, comment: String) {
-               // viewModel.insert(item)
+            override fun onSaveClick(
+                item: BookItem,
+                rating: Int,
+                readDate: String,
+                comment: String
+            ) {
+                viewModel.insert(item, rating, readDate, comment)
+                searchView.setQuery(searchView.query, true) // to update the watched mark
             }
         }
         clickListener = object : OnClickListener {
@@ -66,7 +72,12 @@ class BookSearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                viewModel.search(newText)
+                newText?.let {
+                    viewModel.search(it)
+                    if (it.isBlank()) {
+                        booksAdapter.setItems(listOf())
+                    }
+                }
                 return true
             }
         })

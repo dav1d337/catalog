@@ -1,11 +1,14 @@
 package com.dav1337d.catalog.ui.tv
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +17,8 @@ import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchFragment : Fragment() {
+
+class TVSearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var TVAdapter: SearchResultsTVAdapter
@@ -31,9 +35,15 @@ class SearchFragment : Fragment() {
         val rootView = inflater.inflate(R.layout.search_fragment, container, false)
         searchView = rootView.findViewById(R.id.searchView)
         searchView.queryHint = "Enter title..."
-        recyclerView = rootView.findViewById(R.id.recyclerView)
+
+        recyclerView = rootView.findViewById(R.id.roomItemList)
         clickListenerSave = object : OnClickListener {
-            override fun onSaveClick(item: EitherMovieOrSeries, rating: Int, watchDate:String, comment: String) {
+            override fun onSaveClick(
+                item: EitherMovieOrSeries,
+                rating: Int,
+                watchDate: String,
+                comment: String
+            ) {
                 viewModel.insert(item, rating, watchDate, comment)
                 searchView.setQuery(searchView.query, true) // to update the watched mark
             }
@@ -50,7 +60,6 @@ class SearchFragment : Fragment() {
         return rootView
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -61,7 +70,7 @@ class SearchFragment : Fragment() {
             TVAdapter.setItems(it)
         })
 
-        searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 viewModel.search(query)
                 return false

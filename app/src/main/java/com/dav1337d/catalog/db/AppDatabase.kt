@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [RoomSeriesMovie::class, RoomBook::class], version = 1)
 abstract class AppDatabase: RoomDatabase() {
     abstract fun roomSeriesDao(): RoomSeriesDao
+    abstract fun roomBookDao(): RoomBookDao
 
     companion object {
 

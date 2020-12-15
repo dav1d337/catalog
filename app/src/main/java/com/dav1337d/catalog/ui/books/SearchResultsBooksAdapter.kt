@@ -83,30 +83,33 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
         Log.i("hallo s1", dataSet[position].volumeInfo.title)
        // Log.i("hallo s2", dataSet[position].volumeInfo.publishedDate)
         if (dataSet[position].volumeInfo.publishedDate != null) {
-            if (dataSet[position].volumeInfo.publishedDate!!.length >= 4) { dataSet[position].volumeInfo.publishedDate?.substring(0,4) }
+            if (dataSet[position].volumeInfo.publishedDate!!.length >= 4) {
+                viewHolder.textViewYear.text = dataSet[position].volumeInfo.publishedDate?.substring(0,4)
+            }
         }
 
         viewHolder.textViewDescription.text = dataSet[position].volumeInfo.description
 
-        val listenerImage = Response.Listener<Bitmap> { img ->
-            viewHolder.imageView.setImageBitmap(img)
-        }
-
-        val url = dataSet[position].volumeInfo.imageLinks!!.get("thumbnail")?.replaceFirst("http", "https")
-        val imageRequest = ImageRequest(url,
-            listenerImage,
-            300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
-            Response.ErrorListener { Log.i(TAG + "hallo", it.message) })
-        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
-
-      //  viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
-//        dataSet[position].read?.let {
-//            if (it) {
-//                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
-//            } else {
-//                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
-//            }
+        viewHolder.imageView.setImageBitmap(dataSet[position].thumbnail)
+//        val listenerImage = Response.Listener<Bitmap> { img ->
+//            viewHolder.imageView.setImageBitmap(img)
 //        }
+
+//        val url = dataSet[position].volumeInfo.imageLinks!!.get("thumbnail")?.replaceFirst("http", "https")
+//        val imageRequest = ImageRequest(url,
+//            listenerImage,
+//            300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
+//            Response.ErrorListener { Log.i(TAG + "hallo", it.message) })
+//        Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+
+        viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
+        dataSet[position].read.let {
+            if (it) {
+                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
+            } else {
+                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
+            }
+        }
 
     }
 

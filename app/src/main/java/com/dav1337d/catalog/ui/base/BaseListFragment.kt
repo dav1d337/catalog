@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui
+package com.dav1337d.catalog.ui.base
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/orange"
     android:layout_width="match_parent"
@@ -12,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusable="true"
-        android:clickable="true"/>
+        android:iconifiedByDefault="false"
+        android:focusableInTouchMode="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/roomItemList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

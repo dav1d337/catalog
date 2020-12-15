@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchTV"
-        android:name="com.dav1337d.catalog.ui.tv.SearchFragment"
+        android:name="com.dav1337d.catalog.ui.tv.TVSearchFragment"
         android:label="Search"
         tools:layout="@layout/search_fragment"/>
 </navigation>

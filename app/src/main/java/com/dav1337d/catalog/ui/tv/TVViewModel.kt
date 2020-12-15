@@ -27,7 +27,6 @@ class TVViewModel constructor(private val tvRepository: TVRepository) : ViewMode
             withContext(Dispatchers.IO) {
                 tvRepository.delete(roomSeriesMovie)
             }
-
         }
     }
 

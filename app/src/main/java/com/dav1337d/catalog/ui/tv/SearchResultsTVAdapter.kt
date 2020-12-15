@@ -49,7 +49,7 @@ class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, pri
 
         init {
             // Define click listener for the ViewHolder's View.
-            v.setOnClickListener { Log.d(TAG, "Element $adapterPosition clicked.") }
+            v.setOnClickListener { Log.d(TAG, "Element $bindingAdapter clicked.") }
             textViewName = v.findViewById(R.id.name)
             textViewYear = v.findViewById(R.id.year)
             textViewDescription = v.findViewById(R.id.description)
@@ -97,6 +97,6 @@ class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, pri
     }
 
     companion object {
-        private val TAG = "CustomAdapter"
+        private val TAG = "SearchResultsTVAdapter"
     }
 }

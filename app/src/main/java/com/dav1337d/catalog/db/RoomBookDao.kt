@@ -14,8 +14,9 @@ interface RoomBookDao {
 //    @Query("SELECT * FROM roomBook WHERE book LIKE :name LIMIT 1")
 //    suspend fun findByName(name: String): RoomSeriesMovie?
 //
-//    @Query("SELECT COUNT() FROM roomBook WHERE original_name LIKE :name")
-//    suspend fun count(name:String): Int
+
+    @Query("SELECT COUNT() FROM roomBook WHERE googleId LIKE :id")
+    suspend fun count(id: String): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg roomBook: RoomBook)
