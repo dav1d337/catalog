@@ -4,13 +4,10 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
-import com.dav1337d.catalog.db.BookStatus
 import com.dav1337d.catalog.model.books.BookItem
 import com.dav1337d.catalog.model.books.BookRepository
 import com.dav1337d.catalog.model.books.BookSearchResponse
-import com.dav1337d.catalog.ui.App
 import com.dav1337d.catalog.ui.base.BaseSearchViewModel
-import com.dav1337d.catalog.util.ImageSaver
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 
@@ -31,7 +28,7 @@ class BookSearchViewModel constructor(private val bookRepository: BookRepository
         }
     }
 
-    suspend fun heavyWork(query: String?) = withContext(Dispatchers.Default) {
+    private suspend fun heavyWork(query: String?) = withContext(Dispatchers.Default) {
         val listener = Response.Listener<String> {
             val gson = Gson()
             val result = gson.fromJson(it, BookSearchResponse::class.java)

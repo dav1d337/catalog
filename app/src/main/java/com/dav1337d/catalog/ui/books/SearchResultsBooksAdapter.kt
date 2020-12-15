@@ -16,7 +16,6 @@
 
 package com.dav1337d.catalog.ui.books
 
-import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,12 +23,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Response
-import com.android.volley.toolbox.ImageRequest
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
-import com.dav1337d.catalog.ui.App
-import com.dav1337d.catalog.util.Singletons
 
 /**
  * Provide views to RecyclerView with data from dataSet.

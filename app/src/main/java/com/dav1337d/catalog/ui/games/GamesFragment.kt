@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.dav1337d.catalog.R
+import kotlinx.android.synthetic.main.games_fragment.*
 
 class GamesFragment : Fragment() {
 
@@ -21,6 +22,10 @@ class GamesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(GamesViewModel::class.java)
         // TODO: Use the ViewModel
+
+        fab.setOnClickListener {
+            text.text = "You clicked!"
+        }
     }
 
 }

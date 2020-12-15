@@ -86,5 +86,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
 
   //  implementation 'com.google.api-client:google-api-client:1.27.0'
-  //  implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
+    // Appium
+    testImplementation group: 'io.appium', name: 'java-client', version: '7.3.0'
 }

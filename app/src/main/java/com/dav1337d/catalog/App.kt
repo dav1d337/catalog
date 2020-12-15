@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui
+package com.dav1337d.catalog
 
 import android.app.Application
 import android.content.Context

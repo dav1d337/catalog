@@ -13,7 +13,7 @@ import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.db.RoomBook
-import com.dav1337d.catalog.ui.App
+import com.dav1337d.catalog.App
 import com.dav1337d.catalog.util.ImageSaver
 
 

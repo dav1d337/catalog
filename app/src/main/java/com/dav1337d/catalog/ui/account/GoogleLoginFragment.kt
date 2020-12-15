@@ -15,7 +15,7 @@
 //import com.android.volley.Response
 //import com.android.volley.toolbox.StringRequest
 //import com.dav1337d.catalog.R
-//import com.dav1337d.catalog.ui.App
+//import com.dav1337d.catalog.App
 //import com.dav1337d.catalog.util.Singletons
 //import com.google.android.gms.auth.api.signin.GoogleSignIn
 //import com.google.android.gms.auth.api.signin.GoogleSignInAccount
