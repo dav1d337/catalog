@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
+import com.dav1337d.catalog.ui.base.OnClickListener
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class BookSearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var booksAdapter: SearchResultsBooksAdapter
-    private lateinit var clickListener: OnClickListener
-    private lateinit var clickListenerSave: OnClickListener
+    private lateinit var clickListener: OnClickListener<BookItem>
+    private lateinit var clickListenerSave: OnClickListener<BookItem>
     private lateinit var searchView: SearchView
 
     val viewModel by viewModel<BookSearchViewModel>()
@@ -31,7 +32,7 @@ class BookSearchFragment : Fragment() {
         searchView = rootView.findViewById(R.id.searchView)
         searchView.queryHint = "Enter title..."
         recyclerView = rootView.findViewById(R.id.roomItemList)
-        clickListenerSave = object : OnClickListener {
+        clickListenerSave = object : OnClickListener<BookItem> {
             override fun onSaveClick(
                 item: BookItem,
                 rating: Int,
@@ -42,7 +43,7 @@ class BookSearchFragment : Fragment() {
                 searchView.setQuery(searchView.query, true) // to update the watched mark
             }
         }
-        clickListener = object : OnClickListener {
+        clickListener = object : OnClickListener<BookItem> {
             override fun onCheckBoxClick(item: BookItem) {
                 val dialog = AddBookDialogFragment(clickListenerSave, item)
                 dialog.show(fragmentManager!!, "dialog")

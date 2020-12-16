@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,11 +11,12 @@ import androidx.core.view.forEachIndexed
 import androidx.fragment.app.DialogFragment
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
+import com.dav1337d.catalog.ui.base.OnClickListener
 import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddToDbDialogFragment(val clickListener: OnClickListener, val item: EitherMovieOrSeries): DialogFragment() {
+class AddToDbDialogFragment(val clickListener: OnClickListener<EitherMovieOrSeries>, val item: EitherMovieOrSeries): DialogFragment() {
 
     private var numberOfStars = 0
 

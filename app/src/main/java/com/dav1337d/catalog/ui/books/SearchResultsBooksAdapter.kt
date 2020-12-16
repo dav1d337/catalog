@@ -25,6 +25,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
+import com.dav1337d.catalog.ui.base.OnClickListener
 
 /**
  * Provide views to RecyclerView with data from dataSet.
@@ -33,7 +34,7 @@ import com.dav1337d.catalog.model.books.BookItem
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val listener: OnClickListener) :
+class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val listener: OnClickListener<BookItem>) :
         RecyclerView.Adapter<SearchResultsBooksAdapter.ViewHolder>() {
 
     /**

@@ -59,7 +59,7 @@ class BookSearchViewModel constructor(private val bookRepository: BookRepository
             queryTextChangedJob?.cancel()
 
             queryTextChangedJob = launch(Dispatchers.IO) {
-                delay(50)
+                delay(250)
                 heavyWork(query)
             }
         }

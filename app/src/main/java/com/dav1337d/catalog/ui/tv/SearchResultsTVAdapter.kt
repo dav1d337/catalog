@@ -25,6 +25,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
+import com.dav1337d.catalog.ui.base.OnClickListener
 
 
 /**
@@ -34,7 +35,7 @@ import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener) :
+class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener<EitherMovieOrSeries>) :
         RecyclerView.Adapter<SearchResultsTVAdapter.ViewHolder>() {
 
     /**

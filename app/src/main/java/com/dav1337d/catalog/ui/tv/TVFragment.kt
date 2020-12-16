@@ -1,44 +1,51 @@
 package com.dav1337d.catalog.ui.tv
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.ui.base.BaseListFragment
 import kotlinx.android.synthetic.main.tv_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class TVFragment : Fragment() {
+class TVFragment :
+    BaseListFragment<CustomTVAdapter.ViewHolder, CustomTVAdapter>(R.layout.tv_fragment) {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var tvAdapter: CustomTVAdapter
     private val viewModel by viewModel<TVViewModel>()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    override fun createAdapter(context: Context?): CustomTVAdapter {
+        return CustomTVAdapter(requireContext())
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val rootView = inflater.inflate(R.layout.tv_fragment, container, false)
-        recyclerView = rootView.findViewById(R.id.roomItemList)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        setUpAddDialog()
 
-        tvAdapter = CustomTVAdapter(requireContext())
+        viewModel.liveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                Log.i("hallo", "changed ${it.size}")
+                if (!it.isNullOrEmpty()) {
+                    textView.visibility = View.GONE
+                } else {
+                    textView.visibility = View.VISIBLE
+                }
+                (adapter as CustomTVAdapter).setItems(it)
+            }
+        })
+    }
 
-        recyclerView.adapter = tvAdapter
-
-        tvAdapter.onItemLongClick = { item ->
+    private fun setUpAddDialog() {
+        (adapter as CustomTVAdapter).onItemLongClick = { item ->
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.apply {
@@ -55,10 +62,8 @@ class TVFragment : Fragment() {
                 builder.create()
             }
             alertDialog?.show()
-            alertDialog?.window?.setLayout(600,400)
+            alertDialog?.window?.setLayout(600, 400)
         }
-
-        return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -67,18 +72,6 @@ class TVFragment : Fragment() {
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_tv_home_to_search)
         }
-
-        viewModel.liveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                Log.i("hallo", "changed ${it.size}")
-                if (!it.isNullOrEmpty()) {
-                    textView.visibility = View.GONE
-                } else {
-                    textView.visibility = View.VISIBLE
-                }
-                tvAdapter.setItems(it)
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -88,7 +81,7 @@ class TVFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.name -> viewModel.sortItemsBy("name")
             R.id.rating -> viewModel.sortItemsBy("personalRating")
             R.id.watched -> viewModel.sortItemsBy("watchDate")

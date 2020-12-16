@@ -1,9 +1,14 @@
 package com.dav1337d.catalog.ui.base
 
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
@@ -11,14 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.ui.books.BooksViewModel
+import com.google.android.material.snackbar.Snackbar
 
-abstract class BaseListFragment(layoutId: Int) : Fragment() {
+abstract class BaseListFragment<VH : RecyclerView.ViewHolder, out T : RecyclerView.Adapter<VH>>(
+    @LayoutRes private val layoutId: Int
+) : Fragment() {
 
-    private lateinit var viewModel: ViewModel
     private lateinit var recyclerView: RecyclerView
-    // todo use bundle for laout?
-    private  var layout: Int = layoutId
-    private lateinit var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
+    lateinit var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
+
+    protected abstract fun createAdapter(context: Context?): T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +37,12 @@ abstract class BaseListFragment(layoutId: Int) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val rootView = inflater.inflate(layout, container, false)
+        val rootView = inflater.inflate(layoutId, container, false)
         recyclerView = rootView.findViewById(R.id.roomItemList)
         recyclerView.layoutManager = LinearLayoutManager(activity)
-
-
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(BooksViewModel::class.java)
-        // TODO: Use the ViewModel
+        val adapter = createAdapter(context)
+        this.adapter = adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
+        recyclerView.adapter = adapter
+        return rootView
     }
 }

@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class AppiumTests {
     }
 
     @Test
-    public void test() {
+    public void testExample() {
         driver.findElement(MobileBy.className("android.widget.ImageButton")).click();
 
         driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"You clicked!\")"));
@@ -42,8 +43,8 @@ public class AppiumTests {
         driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
     }
 
-    //@After
-    //public void End() {
-    //    driver.quit();
-    //}
+    @After
+    public void tearDown() {
+        driver.quit();
+    }
 }

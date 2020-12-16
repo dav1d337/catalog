@@ -26,7 +26,7 @@
             android:layout_marginBottom="3dp"
             android:layout_marginEnd="3dp"
             android:scrollbars="vertical"
-            android:text="Lorem ipsum blalbla Lorem ipsum blalbla Lorem ipsusdaasdm blalbla"
+            android:text="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum  blalbla Lorem ipsum blalbla Lorem ipsusdaasdm blalbla"
             app:layout_constrainedHeight="true"
             app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -103,6 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
             android:orientation="horizontal"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="parent">
@@ -111,10 +112,10 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="22dp"
+                android:gravity="center_horizontal"
+                android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
-                android:text="Title"
+                android:text="Title Title Title Title Title Title Title Title Title Title "
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

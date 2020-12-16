@@ -1,5 +1,6 @@
 package com.dav1337d.catalog.ui.books
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
@@ -10,34 +11,39 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.ui.base.BaseListFragment
+import com.dav1337d.catalog.ui.tv.CustomTVAdapter
 import kotlinx.android.synthetic.main.books_fragment.*
 import kotlinx.android.synthetic.main.tv_fragment.fab
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class BooksFragment : Fragment() {
+class BooksFragment : BaseListFragment<CustomBooksAdapter.ViewHolder, CustomBooksAdapter>(R.layout.books_fragment) {
 
-    private lateinit var booksAdapter: CustomBooksAdapter
-    private lateinit var recyclerView: RecyclerView
     private val viewModel by viewModel<BooksViewModel>()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    override fun createAdapter(context: Context?): CustomBooksAdapter {
+        return CustomBooksAdapter(requireContext())
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        val rootView =  inflater.inflate(R.layout.books_fragment, container, false)
-        recyclerView = rootView.findViewById(R.id.roomItemList)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        setUpAddDialog()
 
-        booksAdapter = CustomBooksAdapter(requireContext())
+        viewModel.liveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                if (!it.isNullOrEmpty()) {
+                    empty_text_view.visibility = View.GONE
+                } else {
+                    empty_text_view.visibility = View.VISIBLE
+                }
+                (adapter as CustomBooksAdapter).setItems(it)
+            }
+        })
+    }
 
-        recyclerView.adapter = booksAdapter
-
-        booksAdapter.onItemLongClick = { item ->
+    private fun setUpAddDialog() {
+        (adapter as CustomBooksAdapter).onItemLongClick = { item ->
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.apply {
@@ -54,9 +60,8 @@ class BooksFragment : Fragment() {
                 builder.create()
             }
             alertDialog?.show()
-            alertDialog?.window?.setLayout(600,400)
+            alertDialog?.window?.setLayout(600, 400)
         }
-        return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -65,17 +70,6 @@ class BooksFragment : Fragment() {
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_book_home_to_search)
         }
-
-        viewModel.liveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                if (!it.isNullOrEmpty()) {
-                    empty_text_view.visibility = View.GONE
-                } else {
-                    empty_text_view.visibility = View.VISIBLE
-                }
-                booksAdapter.setItems(it)
-            }
-        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -96,5 +90,4 @@ class BooksFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 }

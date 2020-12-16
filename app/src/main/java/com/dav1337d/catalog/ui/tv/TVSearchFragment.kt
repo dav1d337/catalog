@@ -1,20 +1,17 @@
 package com.dav1337d.catalog.ui.tv
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
+import com.dav1337d.catalog.ui.base.OnClickListener
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -22,8 +19,8 @@ class TVSearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var TVAdapter: SearchResultsTVAdapter
-    private lateinit var clickListener: OnClickListener
-    private lateinit var clickListenerSave: OnClickListener
+    private lateinit var clickListener: OnClickListener<EitherMovieOrSeries>
+    private lateinit var clickListenerSave: OnClickListener<EitherMovieOrSeries>
     private lateinit var searchView: SearchView
 
     val viewModel by viewModel<TVSearchViewModel>()
@@ -37,7 +34,7 @@ class TVSearchFragment : Fragment() {
         searchView.queryHint = "Enter title..."
 
         recyclerView = rootView.findViewById(R.id.roomItemList)
-        clickListenerSave = object : OnClickListener {
+        clickListenerSave = object : OnClickListener<EitherMovieOrSeries> {
             override fun onSaveClick(
                 item: EitherMovieOrSeries,
                 rating: Int,
@@ -48,7 +45,7 @@ class TVSearchFragment : Fragment() {
                 searchView.setQuery(searchView.query, true) // to update the watched mark
             }
         }
-        clickListener = object : OnClickListener {
+        clickListener = object : OnClickListener<EitherMovieOrSeries> {
             override fun onCheckBoxClick(item: EitherMovieOrSeries) {
                 val dialog = AddToDbDialogFragment(clickListenerSave, item)
                 dialog.show(fragmentManager!!, "dialog")

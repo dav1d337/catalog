@@ -13,11 +13,12 @@ import androidx.fragment.app.DialogFragment
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
+import com.dav1337d.catalog.ui.base.OnClickListener
 import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddBookDialogFragment(val clickListener: OnClickListener, val item: BookItem): DialogFragment() {
+class AddBookDialogFragment(val clickListener: OnClickListener<BookItem>, val item: BookItem): DialogFragment() {
 
     private var numberOfStars = 0
 

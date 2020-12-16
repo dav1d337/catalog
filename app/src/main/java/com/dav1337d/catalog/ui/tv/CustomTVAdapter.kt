@@ -64,7 +64,6 @@ class CustomTVAdapter internal constructor(
                 return@setOnLongClickListener false
             }
             title = v.findViewById(R.id.textView)
-     //       year = v.findViewById(R.id.year)
             poster = v.findViewById(R.id.imageView2)
             commentView = v.findViewById(R.id.comment)
             linearLayout = v.findViewById(R.id.tv_linearLayout_stars)
@@ -72,9 +71,7 @@ class CustomTVAdapter internal constructor(
 
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
                 .inflate(R.layout.tv_cardview, viewGroup, false)
 
@@ -87,7 +84,6 @@ class CustomTVAdapter internal constructor(
         Log.d(TAG, "Element $position set.")
 
         viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_air_date.substring(0,4) + ")"
-        //viewHolder.year.text = dataSet[position].first_air_date.substring(0,4)
         val fileName = (dataSet[position].original_name + ".png").replace("/","")
         viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
         val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
