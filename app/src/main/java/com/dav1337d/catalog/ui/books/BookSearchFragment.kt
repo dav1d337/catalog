@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
+import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
 import com.dav1337d.catalog.ui.base.OnClickListener
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -45,7 +46,7 @@ class BookSearchFragment : Fragment() {
         }
         clickListener = object : OnClickListener<BookItem> {
             override fun onCheckBoxClick(item: BookItem) {
-                val dialog = AddBookDialogFragment(clickListenerSave, item)
+                val dialog = AddToDbDialogFragment(clickListenerSave as OnClickListener<Any>, item)
                 dialog.show(fragmentManager!!, "dialog")
             }
         }

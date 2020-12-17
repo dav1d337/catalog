@@ -12,13 +12,15 @@
             android:name="com.dav1337d.catalog.ui.games.GamesFragment"
             android:label="Games"
             tools:layout="@layout/games_fragment">
-<!--        <action-->
-<!--            android:id="@+id/action_register_to_registered"-->
-<!--            app:destination="@id/registered"/>-->
+        <action
+            android:id="@+id/action_games_home_to_search"
+            app:destination="@id/searchGames"/>
     </fragment>
-<!--    <fragment-->
-<!--        android:id="@+id/registered"-->
-<!--        android:name="com.example.android.navigationadvancedsample.formscreen.Registered"-->
-<!--        android:label="Registered"-->
-<!--        tools:layout="@layout/fragment_registered"/>-->
+
+    <fragment
+        android:id="@+id/searchGames"
+        android:name="com.dav1337d.catalog.ui.games.GamesSearchFragment"
+        android:label="Search"
+        tools:layout="@layout/search_fragment"/>
+
 </navigation>

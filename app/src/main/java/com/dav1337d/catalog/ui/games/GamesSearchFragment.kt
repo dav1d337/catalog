@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui.tv
+package com.dav1337d.catalog.ui.games
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,15 +16,15 @@ import com.dav1337d.catalog.ui.base.OnClickListener
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
-class TVSearchFragment : Fragment() {
+class GamesSearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var tvAdapter: SearchResultsTVAdapter
+    private lateinit var gamesAdapter: SearchResultsGamesAdapter
     private lateinit var clickListener: OnClickListener<EitherMovieOrSeries>
     private lateinit var clickListenerSave: OnClickListener<EitherMovieOrSeries>
     private lateinit var searchView: SearchView
 
-    val viewModel by viewModel<TVSearchViewModel>()
+    val viewModel by viewModel<GamesSearchViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,8 +53,8 @@ class TVSearchFragment : Fragment() {
             }
         }
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        tvAdapter = SearchResultsTVAdapter(listOf(), clickListener)
-        recyclerView.adapter = tvAdapter
+        gamesAdapter = SearchResultsGamesAdapter(listOf(), clickListener)
+        recyclerView.adapter = gamesAdapter
         return rootView
     }
 
@@ -63,9 +63,9 @@ class TVSearchFragment : Fragment() {
 
         viewModel.results.observe(viewLifecycleOwner, Observer {
             if (it.isNullOrEmpty()) {
-                tvAdapter.setItems(listOf())
+                gamesAdapter.setItems(listOf())
             }
-            tvAdapter.setItems(it)
+            gamesAdapter.setItems(it)
         })
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -78,7 +78,7 @@ class TVSearchFragment : Fragment() {
                 newText?.let {
                     viewModel.search(it)
                     if (it.isBlank()) {
-                        tvAdapter.setItems(listOf())
+                        gamesAdapter.setItems(listOf())
                     }
                 }
                 return true

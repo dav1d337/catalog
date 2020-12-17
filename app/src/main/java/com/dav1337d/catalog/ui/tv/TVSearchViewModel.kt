@@ -13,12 +13,7 @@ import kotlinx.coroutines.*
 import org.koin.standalone.KoinComponent
 
 class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
-    BaseSearchViewModel() {
-
-
-    val results: MutableLiveData<List<EitherMovieOrSeries>> by lazy {
-        MutableLiveData<List<EitherMovieOrSeries>>()
-    }
+    BaseSearchViewModel<EitherMovieOrSeries>() {
 
     private val listener = Response.Listener<String> {
 

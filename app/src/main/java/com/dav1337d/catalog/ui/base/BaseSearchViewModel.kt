@@ -6,12 +6,12 @@ import com.dav1337d.catalog.model.books.BookItem
 import kotlinx.coroutines.Job
 import org.koin.standalone.KoinComponent
 
-abstract class BaseSearchViewModel: ViewModel(),
+abstract class BaseSearchViewModel<V>: ViewModel(),
     KoinComponent {
 
     var queryTextChangedJob: Job? = null
 
-//    val results: MutableLiveData<List<Any>> by lazy {
-//        MutableLiveData<List<Any>>()
-//    }
+    val results: MutableLiveData<List<V>> by lazy {
+        MutableLiveData<List<V>>()
+    }
 }

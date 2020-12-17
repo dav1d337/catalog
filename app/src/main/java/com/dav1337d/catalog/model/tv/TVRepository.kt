@@ -22,6 +22,7 @@ import org.json.JSONObject
 class TVRepository() {
 
     var roomSeriesDao: RoomSeriesDao = AppDatabase.getInstance(App.appContext!!).roomSeriesDao()
+
     val allSeriesMovie: LiveData<List<RoomSeriesMovie>> = roomSeriesDao
         .getAll()
 

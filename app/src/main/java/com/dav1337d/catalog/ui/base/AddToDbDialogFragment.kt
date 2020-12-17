@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui.books
+package com.dav1337d.catalog.ui.base
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddBookDialogFragment(val clickListener: OnClickListener<BookItem>, val item: BookItem): DialogFragment() {
+class AddToDbDialogFragment(val clickListener: OnClickListener<Any>, val item: Any): DialogFragment() {
 
     private var numberOfStars = 0
 

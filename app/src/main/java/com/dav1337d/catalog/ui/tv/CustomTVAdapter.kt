@@ -88,7 +88,6 @@ class CustomTVAdapter internal constructor(
         viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
         val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
         viewHolder.commentView.text = comment
-        Log.i("hallo rating", dataSet[position].personalRating.toString())
         for (i in 0 until viewHolder.linearLayout.size) {
             if (dataSet[position].personalRating >= 0 && dataSet[position].personalRating > i) {
                 viewHolder.linearLayout[i].visibility = View.VISIBLE

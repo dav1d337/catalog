@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.dav1337d.catalog.ui.tv
+package com.dav1337d.catalog.ui.games
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,8 +35,8 @@ import com.dav1337d.catalog.ui.base.OnClickListener
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener<EitherMovieOrSeries>) :
-        RecyclerView.Adapter<SearchResultsTVAdapter.ViewHolder>() {
+class SearchResultsGamesAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener<EitherMovieOrSeries>) :
+        RecyclerView.Adapter<SearchResultsGamesAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -63,7 +63,7 @@ class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, pri
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.search_result_tv_item, viewGroup, false)
+                .inflate(R.layout.search_result_game_item, viewGroup, false)
 
         return ViewHolder(v)
     }

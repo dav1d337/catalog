@@ -12,11 +12,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 
 class BookSearchViewModel constructor(private val bookRepository: BookRepository) :
-    BaseSearchViewModel() {
-
-    val results: MutableLiveData<List<BookItem>> by lazy {
-        MutableLiveData<List<BookItem>>()
-    }
+    BaseSearchViewModel<BookItem>() {
 
     fun insert(
         item: BookItem, rating: Int, readDate: String, comment: String// , status: BookStatus

@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui.books
+package com.dav1337d.catalog.ui.games
 
 import android.content.Context
 import android.util.Log
@@ -12,7 +12,7 @@ import androidx.core.view.get
 import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.db.RoomBook
+import com.dav1337d.catalog.db.RoomSeriesMovie
 import com.dav1337d.catalog.App
 import com.dav1337d.catalog.util.ImageSaver
 
@@ -24,20 +24,19 @@ import com.dav1337d.catalog.util.ImageSaver
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class CustomBooksAdapter internal constructor(
+class CustomGamesAdapter internal constructor(
     context: Context
 ) :
-        RecyclerView.Adapter<CustomBooksAdapter.ViewHolder>() {
+        RecyclerView.Adapter<CustomGamesAdapter.ViewHolder>() {
 
-    private var dataSet = emptyList<RoomBook>()
-    var onItemLongClick: ((RoomBook) -> Unit)? = null
+    private var dataSet = emptyList<RoomSeriesMovie>()
+    var onItemLongClick: ((RoomSeriesMovie) -> Unit)? = null
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
-        val subtitle: TextView
-      //  val year: TextView
+       // val year: TextView
        // val watchDate: TextView
         val poster: ImageView
         val commentView: TextView
@@ -48,21 +47,17 @@ class CustomBooksAdapter internal constructor(
                 onItemLongClick?.invoke(dataSet[bindingAdapterPosition])
                 return@setOnLongClickListener false
             }
-            title = v.findViewById(R.id.book_title)
-            subtitle = v.findViewById(R.id.book_subtitle)
-          //  year = v.findViewById(R.id.book_year)
-            poster = v.findViewById(R.id.book_img)
-            commentView = v.findViewById(R.id.book_comment)
-            linearLayout = v.findViewById(R.id.book_linearLayout)
+            title = v.findViewById(R.id.textView)
+            poster = v.findViewById(R.id.imageView2)
+            commentView = v.findViewById(R.id.comment)
+            linearLayout = v.findViewById(R.id.tv_linearLayout_stars)
         }
 
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.book_cardview, viewGroup, false)
+                .inflate(R.layout.game_cardview, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -72,13 +67,11 @@ class CustomBooksAdapter internal constructor(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        viewHolder.title.text = dataSet[position].title + " (" + dataSet[position].year?.substring(0,4) + ")"
-        viewHolder.subtitle.text = dataSet[position].subtitle
-        val comment = dataSet[position].comment + " (" + dataSet[position].readDate + ")"
-        viewHolder.commentView.text = comment
-
-        val fileName = (dataSet[position].title + ".png").replace("/","")
+        viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_air_date.substring(0,4) + ")"
+        val fileName = (dataSet[position].original_name + ".png").replace("/","")
         viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
+        viewHolder.commentView.text = comment
 
         for (i in 0 until viewHolder.linearLayout.size) {
             if (dataSet[position].personalRating >= 0 && dataSet[position].personalRating > i) {
@@ -89,14 +82,18 @@ class CustomBooksAdapter internal constructor(
         }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return dataSet[position].personalRating
+    }
+
     override fun getItemCount() = dataSet.size
 
-    internal fun setItems(items: List<RoomBook>) {
+    internal fun setItems(items: List<RoomSeriesMovie>) {
         this.dataSet = items
         notifyDataSetChanged()
     }
 
     companion object {
-        private val TAG = "CustomBooksAdapter"
+        private val TAG = "CustomAdapter"
     }
 }

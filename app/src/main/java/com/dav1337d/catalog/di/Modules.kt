@@ -1,9 +1,12 @@
 package com.dav1337d.catalog.di
 
 import com.dav1337d.catalog.model.books.BookRepository
+import com.dav1337d.catalog.model.games.GamesRepository
 import com.dav1337d.catalog.model.tv.TVRepository
 import com.dav1337d.catalog.ui.books.BookSearchViewModel
 import com.dav1337d.catalog.ui.books.BooksViewModel
+import com.dav1337d.catalog.ui.games.GamesSearchViewModel
+import com.dav1337d.catalog.ui.games.GamesViewModel
 import com.dav1337d.catalog.ui.tv.TVSearchViewModel
 import com.dav1337d.catalog.ui.tv.TVViewModel
 import org.koin.android.viewmodel.ext.koin.viewModel
@@ -17,4 +20,8 @@ val applicationModule = module(override = true) {
    single { BookRepository() }
    viewModel { BookSearchViewModel(get()) }
    viewModel { BooksViewModel(get()) }
+
+   single { GamesRepository() }
+   viewModel { GamesSearchViewModel(get()) }
+   viewModel { GamesViewModel(get()) }
 }

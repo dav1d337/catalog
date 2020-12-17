@@ -33,7 +33,6 @@ class TVFragment :
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                Log.i("hallo", "changed ${it.size}")
                 if (!it.isNullOrEmpty()) {
                     textView.visibility = View.GONE
                 } else {
