@@ -1,23 +1,21 @@
 package com.dav1337d.catalog.ui.games
 
-import android.graphics.Bitmap
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.android.volley.Response
+import com.dav1337d.catalog.model.games.Game
 import com.dav1337d.catalog.model.games.GamesRepository
-import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
-import com.dav1337d.catalog.model.tv.TVRepository
 import com.dav1337d.catalog.ui.base.BaseSearchViewModel
-import kotlinx.coroutines.*
-import org.koin.standalone.KoinComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class GamesSearchViewModel constructor(private val gamesRepository: GamesRepository) :
-    BaseSearchViewModel<EitherMovieOrSeries>() {
+    BaseSearchViewModel<Game>() {
 
 
-    fun insert(item: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
+    val liveData = MediatorLiveData<List<Game>>()
+
+    fun insert(item: Game, rating: Int, watchDate: String, comment: String) {
 //        viewModelScope.launch {
 //            withContext(Dispatchers.IO) {
 //                tvRepository.insert(item, rating, watchDate, comment)
@@ -27,6 +25,11 @@ class GamesSearchViewModel constructor(private val gamesRepository: GamesReposit
 
     init {
         gamesRepository.getAccessToken()
+        liveData.addSource(gamesRepository.searchResults) {
+            if (it != null) {
+                liveData.value = it
+            }
+        }
     }
 
     fun search(query: String?) {

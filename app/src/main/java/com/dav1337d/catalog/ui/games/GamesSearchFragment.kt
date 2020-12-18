@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.model.games.Game
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
 import com.dav1337d.catalog.ui.base.OnClickListener
@@ -20,8 +21,8 @@ class GamesSearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var gamesAdapter: SearchResultsGamesAdapter
-    private lateinit var clickListener: OnClickListener<EitherMovieOrSeries>
-    private lateinit var clickListenerSave: OnClickListener<EitherMovieOrSeries>
+    private lateinit var clickListener: OnClickListener<Game>
+    private lateinit var clickListenerSave: OnClickListener<Game>
     private lateinit var searchView: SearchView
 
     val viewModel by viewModel<GamesSearchViewModel>()
@@ -35,9 +36,9 @@ class GamesSearchFragment : Fragment() {
         searchView.queryHint = "Enter title..."
 
         recyclerView = rootView.findViewById(R.id.roomItemList)
-        clickListenerSave = object : OnClickListener<EitherMovieOrSeries> {
+        clickListenerSave = object : OnClickListener<Game> {
             override fun onSaveClick(
-                item: EitherMovieOrSeries,
+                item: Game,
                 rating: Int,
                 watchDate: String,
                 comment: String
@@ -46,8 +47,8 @@ class GamesSearchFragment : Fragment() {
                 searchView.setQuery(searchView.query, true) // to update the watched mark
             }
         }
-        clickListener = object : OnClickListener<EitherMovieOrSeries> {
-            override fun onCheckBoxClick(item: EitherMovieOrSeries) {
+        clickListener = object : OnClickListener<Game> {
+            override fun onCheckBoxClick(item: Game) {
                 val dialog = AddToDbDialogFragment(clickListenerSave as OnClickListener<Any>, item)
                 dialog.show(fragmentManager!!, "dialog")
             }
@@ -61,7 +62,7 @@ class GamesSearchFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.results.observe(viewLifecycleOwner, Observer {
+        viewModel.liveData.observe(viewLifecycleOwner, Observer {
             if (it.isNullOrEmpty()) {
                 gamesAdapter.setItems(listOf())
             }

@@ -7,6 +7,6 @@ import com.dav1337d.catalog.model.games.GamesRepository
 class GamesViewModel constructor(val gamesRepository: GamesRepository): ViewModel() {
 
     init {
-        gamesRepository.getAccessToken()
+
     }
 }

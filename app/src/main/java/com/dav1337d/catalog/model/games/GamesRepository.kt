@@ -14,13 +14,15 @@ import com.google.gson.Gson
 class GamesRepository {
 
     private var accessToken: String? = null
+    private val gson = Gson()
+
+    val searchResults: MutableLiveData<List<Game>> = MutableLiveData(mutableListOf())
 
     fun getAccessToken() {
         val url = "https://id.twitch.tv/oauth2/token?client_id=tgmc1oc8qhc0f8h1lczzsivyjmt7c9&client_secret=8br53h251vo1fx52qdtgciw34mj8i0&grant_type=client_credentials"
 
         val listener = Response.Listener<String> {
             Log.i("hallo games reponse", it)
-            val gson = Gson()
             val result = gson.fromJson(it, GamesAuthenticationResponse::class.java)
             accessToken = result.access_token
         }
@@ -40,7 +42,6 @@ class GamesRepository {
             Response.Listener { response ->
                 if (response != null) {
                     Log.i("hallo Games Response", response)
-                    val gson = Gson()
                     val result = gson.fromJson(response, Array<SingleGameSearchResponse>::class.java)
 
                     result.forEach {
@@ -81,9 +82,9 @@ class GamesRepository {
             Method.POST, url,
             Response.Listener { response ->
                 if (response != null) {
-                    val gson = Gson()
-
                     val result = gson.fromJson(response, Array<GameDetailsResponse>::class.java)
+
+                    searchResults.value?.toMutableList()?.add(Game(result[0].name))
                     Log.i("hallo lol", result[0].name)
                 } else {
                     Log.i("hallo GameDetail", "Data Null")
@@ -108,7 +109,6 @@ class GamesRepository {
                 return body.toByteArray()
             }
         }
-
         Singletons.getInstance(App.appContext!!).addToRequestQueue(request)
     }
 }
