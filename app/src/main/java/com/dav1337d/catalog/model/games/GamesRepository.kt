@@ -16,7 +16,8 @@ class GamesRepository {
     private var accessToken: String? = null
     private val gson = Gson()
 
-    val searchResults: MutableLiveData<List<Game>> = MutableLiveData(mutableListOf())
+    private val searchResultsList = ArrayList<Game>()
+    val searchResults: MutableLiveData<List<Game>> = MutableLiveData<List<Game>>()
 
     fun getAccessToken() {
         val url = "https://id.twitch.tv/oauth2/token?client_id=tgmc1oc8qhc0f8h1lczzsivyjmt7c9&client_secret=8br53h251vo1fx52qdtgciw34mj8i0&grant_type=client_credentials"
@@ -37,15 +38,21 @@ class GamesRepository {
     fun searchGames(query: String) {
         val url = "https://api.igdb.com/v4/games"
 
+        searchResultsList.clear()
+        searchResults.postValue(searchResultsList)
+
         val request: StringRequest = object : StringRequest(
             Method.POST, url,
             Response.Listener { response ->
                 if (response != null) {
                     Log.i("hallo Games Response", response)
-                    val result = gson.fromJson(response, Array<SingleGameSearchResponse>::class.java)
+                    val result = gson.fromJson(response, Array<GameDetailsResponse>::class.java)
 
                     result.forEach {
-                        getGameDetails(it.id)
+                     //   getGameDetails(it.id)
+                        val game = Game(it.name)
+                        searchResultsList.add(game)
+                        searchResults.value = searchResultsList
                     }
 
                 } else {
@@ -67,7 +74,7 @@ class GamesRepository {
             }
 
             override fun getBody(): ByteArray {
-                val body = "search \"$query\"; fields name;"
+                val body = "search \"$query\"; fields *;" // TODO LOOL addddd
                 return body.toByteArray()
             }
         }
@@ -83,8 +90,11 @@ class GamesRepository {
             Response.Listener { response ->
                 if (response != null) {
                     val result = gson.fromJson(response, Array<GameDetailsResponse>::class.java)
-
-                    searchResults.value?.toMutableList()?.add(Game(result[0].name))
+                    val game = Game(result[0].name)
+                    if (!searchResultsList.contains(game)) {
+                        searchResultsList.add(Game(result[0].name))
+                    }
+                    searchResults.value = searchResultsList
                     Log.i("hallo lol", result[0].name)
                 } else {
                     Log.i("hallo GameDetail", "Data Null")
