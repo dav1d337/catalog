@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         intArrayOf(android.R.attr.state_checked),
         intArrayOf(-android.R.attr.state_checked)
     )
+
     lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {

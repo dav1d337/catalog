@@ -15,4 +15,9 @@
     <string name="date">Date:</string>
     <string name="comment">Comment</string>
     <string name="to_search">To Search</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="sign_in_with_google">Sign In With Google</string>
+    <string name="continue_without_account">Continue Without Account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="password">Password</string>
 </resources>

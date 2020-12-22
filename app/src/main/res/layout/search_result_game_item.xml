@@ -24,7 +24,6 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="1"
         android:text="Title Title Title Title Title Title Title Title"
         android:lines="2"
         android:ellipsize="end"
