@@ -4,9 +4,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -69,6 +67,22 @@ class GamesFragment : BaseListFragment<CustomGamesAdapter.ViewHolder, CustomGame
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_games_home_to_search)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.catalog_menu, menu)
+        menu.findItem(R.id.account).isVisible = false
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.name -> viewModel.sortItemsBy("name")
+            R.id.rating -> viewModel.sortItemsBy("personalRating")
+            R.id.watched -> viewModel.sortItemsBy("watchDate")
+            R.id.release -> viewModel.sortItemsBy("first_air_date")
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

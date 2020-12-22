@@ -30,7 +30,7 @@
         android:ellipsize="end"
         android:textSize="22dp"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@id/author"
+        app:layout_constraintBottom_toTopOf="@id/description"
         app:layout_constraintEnd_toStartOf="@+id/year"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -54,19 +54,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/author"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Author Mueller"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/description"
-        app:layout_constraintEnd_toStartOf="@+id/year"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <TextView
         android:id="@+id/description"
