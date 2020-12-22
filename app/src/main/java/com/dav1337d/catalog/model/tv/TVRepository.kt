@@ -161,7 +161,6 @@ class TVRepository() {
     fun getPosterImage(size: String = "w154", id: String, listener: Response.Listener<Bitmap>) {
         if (!id.isEmpty() && id != "null") {
             val url = "https://image.tmdb.org/t/p/$size$id"
-            val requestFuture = RequestFuture.newFuture<Bitmap>()
             val imageRequest = ImageRequest(url,
                 listener,
                 300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,

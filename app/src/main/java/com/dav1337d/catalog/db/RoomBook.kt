@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.dav1337d.catalog.model.books.BookItem
 
-@Entity(tableName = "roomBook")
+@Entity(tableName = "roomBook", indices = arrayOf(Index(value = ["title"], unique = true)))
 data class RoomBook(
     @PrimaryKey val uid: Int? = null,
   //  @ColumnInfo(name = "book") val book: BookItem,

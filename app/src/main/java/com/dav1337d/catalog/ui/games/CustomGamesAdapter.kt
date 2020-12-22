@@ -12,8 +12,9 @@ import androidx.core.view.get
 import androidx.core.view.size
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.db.RoomSeriesMovie
 import com.dav1337d.catalog.App
+import com.dav1337d.catalog.db.RoomGame
+import com.dav1337d.catalog.extensions.timestampToDate
 import com.dav1337d.catalog.util.ImageSaver
 
 
@@ -29,8 +30,8 @@ class CustomGamesAdapter internal constructor(
 ) :
         RecyclerView.Adapter<CustomGamesAdapter.ViewHolder>() {
 
-    private var dataSet = emptyList<RoomSeriesMovie>()
-    var onItemLongClick: ((RoomSeriesMovie) -> Unit)? = null
+    private var dataSet = emptyList<RoomGame>()
+    var onItemLongClick: ((RoomGame) -> Unit)? = null
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
@@ -67,10 +68,10 @@ class CustomGamesAdapter internal constructor(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_air_date.substring(0,4) + ")"
-        val fileName = (dataSet[position].original_name + ".png").replace("/","")
+        viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_release_date?.timestampToDate()?.substring(dataSet[position].first_release_date!!.timestampToDate()?.lastIndex - 3, dataSet[position].first_release_date!!.timestampToDate()?.lastIndex + 1) + ")"
+        val fileName = (dataSet[position].name + ".png").replace("/", "")
         viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
-        val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
+        val comment = dataSet[position].comment + " (" + dataSet[position].playDate + ")"
         viewHolder.commentView.text = comment
 
         for (i in 0 until viewHolder.linearLayout.size) {
@@ -88,7 +89,7 @@ class CustomGamesAdapter internal constructor(
 
     override fun getItemCount() = dataSet.size
 
-    internal fun setItems(items: List<RoomSeriesMovie>) {
+    internal fun setItems(items: List<RoomGame>) {
         this.dataSet = items
         notifyDataSetChanged()
     }

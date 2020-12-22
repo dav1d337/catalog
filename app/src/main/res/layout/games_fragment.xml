@@ -9,7 +9,7 @@
     tools:context=".ui.games.GamesFragment">
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/empty_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -25,7 +25,7 @@
         app:backgroundTint="@color/transparent"
         android:backgroundTint="@color/colorAccent"
         android:src="@drawable/ic_baseline_add_24"
-        android:contentDescription="To Search"
+        android:contentDescription="@string/to_search"
         android:layout_margin="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView

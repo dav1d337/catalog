@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.model.games.Game
+import com.dav1337d.catalog.model.games.GameDetailsResponse
 import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
 import com.dav1337d.catalog.ui.base.OnClickListener
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -20,8 +20,8 @@ class GamesSearchFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var gamesAdapter: SearchResultsGamesAdapter
-    private lateinit var clickListener: OnClickListener<Game>
-    private lateinit var clickListenerSave: OnClickListener<Game>
+    private lateinit var clickListener: OnClickListener<GameDetailsResponse>
+    private lateinit var clickListenerSave: OnClickListener<GameDetailsResponse>
     private lateinit var searchView: SearchView
 
     val viewModel by viewModel<GamesSearchViewModel>()
@@ -35,19 +35,19 @@ class GamesSearchFragment : Fragment() {
         searchView.queryHint = "Enter title..."
 
         recyclerView = rootView.findViewById(R.id.roomItemList)
-        clickListenerSave = object : OnClickListener<Game> {
+        clickListenerSave = object : OnClickListener<GameDetailsResponse> {
             override fun onSaveClick(
-                item: Game,
+                item: GameDetailsResponse,
                 rating: Int,
-                watchDate: String,
+                date: String,
                 comment: String
             ) {
-                viewModel.insert(item, rating, watchDate, comment)
+                viewModel.insert(item, rating, date, comment)
                 searchView.setQuery(searchView.query, true) // to update the watched mark
             }
         }
-        clickListener = object : OnClickListener<Game> {
-            override fun onCheckBoxClick(item: Game) {
+        clickListener = object : OnClickListener<GameDetailsResponse> {
+            override fun onCheckBoxClick(item: GameDetailsResponse) {
                 val dialog = AddToDbDialogFragment(clickListenerSave as OnClickListener<Any>, item)
                 dialog.show(fragmentManager!!, "dialog")
             }
@@ -67,6 +67,7 @@ class GamesSearchFragment : Fragment() {
             }
             gamesAdapter.setItems(it)
         })
+
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

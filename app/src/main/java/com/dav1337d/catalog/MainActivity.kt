@@ -43,25 +43,6 @@ class MainActivity : AppCompatActivity() {
      */
     private fun setupBottomNavigationBar() {
         bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
-//        bottomNavigationView.itemIconTintList = null
-//        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-//            Log.i("hallo", "hallo 0")
-//            when (item.itemId) {
-//                R.id.tv_home -> {
-//                    Log.i("hallo", "hallo 1")
-//                    updateBottomNavBarColor(resources.getColor(R.color.dark_red))
-//                }
-//                R.id.books_home -> {
-//                    Log.i("hallo", "hallo 2")
-//                    updateBottomNavBarColor(resources.getColor(R.color.green_munsell))
-//                }
-//                R.id.games_home -> {
-//                    Log.i("hallo", "hallo 3")
-//                    updateBottomNavBarColor(resources.getColor(R.color.carrot))
-//                }
-//            }
-//            true
-//        }
 
         val navGraphIds = listOf(
             R.navigation.games_home,

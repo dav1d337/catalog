@@ -1,5 +1,8 @@
 package com.dav1337d.catalog.model.games
 
+import android.graphics.Bitmap
+import com.dav1337d.catalog.db.RoomGame
+
 data class GameDetailsResponse constructor(
     val id: Int,
     val age_ratings: List<Int>,
@@ -10,11 +13,11 @@ data class GameDetailsResponse constructor(
     val bundles: List<Int>,
     val category: Int,
     val collection: Int,
-    val cover: Int,
+    val cover: Cover,
     val created_at: Int,
     val dlcs: List<Int>,
     val external_games: List<Int>,
-    val first_release_date: Int,
+    val first_release_date: Long,
     val follows: Int,
     val franchises: List<Int>,
     val game_engines: List<Int>,
@@ -43,5 +46,31 @@ data class GameDetailsResponse constructor(
     val url: String,
     val videos: List<Int>,
     val websites: List<Int>,
+    val checksum: String,
+    var played: Boolean? = false
+) {
+    fun toRoomEntity(personalRating: Int, playDate: String, comment: String): RoomGame {
+        return RoomGame(
+            igdb_id = this.id,
+            name = this.name,
+            summary = this.summary,
+            url = this.url,
+            first_release_date = this.first_release_date,
+            personalRating = personalRating,
+            playDate = playDate,
+            comment = comment
+        )
+    }
+}
+
+data class Cover(
+    val id: Int,
+    val alpha_channel: Boolean,
+    val animated: Boolean,
+    val game: Int,
+    val height: Int,
+    val image_id: String,
+    val url: String,
+    val width: Int,
     val checksum: String
 )

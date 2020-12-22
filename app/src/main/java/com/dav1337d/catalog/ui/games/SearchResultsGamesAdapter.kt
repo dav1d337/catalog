@@ -23,10 +23,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.dav1337d.catalog.App
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.extensions.timestampToDate
 import com.dav1337d.catalog.model.games.Game
+import com.dav1337d.catalog.model.games.GameDetailsResponse
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import com.dav1337d.catalog.ui.base.OnClickListener
+import com.dav1337d.catalog.util.ImageSaver
 
 
 /**
@@ -36,7 +40,7 @@ import com.dav1337d.catalog.ui.base.OnClickListener
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsGamesAdapter(private var dataSet: List<Game>, private val listener: OnClickListener<Game>) :
+class SearchResultsGamesAdapter(private var dataSet: List<GameDetailsResponse>, private val listener: OnClickListener<GameDetailsResponse>) :
         RecyclerView.Adapter<SearchResultsGamesAdapter.ViewHolder>() {
 
     /**
@@ -76,23 +80,24 @@ class SearchResultsGamesAdapter(private var dataSet: List<Game>, private val lis
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         viewHolder.textViewName.text = dataSet[position].name
-//        if (dataSet[position].first_air_date.length >= 4) { viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4) }
-//        viewHolder.textViewDescription.text = dataSet[position].overview
-//        viewHolder.imageView.setImageBitmap(dataSet[position].poster)
-//        viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
-//        dataSet[position].watched?.let {
-//            if (it) {
-//                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
-//            } else {
-//                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
-//            }
-//        }
+        viewHolder.textViewYear.text = dataSet[position].first_release_date.timestampToDate().substring(dataSet[position].first_release_date.timestampToDate().lastIndex - 3, dataSet[position].first_release_date.timestampToDate().lastIndex + 1)
+        viewHolder.textViewDescription.text = dataSet[position].summary
+        val fileName = (dataSet[position].name + ".png").replace("/", "")
+        viewHolder.imageView.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
+        dataSet[position].played?.let {
+            if (it) {
+                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_checked)
+            } else {
+                viewHolder.checkBox.setImageResource(R.drawable.ic_baseline_check_box_48_unchecked)
+            }
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.size
 
-    fun setItems(dataSet: List<Game>) {
+    fun setItems(dataSet: List<GameDetailsResponse>) {
         this.dataSet = dataSet
         notifyDataSetChanged()
     }

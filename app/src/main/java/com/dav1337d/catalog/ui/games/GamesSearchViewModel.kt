@@ -3,24 +3,26 @@ package com.dav1337d.catalog.ui.games
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.dav1337d.catalog.model.games.Game
+import com.dav1337d.catalog.model.games.GameDetailsResponse
 import com.dav1337d.catalog.model.games.GamesRepository
 import com.dav1337d.catalog.ui.base.BaseSearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GamesSearchViewModel constructor(private val gamesRepository: GamesRepository) :
-    BaseSearchViewModel<Game>() {
+    BaseSearchViewModel<GameDetailsResponse>() {
 
 
-    val liveData = MediatorLiveData<List<Game>>()
+    val liveData = MediatorLiveData<List<GameDetailsResponse>>()
 
-    fun insert(item: Game, rating: Int, watchDate: String, comment: String) {
-//        viewModelScope.launch {
-//            withContext(Dispatchers.IO) {
-//                tvRepository.insert(item, rating, watchDate, comment)
-//            }
-//        }
+    fun insert(item: GameDetailsResponse, rating: Int, watchDate: String, comment: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                gamesRepository.insert(item, rating, watchDate, comment)
+            }
+        }
     }
 
     init {
@@ -38,7 +40,9 @@ class GamesSearchViewModel constructor(private val gamesRepository: GamesReposit
 
             queryTextChangedJob = launch(Dispatchers.IO) {
                 delay(250)
-                gamesRepository.searchGames(query ?: "test")
+                query?.let {
+                    gamesRepository.searchGames(it)
+                }
             }
 
         }
