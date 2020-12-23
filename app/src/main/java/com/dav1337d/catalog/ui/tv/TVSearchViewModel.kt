@@ -1,16 +1,15 @@
 package com.dav1337d.catalog.ui.tv
 
 import android.graphics.Bitmap
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import com.dav1337d.catalog.model.tv.TVRepository
 import com.dav1337d.catalog.ui.base.BaseSearchViewModel
-import kotlinx.coroutines.*
-import org.koin.standalone.KoinComponent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
     BaseSearchViewModel<EitherMovieOrSeries>() {

@@ -3,9 +3,7 @@ package com.dav1337d.catalog.ui.games
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dav1337d.catalog.db.RoomBook
 import com.dav1337d.catalog.db.RoomGame
-import com.dav1337d.catalog.model.books.BookRepository
 import com.dav1337d.catalog.model.games.GamesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

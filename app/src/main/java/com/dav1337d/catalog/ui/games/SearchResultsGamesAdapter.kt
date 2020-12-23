@@ -26,9 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dav1337d.catalog.App
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.extensions.timestampToDate
-import com.dav1337d.catalog.model.games.Game
 import com.dav1337d.catalog.model.games.GameDetailsResponse
-import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import com.dav1337d.catalog.ui.base.OnClickListener
 import com.dav1337d.catalog.util.ImageSaver
 

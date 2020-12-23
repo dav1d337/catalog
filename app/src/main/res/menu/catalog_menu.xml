@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/sort"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/sort"
         android:icon="@drawable/ic_baseline_filter_list_24"
         android:title="@string/filter_by"
         app:showAsAction="ifRoom">
-    <menu>
-        <item android:id="@+id/name"
-            android:title="@string/name" />
-        <item android:id="@+id/rating"
-            android:title="@string/rating" />
-        <item android:id="@+id/release"
-            android:title="@string/release_date" />
-        <item android:id="@+id/watched"
-            android:title="@string/watch_date" />
-    </menu>
-
+        <menu>
+            <item
+                android:id="@+id/name"
+                android:title="@string/name" />
+            <item
+                android:id="@+id/rating"
+                android:title="@string/rating" />
+            <item
+                android:id="@+id/release"
+                android:title="@string/release_date" />
+            <item
+                android:id="@+id/watched"
+                android:title="@string/watch_date" />
+        </menu>
     </item>
 
-    <item android:id="@+id/account"
-        android:icon="@drawable/ic_baseline_star_24"
-        android:title="@string/filter_by"
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings"
         app:showAsAction="ifRoom">
         <menu>
-            <item android:id="@+id/login"
-                android:title="Login" />
+            <item
+                android:id="@+id/logout"
+                android:title="@string/logout" />
         </menu>
-
     </item>
+
 
 </menu>

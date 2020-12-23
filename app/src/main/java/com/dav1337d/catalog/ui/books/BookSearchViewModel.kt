@@ -1,7 +1,6 @@
 package com.dav1337d.catalog.ui.books
 
 import android.graphics.Bitmap
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
 import com.dav1337d.catalog.model.books.BookItem
@@ -9,7 +8,10 @@ import com.dav1337d.catalog.model.books.BookRepository
 import com.dav1337d.catalog.model.books.BookSearchResponse
 import com.dav1337d.catalog.ui.base.BaseSearchViewModel
 import com.google.gson.Gson
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class BookSearchViewModel constructor(private val bookRepository: BookRepository) :
     BaseSearchViewModel<BookItem>() {

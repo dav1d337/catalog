@@ -2,7 +2,6 @@ package com.dav1337d.catalog.ui.games
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
-import com.dav1337d.catalog.model.games.Game
 import com.dav1337d.catalog.model.games.GameDetailsResponse
 import com.dav1337d.catalog.model.games.GamesRepository
 import com.dav1337d.catalog.ui.base.BaseSearchViewModel

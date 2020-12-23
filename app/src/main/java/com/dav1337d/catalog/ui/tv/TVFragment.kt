@@ -2,8 +2,8 @@ package com.dav1337d.catalog.ui.tv
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,7 +12,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.ui.account.LoginActivity
 import com.dav1337d.catalog.ui.base.BaseListFragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.tv_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -75,12 +78,18 @@ class TVFragment :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.catalog_menu, menu)
-        menu.findItem(R.id.account).isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.logout -> {
+                Firebase.auth.signOut()
+                val intent = Intent(activity, LoginActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+                return true
+            }
             R.id.name -> viewModel.sortItemsBy("name")
             R.id.rating -> viewModel.sortItemsBy("personalRating")
             R.id.watched -> viewModel.sortItemsBy("watchDate")

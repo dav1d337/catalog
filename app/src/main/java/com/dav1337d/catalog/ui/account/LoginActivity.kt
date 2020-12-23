@@ -17,18 +17,16 @@ class LoginActivity: AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
-
         auth = Firebase.auth
     }
 
     public override fun onStart() {
         super.onStart()
-
         val currentUser = auth.currentUser
+        editTextTextEmailAddress.setText(auth.currentUser?.email?: "")
         Log.i(TAG, "currentUser:" + currentUser?.email.toString())
         // updateUI(currentUser)
     }
@@ -47,11 +45,11 @@ class LoginActivity: AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
-                    Toast.makeText(baseContext, "Successfully created Account",
+                    Toast.makeText(baseContext, "Successfully created Account. Hi ${auth.currentUser?.email}!",
                         Toast.LENGTH_SHORT).show()
                     val user = auth.currentUser
+                    navigateToHome()
                  //   updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -88,11 +86,11 @@ class LoginActivity: AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-
-                    Toast.makeText(baseContext, "Successfully logged in",
+                    Toast.makeText(baseContext, "Successfully logged in. Hi ${auth.currentUser?.email}!",
                         Toast.LENGTH_SHORT).show()
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
+                    navigateToHome()
              //       updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
@@ -100,16 +98,16 @@ class LoginActivity: AppCompatActivity() {
                     Toast.makeText(baseContext, "Authentication failed: ${task.exception?.message.toString()}",
                         Toast.LENGTH_SHORT).show()
               //      updateUI(null)
-                    // [START_EXCLUDE]
-             //       checkForMultiFactorFailure(task.exception!!)
-                    // [END_EXCLUDE]
                 }
-
           //      hideProgressBar()
             }
     }
 
     fun continueWithoutAccount(view: View) {
+        navigateToHome()
+    }
+
+    private fun navigateToHome() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }

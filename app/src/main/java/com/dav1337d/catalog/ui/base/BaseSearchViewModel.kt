@@ -2,7 +2,6 @@ package com.dav1337d.catalog.ui.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dav1337d.catalog.model.books.BookItem
 import kotlinx.coroutines.Job
 import org.koin.standalone.KoinComponent
 

@@ -7,12 +7,11 @@ import androidx.lifecycle.LiveData
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.ImageRequest
-import com.android.volley.toolbox.RequestFuture
 import com.android.volley.toolbox.StringRequest
+import com.dav1337d.catalog.App
 import com.dav1337d.catalog.db.AppDatabase
 import com.dav1337d.catalog.db.RoomSeriesDao
 import com.dav1337d.catalog.db.RoomSeriesMovie
-import com.dav1337d.catalog.App
 import com.dav1337d.catalog.util.ImageSaver
 import com.dav1337d.catalog.util.Singletons
 import kotlinx.coroutines.runBlocking

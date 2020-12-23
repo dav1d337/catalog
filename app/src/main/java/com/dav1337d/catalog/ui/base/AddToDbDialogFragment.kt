@@ -4,16 +4,12 @@ import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.forEachIndexed
 import androidx.fragment.app.DialogFragment
 import com.dav1337d.catalog.R
-import com.dav1337d.catalog.model.books.BookItem
-import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
-import com.dav1337d.catalog.ui.base.OnClickListener
 import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*

@@ -1,6 +1,5 @@
 package com.dav1337d.catalog.model.games
 
-import android.graphics.Bitmap
 import com.dav1337d.catalog.db.RoomGame
 
 data class GameDetailsResponse constructor(

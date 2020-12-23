@@ -1,15 +1,20 @@
 package com.dav1337d.catalog.ui.books
 
 import android.content.Context
-import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.dav1337d.catalog.R
+import com.dav1337d.catalog.ui.account.LoginActivity
 import com.dav1337d.catalog.ui.base.BaseListFragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.books_fragment.*
 import kotlinx.android.synthetic.main.tv_fragment.fab
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -79,9 +84,12 @@ class BooksFragment :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.login -> {
-                findNavController().navigate(R.id.action_books_to_googleLogin)
-                true
+            R.id.logout -> {
+                Firebase.auth.signOut()
+                val intent = Intent(activity, LoginActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+                return true
             }
             R.id.name -> viewModel.sortItemsBy("name")
             R.id.rating -> viewModel.sortItemsBy("personalRating")
