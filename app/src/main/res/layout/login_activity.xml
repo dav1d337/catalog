@@ -8,15 +8,31 @@
     tools:context="com.dav1337d.catalog.ui.account.LoginActivity"
     android:background="@color/colorPrimary">
 
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/rubik_mono_one"
+        android:scaleType="center"
+        android:text="CATALOG"
+        android:textSize="32sp"
+        android:layout_margin="6dp"
+        android:textColor="@color/carrot"
+        app:layout_constraintBottom_toTopOf="@id/email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="1dp"
+        android:layout_marginTop="30dp"
         android:text="E-Mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/title" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress"

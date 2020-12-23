@@ -60,7 +60,7 @@ class BooksFragment :
                     ) { _, id ->
                         // User cancelled the dialog
                     }
-                    setTitle("Delete this item from catalog?")
+                    setTitle(getString(R.string.delete_confirmation))
                 }
                 builder.create()
             }

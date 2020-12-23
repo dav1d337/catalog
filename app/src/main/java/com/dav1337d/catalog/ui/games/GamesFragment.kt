@@ -20,7 +20,8 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.games_fragment.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class GamesFragment : BaseListFragment<CustomGamesAdapter.ViewHolder, CustomGamesAdapter>(R.layout.games_fragment) {
+class GamesFragment :
+    BaseListFragment<CustomGamesAdapter.ViewHolder, CustomGamesAdapter>(R.layout.games_fragment) {
 
     private val viewModel by viewModel<GamesViewModel>()
 
@@ -35,8 +36,6 @@ class GamesFragment : BaseListFragment<CustomGamesAdapter.ViewHolder, CustomGame
 
         viewModel.liveData.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-
-                Log.i("hallo GamesFragment", it.size.toString())
                 if (!it.isNullOrEmpty()) {
                     empty_text_view.visibility = View.GONE
                 } else {
@@ -52,15 +51,17 @@ class GamesFragment : BaseListFragment<CustomGamesAdapter.ViewHolder, CustomGame
             val alertDialog: AlertDialog? = activity?.let {
                 val builder = AlertDialog.Builder(it)
                 builder.apply {
-                    setPositiveButton("Delete",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            viewModel.delete(item)
-                        })
-                    setNegativeButton("Cancel",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            // User cancelled the dialog
-                        })
-                    setTitle("Delete this item from catalog?")
+                    setPositiveButton(
+                        "Delete"
+                    ) { _, id ->
+                        viewModel.delete(item)
+                    }
+                    setNegativeButton(
+                        "Cancel"
+                    ) { _, id ->
+                        // User cancelled the dialog
+                    }
+                    setTitle(getString(R.string.delete_confirmation))
                 }
                 builder.create()
             }
