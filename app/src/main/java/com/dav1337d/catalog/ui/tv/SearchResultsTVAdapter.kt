@@ -35,8 +35,11 @@ import com.dav1337d.catalog.ui.base.OnClickListener
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, private val listener: OnClickListener<EitherMovieOrSeries>) :
-        RecyclerView.Adapter<SearchResultsTVAdapter.ViewHolder>() {
+class SearchResultsTVAdapter(
+    private var dataSet: List<EitherMovieOrSeries>,
+    private val listener: OnClickListener<EitherMovieOrSeries>
+) :
+    RecyclerView.Adapter<SearchResultsTVAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -63,7 +66,7 @@ class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, pri
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.search_result_tv_item, viewGroup, false)
+            .inflate(R.layout.search_result_tv_item, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -75,7 +78,9 @@ class SearchResultsTVAdapter(private var dataSet: List<EitherMovieOrSeries>, pri
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
         viewHolder.textViewName.text = dataSet[position].name
-        if (dataSet[position].first_air_date.length >= 4) { viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0,4) }
+        if (dataSet[position].first_air_date.length >= 4) {
+            viewHolder.textViewYear.text = dataSet[position].first_air_date.substring(0, 4)
+        }
         viewHolder.textViewDescription.text = dataSet[position].overview
         viewHolder.imageView.setImageBitmap(dataSet[position].poster)
         viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }

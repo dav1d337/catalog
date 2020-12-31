@@ -38,7 +38,7 @@ class TVSearchFragment : Fragment() {
         clickListenerSave = object : OnClickListener<EitherMovieOrSeries> {
             override fun onSaveClick(
                 item: EitherMovieOrSeries,
-                rating: Int,
+                rating: Long,
                 watchDate: String,
                 comment: String
             ) {

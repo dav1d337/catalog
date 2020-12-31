@@ -17,7 +17,7 @@ class BookSearchViewModel constructor(private val bookRepository: BookRepository
     BaseSearchViewModel<BookItem>() {
 
     fun insert(
-        item: BookItem, rating: Int, readDate: String, comment: String// , status: BookStatus
+        item: BookItem, rating: Long, readDate: String, comment: String// , status: BookStatus
     ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

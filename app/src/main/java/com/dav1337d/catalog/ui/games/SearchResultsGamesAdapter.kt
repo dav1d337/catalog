@@ -38,8 +38,11 @@ import com.dav1337d.catalog.util.ImageSaver
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsGamesAdapter(private var dataSet: List<GameDetailsResponse>, private val listener: OnClickListener<GameDetailsResponse>) :
-        RecyclerView.Adapter<SearchResultsGamesAdapter.ViewHolder>() {
+class SearchResultsGamesAdapter(
+    private var dataSet: List<GameDetailsResponse>,
+    private val listener: OnClickListener<GameDetailsResponse>
+) :
+    RecyclerView.Adapter<SearchResultsGamesAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -66,22 +69,24 @@ class SearchResultsGamesAdapter(private var dataSet: List<GameDetailsResponse>, 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.search_result_game_item, viewGroup, false)
+            .inflate(R.layout.search_result_game_item, viewGroup, false)
 
         return ViewHolder(v)
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        Log.d(TAG, "Element $position set.")
-
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
         viewHolder.textViewName.text = dataSet[position].name
-        viewHolder.textViewYear.text = dataSet[position].first_release_date.timestampToDate().substring(dataSet[position].first_release_date.timestampToDate().lastIndex - 3, dataSet[position].first_release_date.timestampToDate().lastIndex + 1)
+        viewHolder.textViewYear.text = dataSet[position].first_release_date.timestampToDate()
+            .substring(
+                dataSet[position].first_release_date.timestampToDate().lastIndex - 3,
+                dataSet[position].first_release_date.timestampToDate().lastIndex + 1
+            )
         viewHolder.textViewDescription.text = dataSet[position].summary
         val fileName = (dataSet[position].name + ".png").replace("/", "")
-        viewHolder.imageView.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        viewHolder.imageView.setImageBitmap(
+            ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load()
+        )
         viewHolder.checkBox.setOnClickListener { listener.onCheckBoxClick(dataSet[position]) }
         dataSet[position].played?.let {
             if (it) {

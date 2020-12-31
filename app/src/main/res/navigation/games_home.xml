@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/games_home"
     app:startDestination="@id/games">
 
     <fragment
-            android:id="@+id/games"
-            android:name="com.dav1337d.catalog.ui.games.GamesFragment"
-            android:label="Games"
-            tools:layout="@layout/games_fragment">
+        android:id="@+id/games"
+        android:name="com.dav1337d.catalog.ui.games.GamesFragment"
+        android:label="Games"
+        tools:layout="@layout/games_fragment">
         <action
             android:id="@+id/action_games_home_to_search"
-            app:destination="@id/searchGames"/>
+            app:destination="@id/searchGames" />
     </fragment>
 
     <fragment
         android:id="@+id/searchGames"
         android:name="com.dav1337d.catalog.ui.games.GamesSearchFragment"
         android:label="Search"
-        tools:layout="@layout/search_fragment"/>
+        tools:layout="@layout/search_fragment" />
 
 </navigation>

@@ -34,8 +34,11 @@ import com.dav1337d.catalog.ui.base.OnClickListener
  *
  * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
  */
-class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val listener: OnClickListener<BookItem>) :
-        RecyclerView.Adapter<SearchResultsBooksAdapter.ViewHolder>() {
+class SearchResultsBooksAdapter(
+    private var dataSet: List<BookItem>,
+    private val listener: OnClickListener<BookItem>
+) :
+    RecyclerView.Adapter<SearchResultsBooksAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -64,7 +67,7 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.search_result_book_item, viewGroup, false)
+            .inflate(R.layout.search_result_book_item, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -78,7 +81,8 @@ class SearchResultsBooksAdapter(private var dataSet: List<BookItem>, private val
         Log.i("hallo s1", dataSet[position].volumeInfo.title)
         if (dataSet[position].volumeInfo.publishedDate != null) {
             if (dataSet[position].volumeInfo.publishedDate!!.length >= 4) {
-                viewHolder.textViewYear.text = dataSet[position].volumeInfo.publishedDate?.substring(0,4)
+                viewHolder.textViewYear.text =
+                    dataSet[position].volumeInfo.publishedDate?.substring(0, 4)
             }
         }
 

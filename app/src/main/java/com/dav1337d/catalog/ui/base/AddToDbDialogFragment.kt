@@ -14,9 +14,10 @@ import kotlinx.android.synthetic.main.dialog_add_to_db.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AddToDbDialogFragment(val clickListener: OnClickListener<Any>, val item: Any): DialogFragment() {
+class AddToDbDialogFragment(val clickListener: OnClickListener<Any>, val item: Any) :
+    DialogFragment() {
 
-    private var numberOfStars = 0
+    private var numberOfStars = 0L
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = activity?.let {
@@ -30,7 +31,12 @@ class AddToDbDialogFragment(val clickListener: OnClickListener<Any>, val item: A
             builder
                 .setView(view)
                 .setPositiveButton("Save") { dialog, id ->
-                    clickListener.onSaveClick(item, numberOfStars, view.datepicker.text.toString(), view.comment.text.toString())
+                    clickListener.onSaveClick(
+                        item,
+                        numberOfStars,
+                        view.datepicker.text.toString(),
+                        view.comment.text.toString()
+                    )
                 }
                 .setNegativeButton("Cancel") { dialog, id ->
                     // User cancelled the dialog

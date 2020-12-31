@@ -97,4 +97,8 @@ class TVFragment :
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    companion object {
+        const val TAG = "TVFragment"
+    }
 }

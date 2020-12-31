@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [RoomSeriesMovie::class, RoomBook::class, RoomGame::class], version = 1)
-abstract class AppDatabase: RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract fun roomSeriesDao(): RoomSeriesDao
     abstract fun roomBookDao(): RoomBookDao
     abstract fun roomGameDao(): RoomGameDao
@@ -14,7 +14,8 @@ abstract class AppDatabase: RoomDatabase() {
     companion object {
 
         // For Singleton instantiation
-        @Volatile private var instance: AppDatabase? = null
+        @Volatile
+        private var instance: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase {
             return instance ?: synchronized(this) {

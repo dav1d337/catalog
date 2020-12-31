@@ -3,16 +3,16 @@
         android:id="@+id/games_home"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_videogame_asset_24"
-        android:title="@string/games"/>
+        android:title="@string/games" />
     <item
         android:id="@+id/tv_home"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_live_tv_24"
-        android:title="@string/tv"/>
+        android:title="@string/tv" />
 
     <item
         android:id="@+id/books_home"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_menu_book_24"
-        android:title="@string/books"/>
+        android:title="@string/books" />
 </menu>

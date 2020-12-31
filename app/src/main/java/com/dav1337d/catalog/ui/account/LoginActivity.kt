@@ -13,7 +13,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.login_activity.*
 
-class LoginActivity: AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
@@ -26,18 +26,18 @@ class LoginActivity: AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
-        editTextTextEmailAddress.setText(auth.currentUser?.email?: "")
+        editTextTextEmailAddress.setText(auth.currentUser?.email ?: "")
         Log.i(TAG, "currentUser:" + currentUser?.email.toString())
         // updateUI(currentUser)
     }
 
-   fun createAccount(view: View) {
+    fun createAccount(view: View) {
         Log.d(TAG, "createAccount:$email")
         if (!isFormValid()) {
             return
         }
 
-  //      showProgressBar()
+        //      showProgressBar()
 
         val email = editTextTextEmailAddress.text.toString()
         val password = editTextTextPassword.text.toString()
@@ -46,27 +46,33 @@ class LoginActivity: AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG, "createUserWithEmail:success")
-                    Toast.makeText(baseContext, "Successfully created Account. Hi ${auth.currentUser?.email}!",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Successfully created Account. Hi ${auth.currentUser?.email}!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     val user = auth.currentUser
                     navigateToHome()
-                 //   updateUI(user)
+                    //   updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed: ${task.exception?.message.toString()}",
-                        Toast.LENGTH_SHORT).show()
-                  //  updateUI(null)
+                    Toast.makeText(
+                        baseContext, "Authentication failed: ${task.exception?.message.toString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    //  updateUI(null)
                 }
 
-              //  hideProgressBar()
+                //  hideProgressBar()
             }
     }
 
     private fun isFormValid(): Boolean {
         if (editTextTextEmailAddress.text.isNullOrEmpty() || editTextTextPassword.text.isNullOrEmpty()) {
-            Toast.makeText(baseContext, "Email and password are necessary",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                baseContext, "Email and password are necessary",
+                Toast.LENGTH_SHORT
+            ).show()
             return false
         }
         return true
@@ -86,20 +92,24 @@ class LoginActivity: AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(baseContext, "Successfully logged in. Hi ${auth.currentUser?.email}!",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Successfully logged in. Hi ${auth.currentUser?.email}!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
                     navigateToHome()
-             //       updateUI(user)
+                    //       updateUI(user)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed: ${task.exception?.message.toString()}",
-                        Toast.LENGTH_SHORT).show()
-              //      updateUI(null)
+                    Toast.makeText(
+                        baseContext, "Authentication failed: ${task.exception?.message.toString()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    //      updateUI(null)
                 }
-          //      hideProgressBar()
+                //      hideProgressBar()
             }
     }
 

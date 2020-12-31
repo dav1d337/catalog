@@ -36,7 +36,7 @@ class BookSearchFragment : Fragment() {
         clickListenerSave = object : OnClickListener<BookItem> {
             override fun onSaveClick(
                 item: BookItem,
-                rating: Int,
+                rating: Long,
                 readDate: String,
                 comment: String
             ) {

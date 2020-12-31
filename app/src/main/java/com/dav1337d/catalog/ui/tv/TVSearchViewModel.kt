@@ -46,7 +46,7 @@ class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
         }
     }
 
-    fun insert(item: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
+    fun insert(item: EitherMovieOrSeries, rating: Long, watchDate: String, comment: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 tvRepository.insert(item, rating, watchDate, comment)

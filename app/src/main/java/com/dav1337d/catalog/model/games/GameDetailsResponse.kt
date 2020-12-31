@@ -3,7 +3,7 @@ package com.dav1337d.catalog.model.games
 import com.dav1337d.catalog.db.RoomGame
 
 data class GameDetailsResponse constructor(
-    val id: Int,
+    val id: Long,
     val age_ratings: List<Int>,
     val aggregated_rating: Float,
     val aggregated_rating_count: Float,
@@ -48,7 +48,7 @@ data class GameDetailsResponse constructor(
     val checksum: String,
     var played: Boolean? = false
 ) {
-    fun toRoomEntity(personalRating: Int, playDate: String, comment: String): RoomGame {
+    fun toRoomEntity(personalRating: Long, playDate: String, comment: String): RoomGame {
         return RoomGame(
             igdb_id = this.id,
             name = this.name,

@@ -16,6 +16,11 @@ import com.dav1337d.catalog.db.RoomGame
 import com.dav1337d.catalog.db.RoomGameDao
 import com.dav1337d.catalog.util.ImageSaver
 import com.dav1337d.catalog.util.Singletons
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.runBlocking
@@ -29,6 +34,7 @@ class GamesRepository {
 
     private var accessToken: String? = null
     private val gson = Gson()
+    private var firestoreDb: FirebaseFirestore = Firebase.firestore
 
     val searchResults: MutableLiveData<List<GameDetailsResponse>> = MutableLiveData()
 
@@ -48,14 +54,52 @@ class GamesRepository {
         Singletons.getInstance(context!!).addToRequestQueue(stringRequest)
     }
 
-    fun insert(game: GameDetailsResponse, rating: Int, watchDate: String, comment: String) {
+    fun insert(game: GameDetailsResponse, rating: Long, playDate: String, comment: String) {
 //        val listenerImage = Response.Listener<Bitmap> { img ->
 //            val fileName = (seriesMovie.original_name + ".png").replace("/", "")
 //            ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").save(img)
 //        }
 //        getPosterImage("w185", seriesMovie.poster_path, listenerImage)
+        roomGameDao.insertAll(game.toRoomEntity(rating, playDate, comment))
+        addToFirestore(game, rating, playDate, comment)
+    }
 
-        roomGameDao.insertAll(game.toRoomEntity(rating, watchDate, comment))
+    private fun addToFirestore(
+        game: GameDetailsResponse,
+        rating: Long,
+        playDate: String,
+        comment: String
+    ) {
+
+        Log.d(TAG, "Logged in as: ${Firebase.auth.currentUser?.email}")
+
+        val game = hashMapOf(
+            "title" to game.name,
+            "igdb_id" to game.id,
+            "summary" to game.summary,
+            "url" to game.url,
+            "release_date" to game.first_release_date,
+            "cover_url" to game.cover.url,
+            "rating" to rating,
+            "playDate" to playDate,
+            "comment" to comment,
+            "creator_id" to Firebase.auth.currentUser?.uid
+        )
+
+        // Add a new document with a generated ID
+        firestoreDb.collection("userGames")
+            .add(game)
+            .addOnSuccessListener { documentReference ->
+                Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.d(TAG, "Error adding document", e)
+            }
+    }
+
+    fun getFromFirestore(): Query {
+        return firestoreDb.collection("userGames")
+            .whereEqualTo("creator_id", Firebase.auth.currentUser?.uid)
     }
 
     fun delete(roomGame: RoomGame) {
@@ -64,7 +108,7 @@ class GamesRepository {
         roomGameDao.delete(roomGame)
     }
 
-    fun contains(id: Int): Boolean {
+    fun contains(id: Long): Boolean {
         return runBlocking {
             if (roomGameDao.count(id) > 0) {
                 return@runBlocking true
@@ -95,7 +139,8 @@ class GamesRepository {
                                     ImageSaver(App.appContext!!).setFileName(fileName)
                                         .setDirectoryName("images").save(img)
 
-                                    searchResults.value = result.filter { it.cover != null }.toList()
+                                    searchResults.value =
+                                        result.filter { it.cover != null }.toList()
                                 }
                                 val imageUrl = "https:" + it.cover.url
                                 val imageRequest = ImageRequest(imageUrl,
@@ -138,5 +183,9 @@ class GamesRepository {
             }
         }
         Singletons.getInstance(App.appContext!!).addToRequestQueue(request)
+    }
+
+    companion object {
+        const val TAG = "GamesRepository"
     }
 }

@@ -13,15 +13,15 @@ import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
 
 val applicationModule = module(override = true) {
-   single { TVRepository() }
-   viewModel { TVSearchViewModel(get()) }
-   viewModel { TVViewModel(get()) }
+    single { TVRepository() }
+    viewModel { TVSearchViewModel(get()) }
+    viewModel { TVViewModel(get()) }
 
-   single { BookRepository() }
-   viewModel { BookSearchViewModel(get()) }
-   viewModel { BooksViewModel(get()) }
+    single { BookRepository() }
+    viewModel { BookSearchViewModel(get()) }
+    viewModel { BooksViewModel(get()) }
 
-   single { GamesRepository() }
-   viewModel { GamesSearchViewModel(get()) }
-   viewModel { GamesViewModel(get()) }
+    single { GamesRepository() }
+    viewModel { GamesSearchViewModel(get()) }
+    viewModel { GamesViewModel(get()) }
 }

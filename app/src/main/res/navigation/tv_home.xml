@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tv_home"
@@ -14,11 +13,11 @@
         tools:layout="@layout/tv_fragment">
         <action
             android:id="@+id/action_tv_home_to_search"
-            app:destination="@id/searchTV"/>
+            app:destination="@id/searchTV" />
     </fragment>
     <fragment
         android:id="@+id/searchTV"
         android:name="com.dav1337d.catalog.ui.tv.TVSearchFragment"
         android:label="Search"
-        tools:layout="@layout/search_fragment"/>
+        tools:layout="@layout/search_fragment" />
 </navigation>

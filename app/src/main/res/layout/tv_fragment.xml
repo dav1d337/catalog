@@ -16,7 +16,7 @@
         android:layout_gravity="center"
         android:layout_margin="22dp"
         android:textSize="22sp"
-        android:text="@string/empty_tv_catalog"/>
+        android:text="@string/empty_tv_catalog" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -27,11 +27,11 @@
         android:backgroundTint="@color/colorAccent"
         android:src="@drawable/ic_baseline_add_24"
         android:contentDescription="To Search"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/roomItemList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

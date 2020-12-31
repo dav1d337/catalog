@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/books_home"
     app:startDestination="@+id/books">
 
     <fragment
-            android:id="@+id/books"
-            android:name="com.dav1337d.catalog.ui.books.BooksFragment"
-            android:label="Books"
-            tools:layout="@layout/books_fragment">
+        android:id="@+id/books"
+        android:name="com.dav1337d.catalog.ui.books.BooksFragment"
+        android:label="Books"
+        tools:layout="@layout/books_fragment">
 
         <action
             android:id="@+id/action_book_home_to_search"
-            app:destination="@id/searchBook"/>
-        <action
-            android:id="@+id/action_books_to_googleLogin"
-            app:destination="@id/googleLogin" />
+            app:destination="@id/searchBook" />
     </fragment>
-
-    <fragment
-        android:id="@+id/googleLogin"
-        android:name="com.dav1337d.catalog.ui.account.GoogleLoginFragment"
-        android:label="GoogleLogin"
-        tools:layout="@layout/google_login_fragment"/>
 
     <fragment
         android:id="@+id/searchBook"
         android:name="com.dav1337d.catalog.ui.books.BookSearchFragment"
         android:label="Search"
-        tools:layout="@layout/search_fragment"/>
+        tools:layout="@layout/search_fragment" />
 </navigation>

@@ -8,8 +8,8 @@ interface RoomSeriesDao {
     @Query("SELECT * FROM roomSeriesMovie")
     fun getAll(): LiveData<List<RoomSeriesMovie>>
 
-  //  @Query("SELECT * FROM roomSeriesMovie WHERE uid IN (:seriesIds)")
-  //  fun loadAllByIds(seriesIds: IntArray): List<RoomSeriesMovie>
+    //  @Query("SELECT * FROM roomSeriesMovie WHERE uid IN (:seriesIds)")
+    //  fun loadAllByIds(seriesIds: IntArray): List<RoomSeriesMovie>
 
     @Query("SELECT * FROM roomSeriesMovie WHERE original_name LIKE :name LIMIT 1")
     suspend fun findByName(name: String): RoomSeriesMovie?

@@ -39,7 +39,7 @@ public class AppiumTests {
 
         driver.findElement(MobileBy.AndroidUIAutomator("new UiSelector().text(\"You clicked!\")"));
 
-        driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @After

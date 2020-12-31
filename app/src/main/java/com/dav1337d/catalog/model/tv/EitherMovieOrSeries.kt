@@ -18,11 +18,10 @@ data class EitherMovieOrSeries(
     val poster_path: String,
     var poster: Bitmap? = null,
     var watched: Boolean? = false
-)
-{
-    fun toRoomEntity(personalRating: Int, watchDate: String, comment: String): RoomSeriesMovie {
+) {
+    fun toRoomEntity(personalRating: Long, watchDate: String, comment: String): RoomSeriesMovie {
         return RoomSeriesMovie(
-      //      this.type,
+            //      this.type,
             this.id_tmdb,
             this.original_name,
             this.name,

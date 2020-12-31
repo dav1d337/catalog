@@ -15,7 +15,7 @@ interface RoomGameDao {
     suspend fun findByName(name: String): RoomGame?
 
     @Query("SELECT COUNT() FROM roomGame WHERE igdb_id LIKE :id")
-    suspend fun count(id: Int): Int
+    suspend fun count(id: Long): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg roomGame: RoomGame)

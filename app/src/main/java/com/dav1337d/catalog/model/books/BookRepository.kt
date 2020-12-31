@@ -45,7 +45,7 @@ class BookRepository {
     }
 
     fun insert(
-        item: BookItem, rating: Int, readDate: String, comment: String//, status: BookStatus
+        item: BookItem, rating: Long, readDate: String, comment: String//, status: BookStatus
     ) {
         roomBookDao.insertAll(
             RoomBook(

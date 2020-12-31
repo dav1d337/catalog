@@ -28,17 +28,16 @@ import com.dav1337d.catalog.util.ImageSaver
 class CustomGamesAdapter internal constructor(
     context: Context
 ) :
-        RecyclerView.Adapter<CustomGamesAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CustomGamesAdapter.ViewHolder>() {
 
     private var dataSet = emptyList<RoomGame>()
     var onItemLongClick: ((RoomGame) -> Unit)? = null
-    /**
-     * Provide a reference to the type of views that you are using (custom ViewHolder)
-     */
+
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
-       // val year: TextView
-       // val watchDate: TextView
+
+        // val year: TextView
+        // val watchDate: TextView
         val poster: ImageView
         val commentView: TextView
         val linearLayout: LinearLayout
@@ -58,7 +57,7 @@ class CustomGamesAdapter internal constructor(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.game_cardview, viewGroup, false)
+            .inflate(R.layout.game_cardview, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -68,9 +67,16 @@ class CustomGamesAdapter internal constructor(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_release_date?.timestampToDate()?.substring(dataSet[position].first_release_date!!.timestampToDate()?.lastIndex - 3, dataSet[position].first_release_date!!.timestampToDate()?.lastIndex + 1) + ")"
+        viewHolder.title.text =
+            dataSet[position].name + " (" + dataSet[position].first_release_date?.timestampToDate()
+                ?.substring(
+                    dataSet[position].first_release_date!!.timestampToDate()?.lastIndex - 3,
+                    dataSet[position].first_release_date!!.timestampToDate()?.lastIndex + 1
+                ) + ")"
         val fileName = (dataSet[position].name + ".png").replace("/", "")
-        viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        viewHolder.poster.setImageBitmap(
+            ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load()
+        )
         val comment = dataSet[position].comment + " (" + dataSet[position].playDate + ")"
         viewHolder.commentView.text = comment
 
@@ -83,9 +89,9 @@ class CustomGamesAdapter internal constructor(
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return dataSet[position].personalRating
-    }
+//    override fun getItemViewType(position: Int): Int {
+//        return dataSet[position].personalRating
+//    }
 
     override fun getItemCount() = dataSet.size
 

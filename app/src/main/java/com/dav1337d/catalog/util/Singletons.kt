@@ -16,8 +16,8 @@ class Singletons constructor(context: Context) {
             INSTANCE ?: synchronized(this) {
                 INSTANCE
                     ?: Singletons(context).also {
-                    INSTANCE = it
-                }
+                        INSTANCE = it
+                    }
             }
     }
 
@@ -28,6 +28,7 @@ class Singletons constructor(context: Context) {
                 override fun getBitmap(url: String): Bitmap {
                     return cache.get(url)
                 }
+
                 override fun putBitmap(url: String, bitmap: Bitmap) {
                     cache.put(url, bitmap)
                 }

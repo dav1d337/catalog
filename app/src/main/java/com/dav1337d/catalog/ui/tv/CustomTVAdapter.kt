@@ -43,17 +43,19 @@ import com.dav1337d.catalog.util.ImageSaver
 class CustomTVAdapter internal constructor(
     context: Context
 ) :
-        RecyclerView.Adapter<CustomTVAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CustomTVAdapter.ViewHolder>() {
 
     private var dataSet = emptyList<RoomSeriesMovie>()
     var onItemLongClick: ((RoomSeriesMovie) -> Unit)? = null
+
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
-       // val year: TextView
-       // val watchDate: TextView
+
+        // val year: TextView
+        // val watchDate: TextView
         val poster: ImageView
         val commentView: TextView
         val linearLayout: LinearLayout
@@ -73,7 +75,7 @@ class CustomTVAdapter internal constructor(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.tv_cardview, viewGroup, false)
+            .inflate(R.layout.tv_cardview, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -83,9 +85,12 @@ class CustomTVAdapter internal constructor(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        viewHolder.title.text = dataSet[position].name + " (" + dataSet[position].first_air_date.substring(0,4) + ")"
-        val fileName = (dataSet[position].original_name + ".png").replace("/","")
-        viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        viewHolder.title.text =
+            dataSet[position].name + " (" + dataSet[position].first_air_date.substring(0, 4) + ")"
+        val fileName = (dataSet[position].original_name + ".png").replace("/", "")
+        viewHolder.poster.setImageBitmap(
+            ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load()
+        )
         val comment = dataSet[position].comment + " (" + dataSet[position].watchDate + ")"
         viewHolder.commentView.text = comment
         for (i in 0 until viewHolder.linearLayout.size) {
@@ -97,9 +102,9 @@ class CustomTVAdapter internal constructor(
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return dataSet[position].personalRating
-    }
+//    override fun getItemViewType(position: Int): Int {
+//        return dataSet[position].personalRating
+//    }
 
     override fun getItemCount() = dataSet.size
 

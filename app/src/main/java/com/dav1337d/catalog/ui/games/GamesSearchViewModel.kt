@@ -16,7 +16,7 @@ class GamesSearchViewModel constructor(private val gamesRepository: GamesReposit
 
     val liveData = MediatorLiveData<List<GameDetailsResponse>>()
 
-    fun insert(item: GameDetailsResponse, rating: Int, watchDate: String, comment: String) {
+    fun insert(item: GameDetailsResponse, rating: Long, watchDate: String, comment: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 gamesRepository.insert(item, rating, watchDate, comment)
@@ -32,6 +32,7 @@ class GamesSearchViewModel constructor(private val gamesRepository: GamesReposit
             }
         }
     }
+
 
     fun search(query: String?) {
         viewModelScope.launch {

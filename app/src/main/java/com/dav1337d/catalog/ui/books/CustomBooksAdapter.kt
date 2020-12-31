@@ -27,18 +27,20 @@ import com.dav1337d.catalog.util.ImageSaver
 class CustomBooksAdapter internal constructor(
     context: Context
 ) :
-        RecyclerView.Adapter<CustomBooksAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CustomBooksAdapter.ViewHolder>() {
 
     private var dataSet = emptyList<RoomBook>()
     var onItemLongClick: ((RoomBook) -> Unit)? = null
+
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
         val subtitle: TextView
-      //  val year: TextView
-       // val watchDate: TextView
+
+        //  val year: TextView
+        // val watchDate: TextView
         val poster: ImageView
         val commentView: TextView
         val linearLayout: LinearLayout
@@ -50,7 +52,7 @@ class CustomBooksAdapter internal constructor(
             }
             title = v.findViewById(R.id.book_title)
             subtitle = v.findViewById(R.id.book_subtitle)
-          //  year = v.findViewById(R.id.book_year)
+            //  year = v.findViewById(R.id.book_year)
             poster = v.findViewById(R.id.book_img)
             commentView = v.findViewById(R.id.book_comment)
             linearLayout = v.findViewById(R.id.book_linearLayout)
@@ -62,7 +64,7 @@ class CustomBooksAdapter internal constructor(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view.
         val v = LayoutInflater.from(viewGroup.context)
-                .inflate(R.layout.book_cardview, viewGroup, false)
+            .inflate(R.layout.book_cardview, viewGroup, false)
 
         return ViewHolder(v)
     }
@@ -72,13 +74,16 @@ class CustomBooksAdapter internal constructor(
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         Log.d(TAG, "Element $position set.")
 
-        viewHolder.title.text = dataSet[position].title + " (" + dataSet[position].year?.substring(0,4) + ")"
+        viewHolder.title.text =
+            dataSet[position].title + " (" + dataSet[position].year?.substring(0, 4) + ")"
         viewHolder.subtitle.text = dataSet[position].subtitle
         val comment = dataSet[position].comment + " (" + dataSet[position].readDate + ")"
         viewHolder.commentView.text = comment
 
-        val fileName = (dataSet[position].title + ".png").replace("/","")
-        viewHolder.poster.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load())
+        val fileName = (dataSet[position].title + ".png").replace("/", "")
+        viewHolder.poster.setImageBitmap(
+            ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").load()
+        )
 
         for (i in 0 until viewHolder.linearLayout.size) {
             if (dataSet[position].personalRating >= 0 && dataSet[position].personalRating > i) {

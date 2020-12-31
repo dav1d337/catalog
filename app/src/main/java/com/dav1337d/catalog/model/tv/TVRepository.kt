@@ -26,7 +26,7 @@ class TVRepository() {
         .getAll()
 
 
-    fun insert(seriesMovie: EitherMovieOrSeries, rating: Int, watchDate: String, comment: String) {
+    fun insert(seriesMovie: EitherMovieOrSeries, rating: Long, watchDate: String, comment: String) {
         val listenerImage = Response.Listener<Bitmap> { img ->
             val fileName = (seriesMovie.original_name + ".png").replace("/", "")
             ImageSaver(App.appContext!!).setFileName(fileName).setDirectoryName("images").save(img)
@@ -79,8 +79,8 @@ class TVRepository() {
                 val backdrop_path = result.getString("backdrop_path")
 
                 val poster_path = result.getString("poster_path")
-              //  var poster: Bitmap? = null
-               // getPosterImage(id = poster_path)
+                //  var poster: Bitmap? = null
+                // getPosterImage(id = poster_path)
 
                 val id_tmdb = result.getInt("id")
                 val result_genres = result.getJSONArray("genre_ids")
@@ -103,7 +103,7 @@ class TVRepository() {
                         backdrop_path,
                         poster_path,
                         watched = watched
-                  //      poster = poster
+                        //      poster = poster
                     )
                 )
             } else if (results.getJSONObject(i).getString("media_type").equals("movie")) {
@@ -117,8 +117,8 @@ class TVRepository() {
 
 
                     val poster_path = result.getString("poster_path")
-                 //   var poster: Bitmap? = null
-                //   getPosterImage(id = poster_path)
+                    //   var poster: Bitmap? = null
+                    //   getPosterImage(id = poster_path)
 
                     val id_tmdb = result.getInt("id")
                     val result_genres = result.getJSONArray("genre_ids")
@@ -144,7 +144,7 @@ class TVRepository() {
                                 backdrop_path,
                                 poster_path,
                                 watched = watched
-                              //  poster = poster
+                                //  poster = poster
                             )
                         )
                     }

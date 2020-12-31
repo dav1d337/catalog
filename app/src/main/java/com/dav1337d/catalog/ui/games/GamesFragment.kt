@@ -1,10 +1,8 @@
 package com.dav1337d.catalog.ui.games
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -34,7 +32,7 @@ class GamesFragment :
 
         setUpDeleteDialog()
 
-        viewModel.liveData.observe(viewLifecycleOwner, Observer {
+        viewModel.getGamesFromFirestore().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (!it.isNullOrEmpty()) {
                     empty_text_view.visibility = View.GONE

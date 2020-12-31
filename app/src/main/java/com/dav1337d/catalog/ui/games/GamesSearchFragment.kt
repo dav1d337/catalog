@@ -38,7 +38,7 @@ class GamesSearchFragment : Fragment() {
         clickListenerSave = object : OnClickListener<GameDetailsResponse> {
             override fun onSaveClick(
                 item: GameDetailsResponse,
-                rating: Int,
+                rating: Long,
                 date: String,
                 comment: String
             ) {
@@ -67,7 +67,6 @@ class GamesSearchFragment : Fragment() {
             }
             gamesAdapter.setItems(it)
         })
-
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

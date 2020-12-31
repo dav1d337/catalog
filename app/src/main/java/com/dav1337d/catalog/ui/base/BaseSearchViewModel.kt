@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Job
 import org.koin.standalone.KoinComponent
 
-abstract class BaseSearchViewModel<V>: ViewModel(),
+abstract class BaseSearchViewModel<V> : ViewModel(),
     KoinComponent {
 
     var queryTextChangedJob: Job? = null
