@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.dav1337d.catalog.ui.games
+package com.dav1337d.catalog.ui.games.search
 
 import android.util.Log
 import android.view.LayoutInflater

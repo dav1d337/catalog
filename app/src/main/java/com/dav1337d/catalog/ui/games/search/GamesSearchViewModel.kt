@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui.games
+package com.dav1337d.catalog.ui.games.search
 
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,8 +13,9 @@ import kotlinx.coroutines.withContext
 class GamesSearchViewModel constructor(private val gamesRepository: GamesRepository) :
     BaseSearchViewModel<GameDetailsResponse>() {
 
-
     val liveData = MediatorLiveData<List<GameDetailsResponse>>()
+    val loading = MediatorLiveData<Boolean>()
+
 
     fun insert(item: GameDetailsResponse, rating: Long, watchDate: String, comment: String) {
         viewModelScope.launch {
@@ -25,16 +26,20 @@ class GamesSearchViewModel constructor(private val gamesRepository: GamesReposit
     }
 
     init {
-        gamesRepository.getAccessToken()
         liveData.addSource(gamesRepository.searchResults) {
             if (it != null) {
                 liveData.value = it
             }
         }
+
+        loading.addSource(gamesRepository.loading) {
+            loading.value = it
+        }
     }
 
 
     fun search(query: String?) {
+
         viewModelScope.launch {
             queryTextChangedJob?.cancel()
 
@@ -46,5 +51,9 @@ class GamesSearchViewModel constructor(private val gamesRepository: GamesReposit
             }
 
         }
+    }
+
+    fun clearSearchResults() {
+        gamesRepository.clearSearchResults()
     }
 }

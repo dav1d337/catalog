@@ -1,6 +1,7 @@
 package com.dav1337d.catalog.ui.books
 
 import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
 import com.dav1337d.catalog.model.books.BookItem
@@ -15,6 +16,8 @@ import kotlinx.coroutines.withContext
 
 class BookSearchViewModel constructor(private val bookRepository: BookRepository) :
     BaseSearchViewModel<BookItem>() {
+
+    val loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     fun insert(
         item: BookItem, rating: Long, readDate: String, comment: String// , status: BookStatus
@@ -37,6 +40,7 @@ class BookSearchViewModel constructor(private val bookRepository: BookRepository
                         val listenerImage = Response.Listener<Bitmap> { img ->
                             it.thumbnail = img
                             results.postValue(results.value)
+                            loading.postValue(false)
                         }
                         bookRepository.getBookImage(it, listenerImage)
                         if (bookRepository.contains(it.id)) {
@@ -53,6 +57,11 @@ class BookSearchViewModel constructor(private val bookRepository: BookRepository
     }
 
     fun search(query: String?) {
+        if (query.isNullOrEmpty()) {
+            loading.postValue(false)
+        } else {
+            loading.postValue(true)
+        }
         viewModelScope.launch {
             queryTextChangedJob?.cancel()
 

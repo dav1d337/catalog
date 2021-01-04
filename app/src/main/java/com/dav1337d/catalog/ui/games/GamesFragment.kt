@@ -10,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.ui.account.LoginActivity
 import com.dav1337d.catalog.ui.base.BaseListFragment
@@ -31,8 +32,9 @@ class GamesFragment :
         super.onViewCreated(view, savedInstanceState)
 
         setUpDeleteDialog()
+        setUpNavigationToDetail()
 
-        viewModel.getGamesFromFirestore().observe(viewLifecycleOwner, Observer {
+        viewModel.getGamesFromFirestoreOrDb().observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 if (!it.isNullOrEmpty()) {
                     empty_text_view.visibility = View.GONE
@@ -66,6 +68,19 @@ class GamesFragment :
             alertDialog?.show()
             alertDialog?.window?.setLayout(600, 400)
         }
+    }
+
+    private fun setUpNavigationToDetail() {
+        (adapter as CustomGamesAdapter).onItemClick = { item ->
+            val id = item.igdb_id
+            val action = GamesFragmentDirections.actionGamesToGameDetailFragment(id)
+            findNavController().navigate(action)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.removeObserver()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

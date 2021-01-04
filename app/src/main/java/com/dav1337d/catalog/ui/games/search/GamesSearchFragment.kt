@@ -1,4 +1,4 @@
-package com.dav1337d.catalog.ui.games
+package com.dav1337d.catalog.ui.games.search
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,7 @@ import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.games.GameDetailsResponse
 import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
 import com.dav1337d.catalog.ui.base.OnClickListener
+import kotlinx.android.synthetic.main.game_detail.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -58,6 +59,11 @@ class GamesSearchFragment : Fragment() {
         return rootView
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.clearSearchResults()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -82,6 +88,14 @@ class GamesSearchFragment : Fragment() {
                     }
                 }
                 return true
+            }
+        })
+
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                progress_loader.visibility = View.VISIBLE
+            } else {
+                progress_loader.visibility = View.GONE
             }
         })
     }

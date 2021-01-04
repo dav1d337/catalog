@@ -30,15 +30,7 @@ class GamesViewModel constructor(private val gamesRepository: GamesRepository) :
     private val firestoreDb = Firebase.firestore
 
     init {
-        if (firebaseAuth.currentUser == null) {
-            liveData.addSource(gamesRepository.allRoomGames) {
-                if (it != null) {
-                    liveData.value = it
-                }
-            }
-        } else {
-            // getFirebaseItems()
-        }
+        gamesRepository.getAccessToken()
     }
 
     private fun getFirebaseItems() {
@@ -82,48 +74,58 @@ class GamesViewModel constructor(private val gamesRepository: GamesRepository) :
             }
     }
 
-    fun getGamesFromFirestore(): LiveData<List<RoomGame>> {
-        gamesRepository.getFromFirestore()
-            .addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
-                if (e != null) {
-                    Log.w(TAG, "Listen failed.", e)
-                    liveData.value = null
-                    return@EventListener
+    fun getGamesFromFirestoreOrDb(): LiveData<List<RoomGame>> {
+
+        if (firebaseAuth.currentUser == null) {
+            liveData.addSource(gamesRepository.allRoomGames) {
+                if (it != null) {
+                    liveData.value = it
                 }
-
-                val list = mutableListOf<RoomGame>()
-                value?.forEach { game ->
-                    val roomGame = RoomGame(
-                        igdb_id = game.data?.get("igdb_id") as Long,
-                        name = game.data?.get("title") as String,
-                        summary = game.data?.get("summary") as String,
-                        url = game.data?.get("url") as String,
-                        first_release_date = game.data?.get("release_date") as Long,
-                        personalRating = game.data?.get("rating") as Long,
-                        playDate = game.data?.get("playDate") as String,
-                        comment = game.data?.get("comment") as String
-                    )
-                    list.add(roomGame)
-
-                    val imageListener = Response.Listener<Bitmap> { img ->
-                        val fileName = (game.data?.get("title") as String + ".png").replace("/", "")
-                        ImageSaver(App.appContext!!).setFileName(fileName)
-                            .setDirectoryName("images").save(img)
-                        liveData.value = liveData.value
+            }
+        } else {
+            gamesRepository.getFromFirestore()
+                .addSnapshotListener(EventListener<QuerySnapshot> { value, e ->
+                    if (e != null) {
+                        Log.w(TAG, "Listen failed.", e)
+                        liveData.value = null
+                        return@EventListener
                     }
-                    val imageUrl = "https:" + game.data?.get("cover_url") as String
-                    val imageRequest = ImageRequest(imageUrl,
-                        imageListener,
-                        900, 900, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
-                        Response.ErrorListener {
-                            Log.i("hallo img error", it.message)
-                        })
-                    Singletons.getInstance(App.appContext!!)
-                        .addToRequestQueue(imageRequest)
-                }
 
-                liveData.value = list
-            })
+                    val list = mutableListOf<RoomGame>()
+                    value?.forEach { game ->
+                        val roomGame = RoomGame(
+                            igdb_id = game.data?.get("igdb_id") as Long,
+                            name = game.data?.get("title") as String,
+                            summary = game.data?.get("summary") as String,
+                            url = game.data?.get("url") as String,
+                            first_release_date = game.data?.get("release_date") as Long,
+                            personalRating = game.data?.get("rating") as Long,
+                            playDate = game.data?.get("playDate") as String,
+                            comment = game.data?.get("comment") as String
+                        )
+                        list.add(roomGame)
+
+                        val imageListener = Response.Listener<Bitmap> { img ->
+                            val fileName =
+                                (game.data?.get("title") as String + ".png").replace("/", "")
+                            ImageSaver(App.appContext!!).setFileName(fileName)
+                                .setDirectoryName("images").save(img)
+                            liveData.value = liveData.value
+                        }
+                        val imageUrl = "https:" + game.data?.get("cover_url") as String
+                        val imageRequest = ImageRequest(imageUrl,
+                            imageListener,
+                            900, 900, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
+                            Response.ErrorListener {
+                                Log.i("hallo img error", it.message)
+                            })
+                        Singletons.getInstance(App.appContext!!)
+                            .addToRequestQueue(imageRequest)
+                    }
+
+                    liveData.value = list
+                })
+        }
 
         return liveData
     }
@@ -170,6 +172,10 @@ class GamesViewModel constructor(private val gamesRepository: GamesRepository) :
             }
         }
         return true
+    }
+
+    fun removeObserver() {
+        liveData.removeSource(gamesRepository.allRoomGames)
     }
 
     companion object {

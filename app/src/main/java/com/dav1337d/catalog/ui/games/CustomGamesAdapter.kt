@@ -32,6 +32,7 @@ class CustomGamesAdapter internal constructor(
 
     private var dataSet = emptyList<RoomGame>()
     var onItemLongClick: ((RoomGame) -> Unit)? = null
+    var onItemClick: ((RoomGame) -> Unit)? = null
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val title: TextView
@@ -47,6 +48,11 @@ class CustomGamesAdapter internal constructor(
                 onItemLongClick?.invoke(dataSet[bindingAdapterPosition])
                 return@setOnLongClickListener false
             }
+
+            v.setOnClickListener {
+                onItemClick?.invoke(dataSet[bindingAdapterPosition])
+            }
+
             title = v.findViewById(R.id.textView)
             poster = v.findViewById(R.id.imageView2)
             commentView = v.findViewById(R.id.comment)

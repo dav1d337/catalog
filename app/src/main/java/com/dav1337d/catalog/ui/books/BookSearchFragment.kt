@@ -13,6 +13,7 @@ import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.books.BookItem
 import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
 import com.dav1337d.catalog.ui.base.OnClickListener
+import kotlinx.android.synthetic.main.game_detail.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class BookSearchFragment : Fragment() {
@@ -56,7 +57,6 @@ class BookSearchFragment : Fragment() {
         return rootView
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -65,6 +65,14 @@ class BookSearchFragment : Fragment() {
                 booksAdapter.setItems(listOf())
             }
             booksAdapter.setItems(it)
+        })
+
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                progress_loader.visibility = View.VISIBLE
+            } else {
+                progress_loader.visibility = View.GONE
+            }
         })
 
         searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {

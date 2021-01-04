@@ -1,6 +1,7 @@
 package com.dav1337d.catalog.ui.tv
 
 import android.graphics.Bitmap
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.volley.Response
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
@@ -13,6 +14,8 @@ import kotlinx.coroutines.withContext
 
 class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
     BaseSearchViewModel<EitherMovieOrSeries>() {
+
+    val loading: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
 
     private val listener = Response.Listener<String> {
 
@@ -34,6 +37,7 @@ class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
                         tv?.let {
                             it.poster = img
                             results.postValue(results.value)
+                            loading.postValue(false)
                         }
                     }
                 }
@@ -55,6 +59,12 @@ class TVSearchViewModel constructor(private val tvRepository: TVRepository) :
     }
 
     fun search(query: String?) {
+        if (query.isNullOrEmpty()) {
+            loading.postValue(false)
+        } else {
+            loading.postValue(true)
+        }
+
         viewModelScope.launch {
             queryTextChangedJob?.cancel()
 

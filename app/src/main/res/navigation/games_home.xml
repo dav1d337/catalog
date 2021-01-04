@@ -14,12 +14,35 @@
         <action
             android:id="@+id/action_games_home_to_search"
             app:destination="@id/searchGames" />
+        <action
+            android:id="@+id/action_games_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/searchGames"
-        android:name="com.dav1337d.catalog.ui.games.GamesSearchFragment"
+        android:name="com.dav1337d.catalog.ui.games.search.GamesSearchFragment"
         android:label="Search"
-        tools:layout="@layout/search_fragment" />
+        tools:layout="@layout/search_fragment">
+        <action
+            android:id="@+id/action_searchGames_to_gameDetailFragment"
+            app:destination="@id/gameDetailFragment">
+
+            <argument
+                android:name="myArg"
+                app:argType="long"
+                android:defaultValue="1L" />
+        </action>
+
+    </fragment>
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.dav1337d.catalog.ui.games.detail.GameDetailFragment"
+        android:label="GameDetailFragment">
+        <argument
+            android:name="gameId"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
 
 </navigation>

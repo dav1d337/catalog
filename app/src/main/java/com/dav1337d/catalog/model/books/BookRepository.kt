@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
@@ -22,6 +23,7 @@ class BookRepository {
     var roomBookDao: RoomBookDao = AppDatabase.getInstance(App.appContext!!).roomBookDao()
     val allBooks: LiveData<List<RoomBook>> = roomBookDao
         .getAll()
+
 
     fun searchBook(query: String, listener: Response.Listener<String>) {
         val url =

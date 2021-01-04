@@ -8,7 +8,7 @@ data class GameDetailsResponse constructor(
     val aggregated_rating: Float,
     val aggregated_rating_count: Float,
     val alternative_names: List<Int>,
-    val artworks: List<Int>,
+    val artworks: List<Artworks>,
     val bundles: List<Int>,
     val category: Int,
     val collection: Int,
@@ -63,6 +63,18 @@ data class GameDetailsResponse constructor(
 }
 
 data class Cover(
+    val id: Int,
+    val alpha_channel: Boolean,
+    val animated: Boolean,
+    val game: Int,
+    val height: Int,
+    val image_id: String,
+    val url: String,
+    val width: Int,
+    val checksum: String
+)
+
+data class Artworks(
     val id: Int,
     val alpha_channel: Boolean,
     val animated: Boolean,

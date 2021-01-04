@@ -164,7 +164,7 @@ class TVRepository() {
                 listener,
                 300, 300, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
                 Response.ErrorListener {
-                    Log.i("hallo img error", it.message)
+//                    Log.i("hallo img error", it.message)
                 })
             Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
         }

@@ -13,6 +13,7 @@ import com.dav1337d.catalog.R
 import com.dav1337d.catalog.model.tv.EitherMovieOrSeries
 import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
 import com.dav1337d.catalog.ui.base.OnClickListener
+import kotlinx.android.synthetic.main.game_detail.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 
@@ -66,6 +67,14 @@ class TVSearchFragment : Fragment() {
                 tvAdapter.setItems(listOf())
             }
             tvAdapter.setItems(it)
+        })
+
+        viewModel.loading.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                progress_loader.visibility = View.VISIBLE
+            } else {
+                progress_loader.visibility = View.GONE
+            }
         })
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
