@@ -14,8 +14,10 @@ import com.dav1337d.catalog.App
 import com.dav1337d.catalog.db.AppDatabase
 import com.dav1337d.catalog.db.RoomGame
 import com.dav1337d.catalog.db.RoomGameDao
+import com.dav1337d.catalog.util.ImageOptions
 import com.dav1337d.catalog.util.ImageSaver
-import com.dav1337d.catalog.util.Singletons
+import com.dav1337d.catalog.util.RequestType
+import com.dav1337d.catalog.util.NetworkUtils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,16 +52,19 @@ class GamesRepository {
         val url =
             "https://id.twitch.tv/oauth2/token?client_id=tgmc1oc8qhc0f8h1lczzsivyjmt7c9&client_secret=8br53h251vo1fx52qdtgciw34mj8i0&grant_type=client_credentials"
 
-        val listener = Response.Listener<String> {
-            val result = gson.fromJson(it, GamesAuthenticationResponse::class.java)
+        val listener = Response.Listener<Any> {
+            val result = gson.fromJson(it as String, GamesAuthenticationResponse::class.java)
             accessToken = result.access_token
         }
 
-        val stringRequest = StringRequest(
-            Request.Method.POST, url, listener,
-            Response.ErrorListener { Log.i("hallo", "Response Twitch API") })
-        val context = App.appContext
-        Singletons.getInstance(context!!).addToRequestQueue(stringRequest)
+        NetworkUtils.getInstance(App.appContext!!).createRequestAndAddToQueue(
+            url,
+            RequestType.STRING,
+            Request.Method.POST,
+            listener,
+            Response.ErrorListener { Log.i(TAG, "Response Twitch API") },
+            null
+        )
     }
 
     fun insert(game: GameDetailsResponse, rating: Long, playDate: String, comment: String) {
@@ -69,7 +74,9 @@ class GamesRepository {
 //        }
 //        getPosterImage("w185", seriesMovie.poster_path, listenerImage)
         roomGameDao.insertAll(game.toRoomEntity(rating, playDate, comment))
-        addToFirestore(game, rating, playDate, comment)
+        if (Firebase.auth.currentUser != null) {
+            addToFirestore(game, rating, playDate, comment)
+        }
     }
 
     private fun addToFirestore(
@@ -163,66 +170,75 @@ class GamesRepository {
 
     fun getGameDetails(id: Long) {
         loading.value = true
-        val url = "https://api.igdb.com/v4/games"
-        Log.i(TAG, "id: ${id.toString()} token: $accessToken"  )
-        val request: StringRequest = object : StringRequest(
-            Method.POST, url,
-            Response.Listener { response ->
-                if (response != null) {
-                    try {
-                        val result = gson.fromJson(response, Array<GameDetailsResponse>::class.java)
-                        gameDetailResult.value = result[0]
+        val listener = Response.Listener<Any> { response ->
+            if (response != null) {
+                try {
+                    val result =
+                        gson.fromJson(response as String, Array<GameDetailsResponse>::class.java)
+                    gameDetailResult.value = result[0]
 
-                        if (!result[0].artworks.isNullOrEmpty()) {
-                            val imageListener = Response.Listener<Bitmap> { img ->
-                                val fileName = (result[0].name + "backdrop" + ".png").replace("/", "")
-                                ImageSaver(App.appContext!!).setFileName(fileName)
-                                    .setDirectoryName("images").save(img)
-                                loading.value = false
-                            }
-                            val imageUrl = "https:" + result[0].artworks[0].url.replace("t_thumb", "t_720p")
-                            val imageRequest = ImageRequest(imageUrl,
-                                imageListener,
-                                900, 900, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
-                                Response.ErrorListener {
-                                    Log.i("hallo img error", it.message)
-                                })
-                            Singletons.getInstance(App.appContext!!)
-                                .addToRequestQueue(imageRequest)
-                        } else {
+                    if (!result[0].artworks.isNullOrEmpty()) {
+                        val imageListener = Response.Listener<Any> { img ->
+                            val fileName = (result[0].name + "backdrop" + ".png").replace("/", "")
+                            ImageSaver(App.appContext!!).setFileName(fileName)
+                                .setDirectoryName("images").save(img as Bitmap)
                             loading.value = false
                         }
+                        val imageUrl =
+                            "https:" + result[0].artworks[0].url.replace("t_thumb", "t_720p")
+                        val imageOptions = ImageOptions(
+                            900,
+                            900,
+                            ImageView.ScaleType.CENTER,
+                            Bitmap.Config.RGB_565
+                        )
 
-                    } catch (e: JsonSyntaxException) {
-                        Log.i(TAG, e.message)
-                        throw e
+                        NetworkUtils.getInstance(App.appContext!!).createRequestAndAddToQueue(
+                            imageUrl,
+                            RequestType.IMAGE,
+                            null,
+                            imageListener,
+                            Response.ErrorListener {
+                                Log.i("hallo img error", it.message)
+                            },
+                            imageOptions
+                        )
+                    } else {
+                        loading.value = false
                     }
 
-                } else {
-                    Log.i(TAG, "Data Null")
+                } catch (e: JsonSyntaxException) {
+                    Log.i(TAG, e.message)
+                    throw e
                 }
-            },
-            Response.ErrorListener { error ->
-                Log.e("error is ", "" + error)
-            }) {
-            //This is for Headers If You Needed
-            @Throws(AuthFailureError::class)
-            override fun getHeaders(): Map<String, String> {
-                val params: MutableMap<String, String> = HashMap()
-                params["Authorization"] =
-                    "Bearer $accessToken"
-                params["Client-ID"] = "tgmc1oc8qhc0f8h1lczzsivyjmt7c9"
-                params["Accept"] = "application/json"
-                return params
-            }
 
-            override fun getBody(): ByteArray {
-                // if we change the query (i.e. the fields) we have to adapt the response data class
-                val body = "fields *, cover.*, artworks.*; where id = $id;"
-                return body.toByteArray()
+            } else {
+                Log.i(TAG, "Data Null")
             }
         }
-        Singletons.getInstance(App.appContext!!).addToRequestQueue(request)
+
+        val errorListener = Response.ErrorListener { error ->
+            Log.e("error is ", "" + error)
+        }
+
+        val params: MutableMap<String, String> = HashMap()
+        params["Authorization"] =
+            "Bearer $accessToken"
+        params["Client-ID"] = "tgmc1oc8qhc0f8h1lczzsivyjmt7c9"
+        params["Accept"] = "application/json"
+
+        val body = "fields *, cover.*, artworks.*; where id = $id;".toByteArray()
+
+        NetworkUtils.getInstance(App.appContext!!).createRequestWithHeaderBodyAndAddToQueue(
+            "https://api.igdb.com/v4/games",
+            RequestType.STRING,
+            Request.Method.POST,
+            listener,
+            errorListener,
+            params,
+            body,
+            null
+        )
     }
 
     fun searchGames(query: String) {
@@ -255,14 +271,15 @@ class GamesRepository {
                                         result.filter { it.cover != null }.toList()
                                     loading.postValue(false)
                                 }
-                                val imageUrl = "https:" + it.cover.url.replace("t_thumb", "t_cover_big")
+                                val imageUrl =
+                                    "https:" + it.cover.url.replace("t_thumb", "t_cover_big")
                                 val imageRequest = ImageRequest(imageUrl,
                                     imageListener,
                                     900, 900, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
                                     Response.ErrorListener {
                                         Log.i("hallo img error", it.message)
                                     })
-                                Singletons.getInstance(App.appContext!!)
+                                NetworkUtils.getInstance(App.appContext!!)
                                     .addToRequestQueue(imageRequest)
                             }
 
@@ -295,7 +312,7 @@ class GamesRepository {
                 return body.toByteArray()
             }
         }
-        Singletons.getInstance(App.appContext!!).addToRequestQueue(request)
+        NetworkUtils.getInstance(App.appContext!!).addToRequestQueue(request)
     }
 
     fun clearSearchResults() {

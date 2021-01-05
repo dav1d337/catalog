@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -13,6 +14,10 @@ import androidx.navigation.fragment.navArgs
 import com.dav1337d.catalog.App
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.databinding.GameDetailBinding
+import com.dav1337d.catalog.model.games.Game
+import com.dav1337d.catalog.model.games.GameDetailsResponse
+import com.dav1337d.catalog.ui.base.AddToDbDialogFragment
+import com.dav1337d.catalog.ui.base.OnClickListener
 import com.dav1337d.catalog.util.ImageSaver
 import kotlinx.android.synthetic.main.game_detail.*
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -45,13 +50,12 @@ class GameDetailFragment: Fragment() {
     override fun onStop() {
         super.onStop()
         (activity as AppCompatActivity).supportActionBar?.show()
-        viewModel.clear()
     }
 
     override fun onResume() {
         super.onResume()
         (activity as AppCompatActivity).supportActionBar?.hide()
-        toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_baseline_arrow_back_24)
+        toolbar.navigationIcon = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_baseline_arrow_back_24)
         toolbar.setNavigationOnClickListener(View.OnClickListener {
             findNavController().navigate(R.id.action_gameDetailFragment_to_games)
         })
@@ -79,8 +83,23 @@ class GameDetailFragment: Fragment() {
                             .setDirectoryName("images").load()
                     )
                 }
-
             }
         })
+
+        val clickListenerSave = object : OnClickListener<GameDetailsResponse> {
+            override fun onSaveClick(
+                item: GameDetailsResponse,
+                rating: Long,
+                date: String,
+                comment: String
+            ) {
+                viewModel.insert(item, rating, date, comment)
+            }
+        }
+
+        addButton.setOnClickListener {
+            val dialog = AddToDbDialogFragment(clickListenerSave as OnClickListener<Any>, viewModel.game.value as GameDetailsResponse)
+            dialog.show(requireFragmentManager(), "dialog")
+        }
     }
 }

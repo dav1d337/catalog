@@ -13,7 +13,7 @@ import com.dav1337d.catalog.db.AppDatabase
 import com.dav1337d.catalog.db.RoomSeriesDao
 import com.dav1337d.catalog.db.RoomSeriesMovie
 import com.dav1337d.catalog.util.ImageSaver
-import com.dav1337d.catalog.util.Singletons
+import com.dav1337d.catalog.util.NetworkUtils
 import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
@@ -60,7 +60,7 @@ class TVRepository() {
             listener,
             Response.ErrorListener { Log.i("hallo", "Response Error TMDB") })
         val context = App.appContext
-        Singletons.getInstance(context!!).addToRequestQueue(stringRequest)
+        NetworkUtils.getInstance(context!!).addToRequestQueue(stringRequest)
     }
 
     fun handleResponse(response: String): List<EitherMovieOrSeries> {
@@ -166,7 +166,7 @@ class TVRepository() {
                 Response.ErrorListener {
 //                    Log.i("hallo img error", it.message)
                 })
-            Singletons.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
+            NetworkUtils.getInstance(App.appContext!!).addToRequestQueue(imageRequest)
         }
     }
 

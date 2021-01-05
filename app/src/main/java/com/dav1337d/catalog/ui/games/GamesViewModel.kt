@@ -13,7 +13,7 @@ import com.dav1337d.catalog.App
 import com.dav1337d.catalog.db.RoomGame
 import com.dav1337d.catalog.model.games.GamesRepository
 import com.dav1337d.catalog.util.ImageSaver
-import com.dav1337d.catalog.util.Singletons
+import com.dav1337d.catalog.util.NetworkUtils
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
@@ -64,7 +64,7 @@ class GamesViewModel constructor(private val gamesRepository: GamesRepository) :
                         Response.ErrorListener {
                             Log.i("hallo img error", it.message)
                         })
-                    Singletons.getInstance(App.appContext!!)
+                    NetworkUtils.getInstance(App.appContext!!)
                         .addToRequestQueue(imageRequest)
                 }
                 liveData.value = list
@@ -119,7 +119,7 @@ class GamesViewModel constructor(private val gamesRepository: GamesRepository) :
                             Response.ErrorListener {
                                 Log.i("hallo img error", it.message)
                             })
-                        Singletons.getInstance(App.appContext!!)
+                        NetworkUtils.getInstance(App.appContext!!)
                             .addToRequestQueue(imageRequest)
                     }
 
