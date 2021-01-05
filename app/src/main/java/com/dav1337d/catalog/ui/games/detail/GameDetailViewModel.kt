@@ -23,6 +23,10 @@ class GameDetailViewModel constructor(private val gamesRepository: GamesReposito
         }
     }
 
+    fun clear() {
+        this.onCleared()
+    }
+
     fun setGame(id: Long) {
         gamesRepository.getGameDetails(id)
     }

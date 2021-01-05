@@ -1,7 +1,5 @@
 package com.dav1337d.catalog.ui.games.detail
 
-import android.R.attr.data
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.dav1337d.catalog.App
 import com.dav1337d.catalog.R
 import com.dav1337d.catalog.databinding.GameDetailBinding
@@ -29,23 +27,34 @@ class GameDetailFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding: GameDetailBinding = DataBindingUtil.inflate(
             inflater, R.layout.game_detail, container, false
         )
+
         val view: View = binding.root
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-      //  (activity as AppCompatActivity).setSupportActionBar(toolbar)
-        viewModel.game.observe(viewLifecycleOwner, Observer {
-            (activity as AppCompatActivity).supportActionBar?.title = "blubb"
-        })
-
         val id = args.gameId
         viewModel.setGame(id)
         return view
+    }
+
+    override fun onStop() {
+        super.onStop()
+        (activity as AppCompatActivity).supportActionBar?.show()
+        viewModel.clear()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as AppCompatActivity).supportActionBar?.hide()
+        toolbar.navigationIcon = resources.getDrawable(R.drawable.ic_baseline_arrow_back_24)
+        toolbar.setNavigationOnClickListener(View.OnClickListener {
+            findNavController().navigate(R.id.action_gameDetailFragment_to_games)
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,9 +65,21 @@ class GameDetailFragment: Fragment() {
                 progress_loader.visibility = View.VISIBLE
             } else {
                 progress_loader.visibility = View.GONE
-                val fileName = (viewModel.game.value?.name + "backdrop" + ".png").replace("/", "")
-                backdrop.setImageBitmap(ImageSaver(App.appContext!!).setFileName(fileName)
-                    .setDirectoryName("images").load())
+                var fileName = (viewModel.game.value?.name + "backdrop" + ".png").replace("/", "")
+                if (ImageSaver(App.appContext!!).setFileName(fileName)
+                        .setDirectoryName("images").load() != null) {
+                    backdrop.setImageBitmap(
+                        ImageSaver(App.appContext!!).setFileName(fileName)
+                            .setDirectoryName("images").load()
+                    )
+                } else {
+                    fileName = (viewModel.game.value?.name + ".png").replace("/", "")
+                    backdrop.setImageBitmap(
+                        ImageSaver(App.appContext!!).setFileName(fileName)
+                            .setDirectoryName("images").load()
+                    )
+                }
+
             }
         })
     }

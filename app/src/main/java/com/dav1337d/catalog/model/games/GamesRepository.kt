@@ -180,7 +180,7 @@ class GamesRepository {
                                     .setDirectoryName("images").save(img)
                                 loading.value = false
                             }
-                            val imageUrl = "https:" + result[0].artworks[0].url.replace("t_thumb", "t_1080p")
+                            val imageUrl = "https:" + result[0].artworks[0].url.replace("t_thumb", "t_720p")
                             val imageRequest = ImageRequest(imageUrl,
                                 imageListener,
                                 900, 900, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,
@@ -255,7 +255,7 @@ class GamesRepository {
                                         result.filter { it.cover != null }.toList()
                                     loading.postValue(false)
                                 }
-                                val imageUrl = "https:" + it.cover.url
+                                val imageUrl = "https:" + it.cover.url.replace("t_thumb", "t_cover_big")
                                 val imageRequest = ImageRequest(imageUrl,
                                     imageListener,
                                     900, 900, ImageView.ScaleType.CENTER, Bitmap.Config.RGB_565,

@@ -43,6 +43,9 @@
             android:name="gameId"
             android:defaultValue="0L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_gameDetailFragment_to_games"
+            app:destination="@id/games" />
     </fragment>
 
 </navigation>
